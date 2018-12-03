@@ -23,6 +23,7 @@ class CreateCustomersTable extends Migration
             $table->string('code', 10);
             $table->boolean('is_confirm')->default(0);
             $table->boolean('is_active')->default(1);
+            $table->boolean('is_suspend')->default(0);
             $table->rememberToken();
             $table->timestamps();
         });

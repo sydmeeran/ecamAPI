@@ -46,6 +46,8 @@ Route::group(['middleware' => 'auth:api'], function(){
     Route::post('/customers/update/{id}', 'CustomerController@update');
     Route::post('/customers/delete/{id}', 'CustomerController@delete');
     Route::post('/customers/search', 'CustomerController@search');
+    Route::post('/customers/{id}/active-deactive', 'CustomerController@active_deactive');
+    Route::post('/customers/{id}/append-suspend', 'CustomerController@append_suspend');
 
 
 });

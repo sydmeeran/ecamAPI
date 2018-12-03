@@ -17,6 +17,10 @@ class BaseController extends Controller
         'status' => 'unauthorized'
     ];
 
+    protected $unauthenticated = [
+        'status' => 'unauthenticated'
+    ];
+
     protected $permission_denied = [
         'status' => 'permission denied'
     ];

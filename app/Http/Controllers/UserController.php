@@ -21,7 +21,7 @@ class UserController extends BaseController
             $success['token'] = $user->createToken('api-user')->accessToken;
             return $this->success_login_response($success);
         } else {
-            return response()->json($this->unauthorized);
+            return response()->json($this->unauthenticated);
         }
     }
 
@@ -86,7 +86,7 @@ class UserController extends BaseController
                 $user = User::with('role')->get()->toArray();
                 return $this->response($user);
             }
-            return response()->json($this->unauthorized);
+            return response()->json($this->permission_denied);
         }
         return response()->json($this->unauthorized);
     }
@@ -109,7 +109,7 @@ class UserController extends BaseController
                 return $this->response($user);
             }
 
-            return response()->json($this->unauthorized);
+            return response()->json($this->permission_denied);
         }
         return response()->json($this->unauthorized);
     }
@@ -122,7 +122,7 @@ class UserController extends BaseController
                 return response()->json($this->success);
             }
 
-            return response()->json($this->unauthorized);
+            return response()->json($this->permission_denied);
         }
         return response()->json($this->unauthorized);
     }

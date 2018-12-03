@@ -43,7 +43,7 @@ class CustomerController extends BaseController
                     'phone_no' => $request->get('phone_no'),
                     'address' => $request->get('address'),
                     'password' => bcrypt($request->get('password')),
-                    'code' => $this->generateCode()
+                    'code' => $this->generateCode(),
                 ];
 
 
@@ -59,7 +59,6 @@ class CustomerController extends BaseController
                 if ($validator->fails()) {
                     return $this->errors($validator);
                 }
-
 
                 $customer = Customer::create($data);
 
@@ -101,9 +100,6 @@ class CustomerController extends BaseController
                         'address' => 'required|string'
                     ]);
                 }
-
-
-
 
                 if ($validator->fails()) {
                     return $this->errors($validator);
@@ -232,7 +228,7 @@ class CustomerController extends BaseController
                 $user = Customer::all()->toArray();
                 return $this->response($user);
             }
-            return response()->json($this->unauthorized);
+            return response()->json($this->permission_denied);
         }
         return response()->json($this->unauthorized);
     }
@@ -245,7 +241,7 @@ class CustomerController extends BaseController
 //                dd($customer);
                 return $this->response($customer);
             }
-            return response()->json($this->unauthorized);
+            return response()->json($this->permission_denied);
         }
         return response()->json($this->unauthorized);
     }
@@ -263,7 +259,7 @@ class CustomerController extends BaseController
                 return $this->response($user);
             }
 
-            return response()->json($this->unauthorized);
+            return response()->json($this->permission_denied);
         }
         return response()->json($this->unauthorized);
     }
@@ -282,7 +278,39 @@ class CustomerController extends BaseController
                 return $this->response($result);
             }
 
-            return response()->json($this->unauthorized);
+            return response()->json($this->permission_denied);
+        }
+        return response()->json($this->unauthorized);
+    }
+
+    public function active_deactive(Request $request, $id){
+        if ($this->check_api_key($request)) {
+
+            if($this->check_permission('customer-update')){
+
+                Customer::where('id', $id)->update([
+                    'is_active' => $request->get('status')
+                ]);
+                return response()->json($this->success);
+
+            }
+            return response()->json($this->permission_denied);
+        }
+        return response()->json($this->unauthorized);
+    }
+
+    public function append_suspend(Request $request, $id){
+        if ($this->check_api_key($request)) {
+
+            if($this->check_permission('customer-update')){
+
+                Customer::where('id', $id)->update([
+                    'is_suspend' => $request->get('status')
+                ]);
+                return response()->json($this->success);
+
+            }
+            return response()->json($this->permission_denied);
         }
         return response()->json($this->unauthorized);
     }
@@ -295,7 +323,7 @@ class CustomerController extends BaseController
                 return response()->json($this->success);
             }
 
-            return response()->json($this->unauthorized);
+            return response()->json($this->permission_denied);
         }
         return response()->json($this->unauthorized);
     }
