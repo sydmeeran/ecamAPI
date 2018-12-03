@@ -41,6 +41,7 @@ Route::group(['middleware' => 'auth:api'], function(){
     // Customers
     Route::post('/customers/register', 'CustomerController@register');
     Route::get('/customers/get-all', 'CustomerController@getAll');
+    Route::get('/customers/get-all/pagination', 'CustomerController@getAll_pagination');
     Route::get('/customers/get/{id}', 'CustomerController@get');
     Route::post('/customers/update/{id}', 'CustomerController@update');
     Route::post('/customers/delete/{id}', 'CustomerController@delete');
