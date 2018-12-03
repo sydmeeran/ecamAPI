@@ -35,6 +35,7 @@ Route::group(['middleware' => 'auth:api'], function(){
     Route::post('/roles/store', 'RoleController@store');
     Route::get('/roles/get-all', 'RoleController@getAll');
     Route::get('/roles/get/{id}', 'RoleController@get');
+    Route::post('/roles/update/{id}', 'RoleController@update');
     Route::post('/roles/delete/{id}', 'RoleController@delete');
 
     // Customers

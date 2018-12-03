@@ -20,7 +20,7 @@ class RoleController extends BaseController
                 ];
 
                 $validator = Validator::make($data, [
-                    'role' => 'required|max:15|unique:roles',
+                    'role' => 'required|max:30|unique:roles',
                     'permissions' => 'required'
                 ]);
 
@@ -44,6 +44,45 @@ class RoleController extends BaseController
             return response()->json($this->permission_denied);
         }
 
+        return response()->json($this->unauthorized);
+    }
+
+    public function update(Request $request, $id)
+    {
+        if ($this->check_api_key($request)) {
+            if ($this->check_permission('role-update')) {
+
+                $data = [
+                    'role' => $request->get('role'),
+                    'permissions' => $request->get('permissions')
+                ];
+
+                $validator = Validator::make($data, [
+                    'role' => 'required|max:30|unique:roles',
+                    'permissions' => 'required'
+                ]);
+
+                if ($validator->fails()) {
+                    return $this->errors($validator);
+                }
+
+                Role::where('id', $id)->update([
+                    'role' => $data['role']
+                ]);
+
+                RolePermission::where('role_id', $id)->delete();
+
+                foreach($data['permissions'] as $permission_id){
+                    RolePermission::create([
+                        'role_id' => $id,
+                        'permission_id' => $permission_id
+                    ]);
+                }
+
+                return response()->json($this->success);
+            }
+            return response()->json($this->permission_denied);
+        }
         return response()->json($this->unauthorized);
     }
 
