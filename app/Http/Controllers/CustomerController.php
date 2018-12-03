@@ -255,6 +255,25 @@ class CustomerController extends BaseController
         return response()->json($this->unauthorized);
     }
 
+    public function search(Request $request){
+        if ($this->check_api_key($request)) {
+
+            if($this->check_permission('customer-retrieve')){
+                $keyword = $request->get('keyword');
+                $result = Customer::where ( 'name', 'LIKE', '%' . $keyword . '%' )
+                    ->orWhere ( 'email', 'LIKE', '%' . $keyword . '%' )
+                    ->orWhere ( 'phone_no', 'LIKE', '%' . $keyword . '%' )
+                    ->orWhere ( 'address', 'LIKE', '%' . $keyword . '%' )
+                    ->get()->toArray();
+
+                return $this->response($result);
+            }
+
+            return response()->json($this->unauthorized);
+        }
+        return response()->json($this->unauthorized);
+    }
+
     public function delete(Request $request, $id){
         if ($this->check_api_key($request)) {
 
