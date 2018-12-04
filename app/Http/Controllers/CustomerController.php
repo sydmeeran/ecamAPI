@@ -238,7 +238,6 @@ class CustomerController extends BaseController
         if ($this->check_api_key($request)) {
             if($this->check_permission('customer-retrieve')){
                 $customer = Customer::paginate(20);
-//                dd($customer);
                 return $this->response($customer);
             }
             return response()->json($this->permission_denied);

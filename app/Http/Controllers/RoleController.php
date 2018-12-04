@@ -57,10 +57,19 @@ class RoleController extends BaseController
                     'permissions' => $request->get('permissions')
                 ];
 
-                $validator = Validator::make($data, [
-                    'role' => 'required|max:30|unique:roles',
-                    'permissions' => 'required'
-                ]);
+                $role = Role::where('id', $id)->get()->toArray();
+
+                if($data['role'] == $role[0]['role']){
+                    $validator = Validator::make($data, [
+                        'role' => 'required|max:30',
+                        'permissions' => 'required'
+                    ]);
+                } else {
+                    $validator = Validator::make($data, [
+                        'role' => 'required|max:30|unique:roles',
+                        'permissions' => 'required'
+                    ]);
+                }
 
                 if ($validator->fails()) {
                     return $this->errors($validator);

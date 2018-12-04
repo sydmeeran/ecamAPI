@@ -28,8 +28,12 @@ Route::group(['middleware' => 'auth:api'], function(){
     Route::post('/users/logout', 'UserController@logout');
 
     Route::get('/users/get-all', 'UserController@getAll');
+    Route::get('/users/get-all/pagination', 'UserController@getAll_pagination');
     Route::get('/users/get/{id}', 'UserController@get');
     Route::post('/users/delete/{id}', 'UserController@delete');
+    Route::post('/users/update/{id}', 'UserController@update');
+    Route::post('/users/{id}/active-deactive', 'UserController@active_deactive');
+    Route::post('/users/search', 'UserController@search');
 
     // Roles
     Route::post('/roles/store', 'RoleController@store');

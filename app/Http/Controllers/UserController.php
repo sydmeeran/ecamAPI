@@ -37,10 +37,11 @@ class UserController extends BaseController
                     'role_id' => $request->get('role_id')
                 ];
 
-                $validator = Validator::make($data, [
+                $validator = Validator::make($request->all(), [
                     'name' => 'required',
                     'email' => 'required|unique:users',
                     'password' => 'required',
+                    'confirm_password' => 'required|same:password',
                     'role_id' => 'required|int'
                 ]);
 
@@ -91,6 +92,18 @@ class UserController extends BaseController
         return response()->json($this->unauthorized);
     }
 
+    public function getAll_pagination(Request $request)
+    {
+        if ($this->check_api_key($request)) {
+            if($this->check_permission('user-retrieve')){
+                $user = User::paginate(20);
+                return $this->response($user);
+            }
+            return response()->json($this->permission_denied);
+        }
+        return response()->json($this->unauthorized);
+    }
+
     public function get(Request $request, $id)
     {
         if ($this->check_api_key($request)) {
@@ -114,6 +127,23 @@ class UserController extends BaseController
         return response()->json($this->unauthorized);
     }
 
+    public function search(Request $request){
+        if ($this->check_api_key($request)) {
+
+            if($this->check_permission('user-retrieve')){
+                $keyword = $request->get('keyword');
+                $result = User::where ( 'name', 'LIKE', '%' . $keyword . '%' )
+                    ->orWhere ( 'email', 'LIKE', '%' . $keyword . '%' )
+                    ->get()->toArray();
+
+                return $this->response($result);
+            }
+
+            return response()->json($this->permission_denied);
+        }
+        return response()->json($this->unauthorized);
+    }
+
     public function delete(Request $request, $id){
         if ($this->check_api_key($request)) {
 
@@ -127,5 +157,60 @@ class UserController extends BaseController
         return response()->json($this->unauthorized);
     }
 
+    public function update(Request $request, $id)
+    {
+        if ($this->check_api_key($request)) {
+            if ($this->check_permission('user-update')) {
+
+                $data = [
+                    'name' => $request->get('name'),
+                    'email' => $request->get('email'),
+                    'role_id' => $request->get('role_id')
+                ];
+
+                $user = User::where('id', $id)->get()->toArray();
+
+                if($data['email'] == $user[0]['email']){
+                    $validator = Validator::make($data, [
+                        'name' => 'required',
+                        'role_id' => 'required|int'
+                    ]);
+
+                } else {
+                    $validator = Validator::make($data, [
+                        'name' => 'required',
+                        'email' => 'required|email|unique:users,email',
+                        'role_id' => 'required|int'
+                    ]);
+                }
+
+                if ($validator->fails()) {
+                    return $this->errors($validator);
+                }
+
+                User::where('id', $id)->update($data);
+
+                return response()->json($this->success);
+            }
+            return response()->json($this->permission_denied);
+        }
+        return response()->json($this->unauthorized);
+    }
+
+    public function active_deactive(Request $request, $id){
+        if ($this->check_api_key($request)) {
+
+            if($this->check_permission('user-update')){
+
+                User::where('id', $id)->update([
+                    'is_active' => $request->get('status')
+                ]);
+                return response()->json($this->success);
+
+            }
+            return response()->json($this->permission_denied);
+        }
+        return response()->json($this->unauthorized);
+    }
 
 }
