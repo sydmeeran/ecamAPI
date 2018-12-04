@@ -98,11 +98,11 @@ class RoleController extends BaseController
     public function getAll(Request $request){
 
         if($this->check_api_key($request)) {
-            if($this->check_permission('role-retrieve')) {
-                $roles = Role::with('permissions')->get()->toArray();
+//            if($this->check_permission('role-retrieve')) {
+                $roles = Role::where('id', '!=', 1)->with('permissions')->get()->toArray();
                 return $this->response($roles);
-            }
-            return response()->json($this->unauthorized);
+//            }
+//            return response()->json($this->unauthorized);
         }
 
         return response()->json($this->unauthorized);
