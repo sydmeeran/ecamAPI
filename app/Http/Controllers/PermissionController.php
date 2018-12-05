@@ -32,7 +32,7 @@ class PermissionController extends BaseController
 
     public function getAll(Request $request){
         if ($this->check_api_key($request)) {
-            $permissions = Permission::orderBy('permission')->get();
+            $permissions = Permission::where('id', '!=', 1)->orderBy('permission')->get();
             return $this->response($permissions);
         }
         return response()->json($this->unauthorized);

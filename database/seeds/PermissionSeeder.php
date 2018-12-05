@@ -22,15 +22,30 @@ class PermissionSeeder extends Seeder
             Permission::create([
                 'permission' => 'role-'.$p
             ]);
+        }
 
+        foreach($permission as $p){
             Permission::create([
                 'permission' => 'user-'.$p
             ]);
+        }
 
+        Permission::create([
+            'permission' => 'user-deactive'
+        ]);
+
+        foreach($permission as $p){
             Permission::create([
                 'permission' => 'customer-'.$p
             ]);
         }
 
+        Permission::create([
+            'permission' => 'customer-deactive'
+        ]);
+
+        Permission::create([
+            'permission' => 'customer-suspend'
+        ]);
     }
 }
