@@ -57,7 +57,7 @@ Route::group(['middleware' => 'auth:api'], function(){
 });
 
 Route::get('/permissions/get-all', 'PermissionController@getAll');
-Route::post('/customers/verification', 'CustomerController@verify');
+Route::post('/customers/use', 'CustomerController@use');
 
 
 // Permissions

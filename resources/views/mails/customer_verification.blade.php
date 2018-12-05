@@ -10,24 +10,27 @@
             {{--<img src="http://aweltaw.com/img/awt_logo.png"--}}
                                                   {{--width="100px;" alt="">--}}
             <u style="padding-left:80px">Accountant</u></p></div>
-    <h2>မင်္ဂလာပါ {{ $name }}</h2>
+    <h2>မင်္ဂလာပါ {{ $business_name }}</h2>
     <p>လူကြီးမင်း၏ Account အားမှတ်ပုံတင်ပြီးဖြစ်ပါသည်။<br>သင့်၏ email မှန်ကန်ကြောင်း အတည်ပြုရန် အောက်တွင်ပါရှိသော button
         အားနှိုပ်ပါ။</p>
     <form action="{{ env('APP_URL') }}/api/customers/verification" method="POST">
         @csrf
-        <input type="text" name="code" style="display: none;" value="{{ $code }}">
+        <input type="text" name="code" style="display: none;" value="{{ $otp }}">
         <input type="email" name="email" style="display: none;" value="{{ $email }}">
         <input type="submit" style="color: white; background-color: green;" value="Verify Account">
     </form>
     <p>ကျေးဇူးအထူးတင်ရှိပါသည်။</p>
 
-    <div id="zawgyi" style="border-left:2px solid #441e1e;padding:20px"><h2>မဂၤလာပါ {{ $name }}</h2>
-        <p>လူႀကီးမင္း၏ Account အားမှတ္ပံုတင္ၿပီးျဖစ္ပါသည္။<br>သင့္၏ email မွန္ကန္ေၾကာင္း အတည္ျပဳရန္ ေအာက္တြင္ပါရွိေသာ
-            button အားႏႈိပ္ပါ။</p>
+    <div id="zawgyi" style="border-left:2px solid #441e1e;padding:20px"><h2>မဂၤလာပါ {{ $business_name }}</h2>
+        <p>လူႀကီးမင္း၏ Account အားမှတ္ပံုတင္ၿပီးျဖစ္ပါသည္။<br>
+            otp : {{ $otp }}
+            {{--သင့္၏ email မွန္ကန္ေၾကာင္း အတည္ျပဳရန္ ေအာက္တြင္ပါရွိေသာ--}}
+            {{--button အားႏႈိပ္ပါ။--}}
+        </p>
         <p>ေက်းဇူးအထူးတင္ရွိပါသည္။</p></div>
-    <form action="{{ env('APP_URL') }}/api/customers/verification" method="POST">
+    <form action="{{ env('APP_URL') }}/api/customers/use" method="POST">
         @csrf
-        <input type="text" name="code" style="display: none;" value="{{ $code }}">
+        <input type="text" name="otp" style="display: none;" value="{{ $otp }}">
         <input type="email" name="email" style="display: none;" value="{{ $email }}">
         <input type="submit" style="color: white; background-color: green;" value="Verify Account">
     </form>

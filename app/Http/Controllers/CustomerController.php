@@ -38,22 +38,36 @@ class CustomerController extends BaseController
             if ($this->check_permission('customer-create')) {
 
                 $data = [
-                    'name' => $request->get('name'),
-                    'email' => $request->get('email'),
-                    'phone_no' => $request->get('phone_no'),
-                    'address' => $request->get('address'),
-                    'password' => bcrypt($request->get('password')),
-                    'code' => $this->generateCode(),
+                    'business_name' => $request->input('business_name'),
+                    'license_no' => $request->input('license_no'),
+                    'license_type' => $request->input('license_type'),
+                    'address' => $request->input('address'),
+                    'owner_name' => $request->input('owner_name'),
+                    'nrc_no' => $request->input('nrc_no'),
+                    'phone_no' => $request->input('phone_no'),
+                    'email' => $request->input('email'),
+                    'contact_name' => $request->input('contact_name'),
+                    'contact_position' => $request->input('contact_position'),
+                    'contact_number' => $request->input('contact_number'),
+                    'contact_email' => $request->input('contact_email'),
+                    'otp' => $request->input('otp'),
                 ];
 
 
                 $validator = Validator::make($request->all(), [
-                    'name' => 'required',
-                    'email' => 'required|email|unique:customers,email',
-                    'phone_no' => 'required|string|max:12',
+                    'business_name' => 'required|string',
+                    'license_no' => 'required|string',
+                    'license_type' => 'required|string',
                     'address' => 'required|string',
-                    'password' => 'required|string',
-                    'confirm_password' => 'required|same:password',
+                    'owner_name' => 'required|string',
+                    'nrc_no' => 'required|string',
+                    'phone_no' => 'required|string|max:12',
+                    'email' => 'required|email|unique:customers,email',
+                    'contact_name' => 'required|string',
+                    'contact_position' => 'required|string',
+                    'contact_number' => 'required|string',
+                    'contact_email' => 'required|email',
+                    'otp' => 'required|string'
                 ]);
 
                 if ($validator->fails()) {
@@ -62,7 +76,7 @@ class CustomerController extends BaseController
 
                 $customer = Customer::create($data);
 
-//                Mail::to($customer->email)->send(new CustomerVerificationEmail($data));
+                Mail::to($customer->email)->send(new CustomerVerificationEmail($data));
 
                 return response()->json($this->success);
             }
@@ -77,27 +91,51 @@ class CustomerController extends BaseController
             if ($this->check_permission('customer-update')) {
 
                 $data = [
-                    'name' => $request->get('name'),
-                    'email' => $request->get('email'),
-                    'phone_no' => $request->get('phone_no'),
-                    'address' => $request->get('address'),
+                    'business_name' => $request->input('business_name'),
+                    'license_no' => $request->input('license_no'),
+                    'license_type' => $request->input('license_type'),
+                    'address' => $request->input('address'),
+                    'owner_name' => $request->input('owner_name'),
+                    'nrc_no' => $request->input('nrc_no'),
+                    'phone_no' => $request->input('phone_no'),
+                    'email' => $request->input('email'),
+                    'contact_name' => $request->input('contact_name'),
+                    'contact_position' => $request->input('contact_position'),
+                    'contact_number' => $request->input('contact_number'),
+                    'contact_email' => $request->input('contact_email'),
                 ];
 
                 $customer = Customer::where('id', $id)->get()->toArray();
 
                 if($data['email'] == $customer[0]['email']){
                     $validator = Validator::make($request->all(), [
-                        'name' => 'required',
-                        'email' => 'required|email',
+                        'business_name' => 'required|string',
+                        'license_no' => 'required|string',
+                        'license_type' => 'required|string',
+                        'address' => 'required|string',
+                        'owner_name' => 'required|string',
+                        'nrc_no' => 'required|string',
                         'phone_no' => 'required|string|max:12',
-                        'address' => 'required|string'
+                        'email' => 'required|email',
+                        'contact_name' => 'required|string',
+                        'contact_position' => 'required|string',
+                        'contact_number' => 'required|string',
+                        'contact_email' => 'required|email',
                     ]);
                 } else {
                     $validator = Validator::make($request->all(), [
-                        'name' => 'required',
-                        'email' => 'required|email|unique:customers,email',
+                        'business_name' => 'required|string',
+                        'license_no' => 'required|string',
+                        'license_type' => 'required|string',
+                        'address' => 'required|string',
+                        'owner_name' => 'required|string',
+                        'nrc_no' => 'required|string',
                         'phone_no' => 'required|string|max:12',
-                        'address' => 'required|string'
+                        'email' => 'required|email',
+                        'contact_name' => 'required|string',
+                        'contact_position' => 'required|string',
+                        'contact_number' => 'required|string',
+                        'contact_email' => 'required|email',
                     ]);
                 }
 
@@ -116,12 +154,12 @@ class CustomerController extends BaseController
         return response()->json($this->unauthorized);
     }
 
-    public function verify(Request $request){
+    public function use(Request $request){
         $email = $request->input('email');
-        $code = $request->input('code');
+        $otp = $request->input('otp');
 
-        Customer::where('email', $email)->where('code', $code)->update([
-            'is_confirm' => 1
+        Customer::where('email', $email)->where('otp', $otp)->update([
+            'is_use' => 1
         ]);
 
         return redirect('https://www.google.com');

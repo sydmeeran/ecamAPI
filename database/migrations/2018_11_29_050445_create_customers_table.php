@@ -15,13 +15,20 @@ class CreateCustomersTable extends Migration
     {
         Schema::create('customers', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name');
-            $table->string('email');
-            $table->string('phone_no');
+            $table->string('business_name');
+            $table->string('license_no');
+            $table->string('license_type');
             $table->string('address');
-            $table->string('password');
-            $table->string('code', 10);
-            $table->boolean('is_confirm')->default(0);
+            $table->string('owner_name');
+            $table->string('nrc_no');
+            $table->string('phone_no');
+            $table->string('email');
+            $table->string('contact_name');
+            $table->string('contact_position');
+            $table->string('contact_number');
+            $table->string('contact_email');
+            $table->string('otp', 10);
+            $table->boolean('is_use')->default(0);
             $table->boolean('is_active')->default(1);
             $table->boolean('is_suspend')->default(0);
             $table->rememberToken();

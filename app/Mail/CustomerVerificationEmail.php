@@ -34,8 +34,8 @@ class CustomerVerificationEmail extends Mailable
             ->subject('Thanks for your registration!')
             ->view('mails.customer_verification')
             ->with([
-                'code' => $this->data['code'],
-                'name' => $this->data['name'],
+                'otp' => $this->data['otp'],
+                'business_name' => $this->data['business_name'],
                 'email' => $this->data['email']
             ]);
     }

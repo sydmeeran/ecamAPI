@@ -13,7 +13,9 @@ class Customer extends Model
     protected $table = 'customers';
 
     protected $fillable = [
-      'name', 'email', 'phone_no', 'address', 'password', 'code', 'is_confirm', 'is_active', 'is_suspend'
+      'business_name', 'license_no', 'license_type', 'address', 'owner_name', 'nrc_no',
+        'phone_no', 'email', 'contact_name', 'contact_position', 'contact_number', 'contact_email', 'otp',
+        'is_use', 'is_active', 'is_suspend'
     ];
 
     /**
@@ -22,6 +24,6 @@ class Customer extends Model
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token',
+        'remember_token',
     ];
 }
