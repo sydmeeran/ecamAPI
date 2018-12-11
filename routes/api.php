@@ -54,6 +54,8 @@ Route::group(['middleware' => 'auth:api'], function () {
 
     // Businesses
     Route::post('/businesses/update/{id}', 'BusinessController@update');
+    Route::post('/businesses/delete/{id}', 'BusinessController@delete');
+    Route::get('/businesses/get/{id}', 'BusinessController@get');
 });
 
 Route::get('/permissions/get-all', 'PermissionController@getAll');

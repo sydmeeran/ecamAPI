@@ -38,12 +38,11 @@ class BusinessRepostitory extends BaseRepository
         ]);
     }
 
-    public function setData(Request $request, $license_photo){
+    public function setData(Request $request){
         $business_data = [
             'business_name' => $request->input('business_name'),
             'license_no' => $request->input('license_no'),
             'license_type' => $request->input('license_type'),
-            'license_photo' => $license_photo,
             'address' => $request->input('address'),
         ];
         return $business_data;
@@ -94,7 +93,7 @@ class BusinessRepostitory extends BaseRepository
             return $validator;
         }
         $license_photo_name = $this->storeLicensePhoto($request);
-        $data = $this->setData($request, $license_photo_name);
+        $data = $this->setData($request);
         $data['license_photo'] = $license_photo_name;
         $this->create_business($data, $customer_id);
         return 'success';
@@ -114,30 +113,48 @@ class BusinessRepostitory extends BaseRepository
 //
 //    }
 
-    public function updateLicensePhoto(Request $request, $customer_id){
-        $businesses = $this->model()->where('customer_id', $customer_id)->get();
-        foreach($businesses as $business){
+    public function updateValidation(Request $request){
+        return Validator::make($request->all(), [
+            'business_name' => 'required',
+            'license_no' => 'required',
+            'license_type' => 'required',
+            'license_photo.*' => 'image|mimes:jpeg,png,jpg,svg|max:2048',
+            'address' => 'required',
+        ]);
+    }
+
+    public function updateLicensePhoto(Request $request, $id){
+        if(Input::hasFile('license_photo')){
+            $business = $this->find($id);
             if(file_exists($business->license_photo)){
                 unlink($business->license_photo);
             }
+            $license_photo = $request->file('license_photo');
+            $name =  $this->uuid($this->prefix, 15).'.'.$license_photo->getClientOriginalExtension();
+            $license_photo_name = $license_photo->move(public_path('db/license_photos'), $name);
+            return '/db/license_photos/'.$license_photo_name->getFilename();
         }
-        return $this->storeLicensePhoto($request);
+        return 'no file';
     }
 
-    public function update(Request $request, $customer_id){
-        $validator = $this->validation($request);
+    public function update(Request $request, $id){
+        $validator = $this->updateValidation($request);
         if($validator->fails()){
             return $validator;
         }
-        $license_photo_name = $this->updateLicensePhoto($request, $customer_id);
-        $data = $this->setData($request, $license_photo_name);
 
-        $this->deleteByCustomerId($customer_id);
+        $license_photo_name = $this->updateLicensePhoto($request, $id);
 
-        $this->create_business($data, $customer_id);
+        $data = $this->setData($request);
+        if($license_photo_name !== "no file"){
+            $data['license_photo'] = $license_photo_name;
+        }
+
+        $this->model()->where('id', $id)->update($data);
 
         return 'success';
     }
+
 
     public function deleteByCustomerId($id){
         $this->model()->where('customer_id', $id)->delete();

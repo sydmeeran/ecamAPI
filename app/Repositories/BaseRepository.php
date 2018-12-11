@@ -36,6 +36,6 @@ abstract class BaseRepository
     }
 
     public function delete($id){
-        $this->model()->where('id', $id)->update(['delete' => 1]);
+        $this->model()->where('id', $id)->delete();
     }
 }

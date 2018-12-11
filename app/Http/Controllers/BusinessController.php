@@ -29,4 +29,35 @@ class BusinessController extends BaseController
         }
         return $this->unauthorized();
     }
+
+    public function delete(Request $request, $id){
+        if ($this->check_api_key($request)) {
+            if ($this->check_permission('customer-update')) {
+
+                $this->business->delete($id);
+
+                return $this->success();
+            }
+            return $this->permission_denied();
+        }
+        return $this->unauthorized();
+    }
+
+    public function get(Request $request, $id)
+    {
+        if ($this->check_api_key($request)) {
+
+            if($this->check_permission('customer-retrieve')){
+                $business = $this->business->find($id)->toArray();
+
+                if(empty($business)){
+                    return $this->response($business);
+                }
+                return $this->response($business);
+            }
+
+            return $this->permission_denied();
+        }
+        return $this->unauthorized();
+    }
 }
