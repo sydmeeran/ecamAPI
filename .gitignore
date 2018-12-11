@@ -1,6 +1,8 @@
 /node_modules
 /public/hot
 /public/storage
+/public/db/nrc_photos
+/public/db/license_photos
 /storage/*.key
 /vendor
 /.idea
