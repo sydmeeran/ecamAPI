@@ -13,9 +13,9 @@ class Customer extends Model
     protected $table = 'customers';
 
     protected $fillable = [
-      'business_name', 'license_no', 'license_type', 'address', 'owner_name', 'nrc_no',
-        'phone_no', 'email', 'contact_name', 'contact_position', 'contact_number', 'contact_email', 'otp',
-        'is_use', 'is_active', 'is_suspend'
+      'company_id', 'company_name', 'owner_name', 'nrc_no', 'nrc_photo', 'phone_no',
+        'email', 'contact_name', 'contact_position', 'contact_number', 'contact_email',
+        'company_dica_link', 'company_link', 'otp', 'is_use', 'is_active', 'is_suspend'
     ];
 
     /**
@@ -24,6 +24,10 @@ class Customer extends Model
      * @var array
      */
     protected $hidden = [
-        'remember_token',
+        'remember_token'
     ];
+
+    public function businesses(){
+        return $this->hasMany(Business::class);
+    }
 }

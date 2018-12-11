@@ -35,7 +35,7 @@ class CustomerVerificationEmail extends Mailable
             ->view('mails.customer_verification')
             ->with([
                 'otp' => $this->data['otp'],
-                'business_name' => $this->data['business_name'],
+                'owner_name' => $this->data['owner_name'],
                 'email' => $this->data['email']
             ]);
     }

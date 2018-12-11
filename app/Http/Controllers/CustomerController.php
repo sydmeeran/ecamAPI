@@ -2,15 +2,26 @@
 
 namespace App\Http\Controllers;
 
+use App\Business;
 use App\Customer;
 use App\Mail\CustomerVerificationEmail;
+
+use App\Repositories\DataRepo;
 use Illuminate\Http\Request;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 
 class CustomerController extends BaseController
 {
+    protected $customer;
+
+    public function __construct()
+    {
+        $this->customer = DataRepo::customer();
+    }
+
     /**
      * login api
      *
@@ -37,52 +48,17 @@ class CustomerController extends BaseController
         if ($this->check_api_key($request)) {
             if ($this->check_permission('customer-create')) {
 
-                $data = [
-                    'business_name' => $request->input('business_name'),
-                    'license_no' => $request->input('license_no'),
-                    'license_type' => $request->input('license_type'),
-                    'address' => $request->input('address'),
-                    'owner_name' => $request->input('owner_name'),
-                    'nrc_no' => $request->input('nrc_no'),
-                    'phone_no' => $request->input('phone_no'),
-                    'email' => $request->input('email'),
-                    'contact_name' => $request->input('contact_name'),
-                    'contact_position' => $request->input('contact_position'),
-                    'contact_number' => $request->input('contact_number'),
-                    'contact_email' => $request->input('contact_email'),
-                    'otp' => $request->input('otp'),
-                ];
+                $status = $this->customer->store($request);
 
-
-                $validator = Validator::make($request->all(), [
-                    'business_name' => 'required|string',
-                    'license_no' => 'required|string',
-                    'license_type' => 'required|string',
-                    'address' => 'required|string',
-                    'owner_name' => 'required|string',
-                    'nrc_no' => 'required|string',
-                    'phone_no' => 'required|string|max:12',
-                    'email' => 'required|email|unique:customers,email',
-                    'contact_name' => 'required|string',
-                    'contact_position' => 'required|string',
-                    'contact_number' => 'required|string',
-                    'contact_email' => 'required|email',
-                    'otp' => 'required|string'
-                ]);
-
-                if ($validator->fails()) {
-                    return $this->errors($validator);
+                if($status === 'success'){
+                    return $this->success();
                 }
 
-                $customer = Customer::create($data);
-
-                Mail::to($customer->email)->send(new CustomerVerificationEmail($data));
-
-                return response()->json($this->success);
+                return $this->errors($status);
             }
-            return response()->json($this->permission_denied);
+            return $this->permission_denied();
         }
-        return response()->json($this->unauthorized);
+        return $this->unauthorized();
     }
 
     public function update(Request $request, $id)
@@ -90,75 +66,81 @@ class CustomerController extends BaseController
         if ($this->check_api_key($request)) {
             if ($this->check_permission('customer-update')) {
 
-                $data = [
-                    'business_name' => $request->input('business_name'),
-                    'license_no' => $request->input('license_no'),
-                    'license_type' => $request->input('license_type'),
-                    'address' => $request->input('address'),
-                    'owner_name' => $request->input('owner_name'),
-                    'nrc_no' => $request->input('nrc_no'),
-                    'phone_no' => $request->input('phone_no'),
-                    'email' => $request->input('email'),
-                    'contact_name' => $request->input('contact_name'),
-                    'contact_position' => $request->input('contact_position'),
-                    'contact_number' => $request->input('contact_number'),
-                    'contact_email' => $request->input('contact_email'),
-                ];
+//                $data = [
+//                    'business_name' => $request->input('business_name'),
+//                    'license_no' => $request->input('license_no'),
+//                    'license_type' => $request->input('license_type'),
+//                    'address' => $request->input('address'),
+//                    'owner_name' => $request->input('owner_name'),
+//                    'nrc_no' => $request->input('nrc_no'),
+//                    'phone_no' => $request->input('phone_no'),
+//                    'email' => $request->input('email'),
+//                    'contact_name' => $request->input('contact_name'),
+//                    'contact_position' => $request->input('contact_position'),
+//                    'contact_number' => $request->input('contact_number'),
+//                    'contact_email' => $request->input('contact_email'),
+//                ];
+//
+//                $customer = Customer::where('id', $id)->get()->toArray();
+//
+//                if($data['email'] == $customer[0]['email']){
+//                    $validator = Validator::make($request->all(), [
+//                        'business_name' => 'required|string',
+//                        'license_no' => 'required|string',
+//                        'license_type' => 'required|string',
+//                        'address' => 'required|string',
+//                        'owner_name' => 'required|string',
+//                        'nrc_no' => 'required|string',
+//                        'phone_no' => 'required|string|max:12',
+//                        'email' => 'required|email',
+//                        'contact_name' => 'required|string',
+//                        'contact_position' => 'required|string',
+//                        'contact_number' => 'required|string',
+//                        'contact_email' => 'required|email',
+//                    ]);
+//                } else {
+//                    $validator = Validator::make($request->all(), [
+//                        'business_name' => 'required|string',
+//                        'license_no' => 'required|string',
+//                        'license_type' => 'required|string',
+//                        'address' => 'required|string',
+//                        'owner_name' => 'required|string',
+//                        'nrc_no' => 'required|string',
+//                        'phone_no' => 'required|string|max:12',
+//                        'email' => 'required|email',
+//                        'contact_name' => 'required|string',
+//                        'contact_position' => 'required|string',
+//                        'contact_number' => 'required|string',
+//                        'contact_email' => 'required|email',
+//                    ]);
+//                }
+//
+//                if ($validator->fails()) {
+//                    return $this->errors($validator);
+//                }
+//
+//                $this->customer->model()->where('id', $id)->update($data);
+//
+////                Mail::to($customer->email)->send(new CustomerVerificationEmail($data));
 
-                $customer = Customer::where('id', $id)->get()->toArray();
+                $status = $this->customer->update($request, $id);
 
-                if($data['email'] == $customer[0]['email']){
-                    $validator = Validator::make($request->all(), [
-                        'business_name' => 'required|string',
-                        'license_no' => 'required|string',
-                        'license_type' => 'required|string',
-                        'address' => 'required|string',
-                        'owner_name' => 'required|string',
-                        'nrc_no' => 'required|string',
-                        'phone_no' => 'required|string|max:12',
-                        'email' => 'required|email',
-                        'contact_name' => 'required|string',
-                        'contact_position' => 'required|string',
-                        'contact_number' => 'required|string',
-                        'contact_email' => 'required|email',
-                    ]);
-                } else {
-                    $validator = Validator::make($request->all(), [
-                        'business_name' => 'required|string',
-                        'license_no' => 'required|string',
-                        'license_type' => 'required|string',
-                        'address' => 'required|string',
-                        'owner_name' => 'required|string',
-                        'nrc_no' => 'required|string',
-                        'phone_no' => 'required|string|max:12',
-                        'email' => 'required|email',
-                        'contact_name' => 'required|string',
-                        'contact_position' => 'required|string',
-                        'contact_number' => 'required|string',
-                        'contact_email' => 'required|email',
-                    ]);
+                if ($status === 'success') {
+                    return $this->success();
                 }
 
-                if ($validator->fails()) {
-                    return $this->errors($validator);
-                }
-
-                Customer::where('id', $id)->update($data);
-
-//                Mail::to($customer->email)->send(new CustomerVerificationEmail($data));
-
-                return response()->json($this->success);
+                return $this->errors($status);
             }
-            return response()->json($this->permission_denied);
+            return $this->permission_denied();
         }
-        return response()->json($this->unauthorized);
+        return $this->unauthorized();
     }
 
     public function use(Request $request){
         $email = $request->input('email');
         $otp = $request->input('otp');
 
-        Customer::where('email', $email)->where('otp', $otp)->update([
+        $this->customer->model()->where('email', $email)->where('otp', $otp)->update([
             'is_use' => 1
         ]);
 
@@ -263,24 +245,25 @@ class CustomerController extends BaseController
     {
         if ($this->check_api_key($request)) {
             if($this->check_permission('customer-retrieve')){
-                $user = Customer::all()->toArray();
+
+                $user = $this->customer->with(['businesses'])->toArray();
                 return $this->response($user);
             }
-            return response()->json($this->permission_denied);
+            return $this->permission_denied();
         }
-        return response()->json($this->unauthorized);
+        return $this->unauthorized();
     }
 
     public function getAll_pagination(Request $request)
     {
         if ($this->check_api_key($request)) {
             if($this->check_permission('customer-retrieve')){
-                $customer = Customer::paginate(20);
+                $customer = $this->customer->paginate(20);
                 return $this->response($customer);
             }
-            return response()->json($this->permission_denied);
+            return $this->permission_denied();
         }
-        return response()->json($this->unauthorized);
+        return $this->unauthorized();
     }
 
     public function get(Request $request, $id)
@@ -288,7 +271,7 @@ class CustomerController extends BaseController
         if ($this->check_api_key($request)) {
 
             if($this->check_permission('customer-retrieve')){
-                $user = Customer::where('id', $id)->get()->toArray();
+                $user = $this->customer->with(['businesses'], $id)->toArray();
                 if(empty($user)){
                     return $this->response($user);
                 }
@@ -296,9 +279,9 @@ class CustomerController extends BaseController
                 return $this->response($user);
             }
 
-            return response()->json($this->permission_denied);
+            return $this->permission_denied();
         }
-        return response()->json($this->unauthorized);
+        return $this->unauthorized();
     }
 
     public function search(Request $request){
@@ -306,18 +289,19 @@ class CustomerController extends BaseController
 
             if($this->check_permission('customer-retrieve')){
                 $keyword = $request->get('keyword');
-                $result = Customer::where ( 'name', 'LIKE', '%' . $keyword . '%' )
+                $result = $this->customer->model()->where( 'owner_name', 'LIKE', '%' . $keyword . '%' )
                     ->orWhere ( 'email', 'LIKE', '%' . $keyword . '%' )
                     ->orWhere ( 'phone_no', 'LIKE', '%' . $keyword . '%' )
-                    ->orWhere ( 'address', 'LIKE', '%' . $keyword . '%' )
+                    ->orWhere ( 'company_name', 'LIKE', '%' . $keyword . '%' )
+                    ->orWhere ( 'contact_name', 'LIKE', '%' . $keyword . '%' )
                     ->get()->toArray();
 
                 return $this->response($result);
             }
 
-            return response()->json($this->permission_denied);
+            return $this->permission_denied();
         }
-        return response()->json($this->unauthorized);
+        return $this->unauthorized();
     }
 
     public function active_deactive(Request $request, $id){
@@ -325,15 +309,15 @@ class CustomerController extends BaseController
 
             if($this->check_permission('customer-update')){
 
-                Customer::where('id', $id)->update([
+                $this->customer->model()->where('id', $id)->update([
                     'is_active' => $request->get('status')
                 ]);
-                return response()->json($this->success);
+                return $this->success();
 
             }
-            return response()->json($this->permission_denied);
+            return $this->permission_denied();
         }
-        return response()->json($this->unauthorized);
+        return $this->unauthorized();
     }
 
     public function append_suspend(Request $request, $id){
@@ -341,27 +325,38 @@ class CustomerController extends BaseController
 
             if($this->check_permission('customer-update')){
 
-                Customer::where('id', $id)->update([
+                $this->customer->model()->where('id', $id)->update([
                     'is_suspend' => $request->get('status')
                 ]);
-                return response()->json($this->success);
+                return $this->success();
 
             }
-            return response()->json($this->permission_denied);
+            return $this->permission_denied();
         }
-        return response()->json($this->unauthorized);
+        return $this->unauthorized();
     }
 
     public function delete(Request $request, $id){
         if ($this->check_api_key($request)) {
 
             if($this->check_permission('customer-delete')){
-                Customer::where('id', $id)->delete();
-                return response()->json($this->success);
+                $this->customer->model()->where('id', $id)->delete();
+                return $this->success();
             }
 
-            return response()->json($this->permission_denied);
+            return $this->permission_denied();
         }
-        return response()->json($this->unauthorized);
+        return $this->unauthorized();
+    }
+
+    protected function combine_array($business_name_arrs, $license_no_arrs, $license_type_arrs, $license_photo_arrs, $address_arrs) {
+        $result = array_map(function ($business_name_arrs, $license_no_arrs, $license_type_arrs, $license_photo_arrs, $address_arrs) {
+            return array_combine(
+                ['business_name', 'license_no', 'license_type', 'license_photo', 'address'],
+                [$business_name_arrs, $license_no_arrs, $license_type_arrs, $license_photo_arrs, $address_arrs]
+            );
+        }, $business_name_arrs, $license_no_arrs, $license_type_arrs, $license_photo_arrs, $address_arrs);
+
+        return $result;
     }
 }

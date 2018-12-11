@@ -10,7 +10,7 @@
             {{--<img src="http://aweltaw.com/img/awt_logo.png"--}}
                                                   {{--width="100px;" alt="">--}}
             <u style="padding-left:80px">Accountant</u></p></div>
-    <h2>မင်္ဂလာပါ {{ $business_name }}</h2>
+    <h2>မင်္ဂလာပါ {{ $owner_name }}</h2>
     <p>လူကြီးမင်း၏ Account အားမှတ်ပုံတင်ပြီးဖြစ်ပါသည်။<br>သင့်၏ email မှန်ကန်ကြောင်း အတည်ပြုရန် အောက်တွင်ပါရှိသော button
         အားနှိုပ်ပါ။</p>
     <form action="{{ env('APP_URL') }}/api/customers/verification" method="POST">
@@ -21,7 +21,7 @@
     </form>
     <p>ကျေးဇူးအထူးတင်ရှိပါသည်။</p>
 
-    <div id="zawgyi" style="border-left:2px solid #441e1e;padding:20px"><h2>မဂၤလာပါ {{ $business_name }}</h2>
+    <div id="zawgyi" style="border-left:2px solid #441e1e;padding:20px"><h2>မဂၤလာပါ {{ $owner_name }}</h2>
         <p>လူႀကီးမင္း၏ Account အားမှတ္ပံုတင္ၿပီးျဖစ္ပါသည္။<br>
             otp : {{ $otp }}
             {{--သင့္၏ email မွန္ကန္ေၾကာင္း အတည္ျပဳရန္ ေအာက္တြင္ပါရွိေသာ--}}

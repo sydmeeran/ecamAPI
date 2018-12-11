@@ -15,12 +15,11 @@ class CreateCustomersTable extends Migration
     {
         Schema::create('customers', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('business_name');
-            $table->string('license_no');
-            $table->string('license_type');
-            $table->string('address');
+            $table->uuid('company_id');
+            $table->string('company_name');
             $table->string('owner_name');
             $table->string('nrc_no');
+            $table->string('nrc_photo');
             $table->string('phone_no');
             $table->string('email');
             $table->string('contact_name');
@@ -28,6 +27,8 @@ class CreateCustomersTable extends Migration
             $table->string('contact_number');
             $table->string('contact_email');
             $table->string('otp', 10);
+            $table->string('company_dica_link');
+            $table->string('company_link');
             $table->boolean('is_use')->default(0);
             $table->boolean('is_active')->default(1);
             $table->boolean('is_suspend')->default(0);

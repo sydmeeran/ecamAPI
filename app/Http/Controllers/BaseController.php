@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Role;
+use App\UUID;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -24,6 +25,22 @@ class BaseController extends Controller
     protected $permission_denied = [
         'status' => 'permission denied'
     ];
+
+    protected function success(){
+        return response()->json($this->success);
+    }
+
+    protected function unauthorized(){
+        return response()->json($this->unauthorized);
+    }
+
+    protected function unauthenticated(){
+        return response()->json($this->unauthenticated);
+    }
+
+    protected function permission_denied(){
+        return response()->json($this->permission_denied);
+    }
 
     protected function errors($validator){
         return response()->json([
@@ -68,5 +85,6 @@ class BaseController extends Controller
         }
         return false;
     }
+
 
 }
