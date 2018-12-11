@@ -59,6 +59,10 @@ Route::post('/customers/use', 'CustomerController@use');
 Route::get('group-messages', 'GroupChatController@index');
 Route::post('group-messages', 'GroupChatController@store');
 
+/**
+ * Image Upload
+ */
+Route::post('image/upload', 'ImageUploadController@store');
 
 // Permissions
 //Route::post('/permissions/store', 'PermissionController@store');
