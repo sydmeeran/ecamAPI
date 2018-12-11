@@ -62,7 +62,6 @@ class GroupChatRepository extends BaseRepository
     {
         $data = $this->validateData($attributes);
         $model = $this->model()->create($data);
-
         /** @var GroupChat $model */
         $this->onSaving($model, $data);
 
@@ -71,8 +70,12 @@ class GroupChatRepository extends BaseRepository
 
     protected function onSaving(GroupChat $chat, array $data)
     {
-        if ($ids = array_get($data, 'images')) {
-            $this->image->update($ids, $chat);
+        if ($image = array_get($data, 'image')) {
+            if (array_get($image, 'id')) {
+                $this->image->update($image['id'], $chat);
+            } else {
+                $this->image->update(array_column($image, 'id'), $chat);
+            }
         }
     }
 

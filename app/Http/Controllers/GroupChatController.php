@@ -23,12 +23,20 @@ class GroupChatController extends Controller
 
     protected function setData(Request $request)
     {
-        return $request->only([
+        $data = $request->only([
             'sender_id',
-            'message',
             'assigned_id',
-            'images',
         ]);
+
+        $message = array_get($request->get('message'), 'message');
+        $image = array_get($request->get('message'), 'image');
+
+        $data = array_merge($data, [
+            'message' => $message,
+            'image'   => $image,
+        ]);
+
+        return $data;
     }
 
     /**
@@ -39,6 +47,7 @@ class GroupChatController extends Controller
     public function store(Request $request)
     {
         $data = $this->setData($request);
+
         $this->repo->store($data);
 
         return ok();

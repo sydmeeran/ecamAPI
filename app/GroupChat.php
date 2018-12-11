@@ -45,9 +45,11 @@ class GroupChat extends BaseModel implements SerializableModel, ImageableModel
         return [
             'id'          => $this->getId(),
             'sender_id'   => $this->sender_id,
-            'message'     => $this->message,
+            'message'     => [
+                'message' => $this->message,
+                'image'   => $this->getImage(),
+            ],
             'assigned_id' => $this->assigned_id,
-            'image'       => $this->getImage(),
             'user'        => $this->user,
             'assigned'    => $this->assigned,
         ];
@@ -58,9 +60,11 @@ class GroupChat extends BaseModel implements SerializableModel, ImageableModel
         return [
             'id'          => $this->getId(),
             'sender_id'   => $this->sender_id,
-            'message'     => $this->message,
+            'message'     => [
+                'message' => $this->message,
+                'image'   => $this->getImage(),
+            ],
             'assigned_id' => $this->assigned_id,
-            'image'       => $this->getImage(),
             'user'        => $this->user,
             'assigned'    => $this->assigned,
         ];

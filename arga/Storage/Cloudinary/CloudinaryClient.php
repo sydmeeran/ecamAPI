@@ -153,7 +153,7 @@ class CloudinaryClient
     {
         if (is_array($id)) {
             foreach ($id as $value) {
-                $file = Image::findOrFail($value);
+                $file = Image::find($value);
                 if ($file instanceof Image) {
                     $file->related_model()->associate($model);
                     $file->update();
@@ -163,7 +163,7 @@ class CloudinaryClient
             return;
         }
 
-        $file = Image::findOrFial($id);
+        $file = Image::find($id);
         if ($file instanceof Image) {
             $file->related_model()->associate($model);
             $file->update();
