@@ -27,8 +27,8 @@ class CreateCustomersTable extends Migration
             $table->string('contact_number');
             $table->string('contact_email');
             $table->string('otp', 10);
-            $table->string('company_dica_link');
-            $table->string('company_link');
+            $table->string('company_dica_link')->nullable();
+            $table->string('company_link')->nullable();
             $table->boolean('is_use')->default(0);
             $table->boolean('is_active')->default(1);
             $table->boolean('is_suspend')->default(0);

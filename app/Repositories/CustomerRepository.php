@@ -78,25 +78,37 @@ class CustomerRepository extends BaseRepository
          */
         $nrc_photo = $request->file('nrc_photo');
         $nrc_photo_name = $nrc_photo->move(public_path('db/nrc_photos'), $this->uuid(date('m'), 15).'.'.$nrc_photo->getClientOriginalExtension());
-        return '/db/license_photos/'.$nrc_photo_name->getFilename();
+        return 'db/nrc_photos/'.$nrc_photo_name->getFilename();
 
     }
 
     public function store(Request $request){
         $validator = $this->validation($request);
+        $business_validator = $this->business->validation($request);
+
         if ($validator->fails()) {
             return $validator;
+        } elseif ($business_validator->fails()) {
+            return $business_validator;
         }
         $nrc_photo_name = $this->storeNrcPhoto($request);
 
         $data = $this->setData($request, $nrc_photo_name);
-        $data['company_id'] = $this->uuid($this->prefix);
+        $data['company_id'] = $this->generateCompanyId();
 
         $customer = $this->model()->create($data);
 
         Mail::to($customer->email)->send(new CustomerVerificationEmail($customer));
 
         return $this->business->store($request, $customer->id);
+    }
+
+    protected function generateCompanyId(){
+        $company_id = $this->prefix.generateCode(4);
+        while($this->model()->where('company_id', $company_id)->exists()){
+            $company_id = $this->prefix.generateCode(4);
+        }
+        return $company_id;
     }
 
     public function updateValidation(Request $request){
@@ -125,9 +137,9 @@ class CustomerRepository extends BaseRepository
 
     public function updateNrcPhoto(Request $request, $id){
         if (Input::hasFile('nrc_photo')) {
-            $nrc_photo = $this->find($id);
-            if(file_exists($nrc_photo)){
-                unlink($nrc_photo);
+            $customer = $this->find($id);
+            if(file_exists($customer->nrc_photo)){
+                unlink($customer->nrc_photo);
             }
         }
         return $this->storeNrcPhoto($request);

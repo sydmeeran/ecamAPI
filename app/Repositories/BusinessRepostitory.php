@@ -82,7 +82,7 @@ class BusinessRepostitory extends BaseRepository
         foreach($license_photos as $license_photo){
             $name =  $this->uuid($this->prefix, 15).'.'.$license_photo->getClientOriginalExtension();
             $license_photo_name = $license_photo->move(public_path('db/license_photos'), $name);
-            $lpn[] = '/db/license_photos/'.$license_photo_name->getFilename();
+            $lpn[] = 'db/license_photos/'.$license_photo_name->getFilename();
         }
         return $lpn;
     }
@@ -115,11 +115,11 @@ class BusinessRepostitory extends BaseRepository
 
     public function updateValidation(Request $request){
         return Validator::make($request->all(), [
-            'business_name' => 'required',
-            'license_no' => 'required',
-            'license_type' => 'required',
+            'business_name' => 'required|string',
+            'license_no' => 'required|string',
+            'license_type' => 'required|string',
             'license_photo.*' => 'image|mimes:jpeg,png,jpg,svg|max:2048',
-            'address' => 'required',
+            'address' => 'required|string',
         ]);
     }
 
@@ -132,7 +132,7 @@ class BusinessRepostitory extends BaseRepository
             $license_photo = $request->file('license_photo');
             $name =  $this->uuid($this->prefix, 15).'.'.$license_photo->getClientOriginalExtension();
             $license_photo_name = $license_photo->move(public_path('db/license_photos'), $name);
-            return '/db/license_photos/'.$license_photo_name->getFilename();
+            return 'db/license_photos/'.$license_photo_name->getFilename();
         }
         return 'no file';
     }
