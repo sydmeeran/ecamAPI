@@ -51,6 +51,9 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::post('/customers/search', 'CustomerController@search');
     Route::post('/customers/{id}/active-deactive', 'CustomerController@active_deactive');
     Route::post('/customers/{id}/append-suspend', 'CustomerController@append_suspend');
+
+    // Businesses
+    Route::post('/businesses/update/{id}', 'BusinessController@update');
 });
 
 Route::get('/permissions/get-all', 'PermissionController@getAll');
