@@ -19,12 +19,12 @@ trait HasImage
      */
     public function image()
     {
-        return $this->morphOne(Image::class, 'model');
+        return $this->morphOne(Image::class, 'related_model');
     }
 
     public function images()
     {
-        return $this->morphMany(Image::class, 'model');
+        return $this->morphMany(Image::class, 'related_model');
     }
 
     public function getThumbnailUrl($options = []): ?string

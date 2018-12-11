@@ -14,7 +14,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Image extends BaseModel implements SerializableModel
 {
     use SoftDeletes;
-    use HasImage;
 
     protected $table = 'images';
 
@@ -29,9 +28,9 @@ class Image extends BaseModel implements SerializableModel
         return $this->morphTo();
     }
 
-    public function getRelatedModel(): ?ImageableModel
+    public function getRelatedModel()
     {
-        return $this->getRelationValue('model');
+        return $this->getRelationValue('related_model');
     }
 
     protected function getUrl($options = [])
@@ -43,14 +42,14 @@ class Image extends BaseModel implements SerializableModel
      * @param array $options
      * @return mixed|null|string|string[]
      */
-    protected function getThumbnail($options = [])
+    protected function getThumbnailUrl($options = [])
     {
         if ($options) {
             return $this->getUrl($options);
         }
 
         return $this->getUrl([
-            'height'  => 300,
+            'height'  => 150,
             'quality' => 50,
             'crop'    => 'thumb',
         ]);
@@ -71,7 +70,8 @@ class Image extends BaseModel implements SerializableModel
         return [
             'id'            => $this->getId(),
             'cloud_service' => $this->cloud_service,
-            'path'          => $this->path,
+            'path'          => $this->getUrl(),
+            'thumbnail'     => $this->getThumbnailUrl(),
             'type'          => 'image',
         ];
     }
