@@ -60,18 +60,30 @@ class BusinessRepostitory extends BaseRepository
     }
 
     public function create_business($data, $customer_id){
-        $businesses = $this->combine_array($data['business_name'], $data['license_no'], $data['license_type'], $data['license_photo'], $data['address']);
+        if(is_array($data['license_photo'])){
+            $businesses = $this->combine_array($data['business_name'], $data['license_no'], $data['license_type'], $data['license_photo'], $data['address']);
 
-        foreach($businesses as $business){
+            foreach($businesses as $business){
+                $this->model()->create([
+                    'business_name' => $business['business_name'],
+                    'license_no' => $business['license_no'],
+                    'license_type' => $business['license_type'],
+                    'license_photo' => $business['license_photo'],
+                    'address' => $business['address'],
+                    'customer_id' => $customer_id
+                ]);
+            }
+        } else {
             $this->model()->create([
-                'business_name' => $business['business_name'],
-                'license_no' => $business['license_no'],
-                'license_type' => $business['license_type'],
-                'license_photo' => $business['license_photo'],
-                'address' => $business['address'],
+                'business_name' => $data['business_name'],
+                'license_no' => $data['license_no'],
+                'license_type' => $data['license_type'],
+                'license_photo' => $data['license_photo'],
+                'address' => $data['address'],
                 'customer_id' => $customer_id
             ]);
         }
+
     }
 
     public function storeLicensePhoto(Request $request){
@@ -84,6 +96,11 @@ class BusinessRepostitory extends BaseRepository
             $license_photo_name = $license_photo->move(public_path('db/license_photos'), $name);
             $lpn[] = 'db/license_photos/'.$license_photo_name->getFilename();
         }
+        if(!isset($lpn)){
+            $name =  $this->uuid($this->prefix, 15).'.'.$license_photos->getClientOriginalExtension();
+            $license_photo_name = $license_photos->move(public_path('db/license_photos'), $name);
+            $lpn = 'db/license_photos/'.$license_photo_name->getFilename();
+        };
         return $lpn;
     }
 
@@ -95,7 +112,9 @@ class BusinessRepostitory extends BaseRepository
         $license_photo_name = $this->storeLicensePhoto($request);
         $data = $this->setData($request);
         $data['license_photo'] = $license_photo_name;
+
         $this->create_business($data, $customer_id);
+
         return 'success';
     }
 

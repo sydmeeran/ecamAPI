@@ -13,6 +13,38 @@ class BusinessController extends BaseController
         $this->business = DataRepo::business();
     }
 
+    public function register(Request $request, $customer_id){
+//        if ($this->check_api_key($request)) {
+//            if ($this->check_permission('customer-update')) {
+
+                $response = $this->check_api_auth($request, 'customer-update');
+
+                if($response){
+                    $status = $this->business->store($request, $customer_id);
+
+                    if ($status === 'success') {
+                        return $this->success();
+                    }
+                    return $this->errors($status);
+                }
+                return $response;
+
+//            }
+//            return $this->permission_denied();
+//        }
+//        return $this->unauthorized();
+    }
+
+    public function check_api_auth(Request $request, $permission = 'all'){
+        if ($this->check_api_key($request)) {
+            if ($this->check_permission($permission)) {
+                return true;
+            }
+            return $this->permission_denied();
+        }
+        return $this->unauthorized();
+    }
+
     public function update(Request $request, $id){
         if ($this->check_api_key($request)) {
             if ($this->check_permission('customer-update')) {
@@ -60,4 +92,24 @@ class BusinessController extends BaseController
         }
         return $this->unauthorized();
     }
+
+    public function getByCustomer(Request $request, $customer_id)
+    {
+        if ($this->check_api_key($request)) {
+
+            if($this->check_permission('customer-retrieve')){
+                $business = $this->business->model()->where('customer_id', $customer_id)->get()->toArray();
+
+                if(empty($business)){
+                    return $this->response($business);
+                }
+                return $this->response($business);
+            }
+
+            return $this->permission_denied();
+        }
+        return $this->unauthorized();
+    }
+
+
 }

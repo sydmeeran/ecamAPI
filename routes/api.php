@@ -53,9 +53,11 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::post('/customers/{id}/append-suspend', 'CustomerController@append_suspend');
 
     // Businesses
+    Route::post('/businesses/register/{customer_id}', 'BusinessController@register');
     Route::post('/businesses/update/{id}', 'BusinessController@update');
     Route::post('/businesses/delete/{id}', 'BusinessController@delete');
     Route::get('/businesses/get/{id}', 'BusinessController@get');
+    Route::get('/businesses/get-by-customer/{id}', 'BusinessController@getByCustomer');
 });
 
 Route::get('/permissions/get-all', 'PermissionController@getAll');
