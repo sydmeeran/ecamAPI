@@ -33,7 +33,7 @@ class BusinessRepostitory extends BaseRepository
             'license_no' => 'required',
             'license_type' => 'required',
             'license_photo' => 'required',
-            'license_photo.*' => 'image|mimes:jpeg,png,jpg,svg|max:2048',
+            'license_photo.*' => 'image|mimes:jpeg,png,jpg|max:2048',
             'address' => 'required',
         ]);
     }
@@ -137,7 +137,7 @@ class BusinessRepostitory extends BaseRepository
             'business_name' => 'required|string',
             'license_no' => 'required|string',
             'license_type' => 'required|string',
-            'license_photo.*' => 'image|mimes:jpeg,png,jpg,svg|max:2048',
+            'license_photo.*' => 'image|mimes:jpeg,png,jpg|max:2048',
             'address' => 'required|string',
         ]);
     }

@@ -14,52 +14,32 @@ class BusinessController extends BaseController
     }
 
     public function register(Request $request, $customer_id){
-//        if ($this->check_api_key($request)) {
-//            if ($this->check_permission('customer-update')) {
+        $response = $this->check_api_auth($request, 'customer-update');
 
-                $response = $this->check_api_auth($request, 'customer-update');
+        if($response){
+            $status = $this->business->store($request, $customer_id);
 
-                if($response){
-                    $status = $this->business->store($request, $customer_id);
-
-                    if ($status === 'success') {
-                        return $this->success();
-                    }
-                    return $this->errors($status);
-                }
-                return $response;
-
-//            }
-//            return $this->permission_denied();
-//        }
-//        return $this->unauthorized();
-    }
-
-    public function check_api_auth(Request $request, $permission = 'all'){
-        if ($this->check_api_key($request)) {
-            if ($this->check_permission($permission)) {
-                return true;
+            if ($status === 'success') {
+                return $this->success();
             }
-            return $this->permission_denied();
+            return $this->errors($status);
         }
-        return $this->unauthorized();
+        return $response;
     }
 
     public function update(Request $request, $id){
-        if ($this->check_api_key($request)) {
-            if ($this->check_permission('customer-update')) {
+        $response = $this->check_api_auth($request, 'customer-update');
 
-                $status = $this->business->update($request, $id);
+        if($response){
 
-                if ($status === 'success') {
-                    return $this->success();
-                }
+            $status = $this->business->update($request, $id);
 
-                return $this->errors($status);
+            if ($status === 'success') {
+                return $this->success();
             }
-            return $this->permission_denied();
+            return $this->errors($status);
         }
-        return $this->unauthorized();
+        return $response;
     }
 
     public function delete(Request $request, $id){

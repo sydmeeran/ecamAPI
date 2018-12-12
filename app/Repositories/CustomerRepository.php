@@ -32,10 +32,18 @@ class CustomerRepository extends BaseRepository
     public function validation(Request $request){
         return Validator::make($request->all(), [
             'company_name' => 'required|string',
+
+            'business_name' => 'required',
+            'license_no' => 'required',
+            'license_type' => 'required',
+            'license_photo' => 'required',
+            'license_photo.*' => 'image|mimes:jpeg,png,jpg|max:2048',
+            'address' => 'required',
+
             'owner_name' => 'required|string',
             'nrc_no' => 'required|string',
             'nrc_photo' => 'required',
-            'nrc_photo.*' => 'image|mimes:jpeg,png,jpg,svg|max:2048',
+            'nrc_photo.*' => 'image|mimes:jpeg,png,jpg|max:2048',
             'phone_no' => 'required|string|max:12',
             'email' => 'required|email|unique:customers,email',
 

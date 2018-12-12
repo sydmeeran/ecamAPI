@@ -86,5 +86,15 @@ class BaseController extends Controller
         return false;
     }
 
+    public function check_api_auth(Request $request, $permission = 'all'){
+        if ($this->check_api_key($request)) {
+            if ($this->check_permission($permission)) {
+                return true;
+            }
+            return $this->permission_denied();
+        }
+        return $this->unauthorized();
+    }
+
 
 }
