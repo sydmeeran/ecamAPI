@@ -18,6 +18,7 @@
         "laravel/tinker": "^1.0",
         "maatwebsite/excel": "^3.1",
         "phpoffice/phpspreadsheet": "^1.5",
+        "rabbit-converter/rabbit-php": "dev-master",
         "spatie/laravel-fractal": "^5.4"
     },
     "require-dev": {
