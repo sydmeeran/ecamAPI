@@ -69,7 +69,7 @@ Route::post('group-messages', 'GroupChatController@store');
 /**
  * Image Upload
  */
-Route::post('image/upload', 'ImageUploadController@store');
+Route::post('image/upload', 'ImageController@store');
 
 // Permissions
 //Route::post('/permissions/store', 'PermissionController@store');
