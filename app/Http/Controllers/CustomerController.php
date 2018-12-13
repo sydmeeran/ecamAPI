@@ -66,63 +66,6 @@ class CustomerController extends BaseController
         if ($this->check_api_key($request)) {
             if ($this->check_permission('customer-update')) {
 
-//                $data = [
-//                    'business_name' => $request->input('business_name'),
-//                    'license_no' => $request->input('license_no'),
-//                    'license_type' => $request->input('license_type'),
-//                    'address' => $request->input('address'),
-//                    'owner_name' => $request->input('owner_name'),
-//                    'nrc_no' => $request->input('nrc_no'),
-//                    'phone_no' => $request->input('phone_no'),
-//                    'email' => $request->input('email'),
-//                    'contact_name' => $request->input('contact_name'),
-//                    'contact_position' => $request->input('contact_position'),
-//                    'contact_number' => $request->input('contact_number'),
-//                    'contact_email' => $request->input('contact_email'),
-//                ];
-//
-//                $customer = Customer::where('id', $id)->get()->toArray();
-//
-//                if($data['email'] == $customer[0]['email']){
-//                    $validator = Validator::make($request->all(), [
-//                        'business_name' => 'required|string',
-//                        'license_no' => 'required|string',
-//                        'license_type' => 'required|string',
-//                        'address' => 'required|string',
-//                        'owner_name' => 'required|string',
-//                        'nrc_no' => 'required|string',
-//                        'phone_no' => 'required|string|max:12',
-//                        'email' => 'required|email',
-//                        'contact_name' => 'required|string',
-//                        'contact_position' => 'required|string',
-//                        'contact_number' => 'required|string',
-//                        'contact_email' => 'required|email',
-//                    ]);
-//                } else {
-//                    $validator = Validator::make($request->all(), [
-//                        'business_name' => 'required|string',
-//                        'license_no' => 'required|string',
-//                        'license_type' => 'required|string',
-//                        'address' => 'required|string',
-//                        'owner_name' => 'required|string',
-//                        'nrc_no' => 'required|string',
-//                        'phone_no' => 'required|string|max:12',
-//                        'email' => 'required|email',
-//                        'contact_name' => 'required|string',
-//                        'contact_position' => 'required|string',
-//                        'contact_number' => 'required|string',
-//                        'contact_email' => 'required|email',
-//                    ]);
-//                }
-//
-//                if ($validator->fails()) {
-//                    return $this->errors($validator);
-//                }
-//
-//                $this->customer->model()->where('id', $id)->update($data);
-//
-////                Mail::to($customer->email)->send(new CustomerVerificationEmail($data));
-
                 $status = $this->customer->update($request, $id);
 
                 if ($status === 'success') {

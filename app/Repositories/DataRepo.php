@@ -18,4 +18,19 @@ class DataRepo
     {
         return app(BusinessRepostitory::class);
     }
+
+    public static function job_entry(): JobEntryRepository
+    {
+        return app(JobEntryRepository::class);
+    }
+
+    public static function pnl_excel(): PnlExcelRepository
+    {
+        return app(PnlExcelRepository::class);
+    }
+
+    public static function balance_sheet_excel(): BalanceSheetExcelRepository
+    {
+        return app(BalanceSheetExcelRepository::class);
+    }
 }

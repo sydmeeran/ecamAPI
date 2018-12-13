@@ -3,6 +3,7 @@
 /public/storage
 /public/db/nrc_photos
 /public/db/license_photos
+/public/db/excel_files
 /storage/*.key
 /vendor
 /.idea

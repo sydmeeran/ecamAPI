@@ -30,4 +30,9 @@ class Customer extends Model
     public function businesses(){
         return $this->hasMany(Business::class);
     }
+
+    public function job_entries(){
+        return $this->hasMany(JobEntry::class);
+    }
+
 }

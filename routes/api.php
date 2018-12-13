@@ -58,6 +58,16 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::post('/businesses/delete/{id}', 'BusinessController@delete');
     Route::get('/businesses/get/{id}', 'BusinessController@get');
     Route::get('/businesses/get-by-customer/{id}', 'BusinessController@getByCustomer');
+
+    // Job Entries
+    Route::get('/job-entries/get/{id}', 'JobEntryController@get');
+    Route::get('/job-entries/get-all/pagination', 'JobEntryController@getAll_pagination');
+    Route::get('/job-entries/get-all', 'JobEntryController@getAll');
+    Route::post('/job-entries/register', 'JobEntryController@register');
+    Route::post('/job-entries/update/{id}', 'JobEntryController@update');
+    Route::post('/job-entries/delete/{id}', 'JobEntryController@delete');
+
+    Route::get('/job-entries/get-by-customer/{id}', 'JobEntryController@getByCustomer');
 });
 
 Route::get('/permissions/get-all', 'PermissionController@getAll');
