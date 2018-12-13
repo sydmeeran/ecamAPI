@@ -6,7 +6,7 @@ use Arga\Storage\Cloudinary\CloudinaryClient;
 use Arga\Storage\Cloudinary\CloudinaryHelper;
 use Illuminate\Http\Request;
 
-class ImageUploadController extends Controller
+class ImageController extends Controller
 {
     use CloudinaryHelper;
 
