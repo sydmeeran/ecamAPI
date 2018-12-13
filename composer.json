@@ -16,6 +16,7 @@
         "laravel/framework": "5.7.*",
         "laravel/passport": "^7.0",
         "laravel/tinker": "^1.0",
+        "rabbit-converter/rabbit-php": "dev-master",
         "spatie/laravel-fractal": "^5.4"
     },
     "require-dev": {

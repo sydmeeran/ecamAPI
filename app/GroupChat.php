@@ -2,12 +2,14 @@
 
 namespace App;
 
+use Arga\Helpers\FontChecker;
 use Arga\Storage\Cloudinary\HasImage;
 use Arga\Storage\Cloudinary\ImageableModel;
 use Arga\Storage\Database\BaseModel;
 use Arga\Storage\Database\Contracts\SerializableModel;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Rabbit;
 
 /**
  * Class GroupChat
@@ -40,6 +42,15 @@ class GroupChat extends BaseModel implements SerializableModel, ImageableModel
     public function assigned()
     {
         return $this->belongsTo(User::class, 'assigned_id');
+    }
+
+    public function setMessageAttribute($value)
+    {
+        if (FontChecker::isZawgyi($value)) {
+            $value = Rabbit::zg2uni($value);
+        }
+
+        $this->attributes['message'] = $value;
     }
 
     public function getCreatedAt()
