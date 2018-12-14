@@ -4,6 +4,7 @@
 /public/db/nrc_photos
 /public/db/license_photos
 /public/db/excel_files
+/public/db/profile_photos
 /storage/*.key
 /vendor
 /.idea
