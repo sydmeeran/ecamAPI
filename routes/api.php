@@ -66,8 +66,8 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::post('/job-entries/register', 'JobEntryController@register');
     Route::post('/job-entries/update/{id}', 'JobEntryController@update');
     Route::post('/job-entries/delete/{id}', 'JobEntryController@delete');
-
     Route::get('/job-entries/get-by-customer/{id}', 'JobEntryController@getByCustomer');
+    Route::post('/job-entries/search', 'JobEntryController@search');
 });
 
 Route::get('/permissions/get-all', 'PermissionController@getAll');

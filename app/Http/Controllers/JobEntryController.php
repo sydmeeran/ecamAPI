@@ -78,7 +78,7 @@ class JobEntryController extends BaseController
     {
         if ($this->check_api_key($request)) {
             if($this->check_permission('job-entry-retrieve')){
-                $job_entry = $this->job_entry->paginate(20);
+                $job_entry = $this->job_entry->model()->with('customer')->paginate(20);
                 return $this->response($job_entry);
             }
             return $this->permission_denied();
@@ -92,7 +92,7 @@ class JobEntryController extends BaseController
 
             if($this->check_permission('job-entry-retrieve')){
 
-                $job_entry = $this->job_entry->with(['pnl_excel', 'balance_sheet_excel'], $id)->toArray();
+                $job_entry = $this->job_entry->with(['customer', 'pnl_excel', 'balance_sheet_excel'], $id)->toArray();
                 if(empty($job_entry)){
                     return $this->response($job_entry);
                 }
@@ -113,7 +113,7 @@ class JobEntryController extends BaseController
                 $result = $this->job_entry->model()->where( 'company_type', 'LIKE', '%' . $keyword . '%' )
                     ->orWhere ( 'excel_type', 'LIKE', '%' . $keyword . '%' )
                     ->orWhere ( 'excel_file', 'LIKE', '%' . $keyword . '%' )
-                    ->get()->toArray();
+                    ->with('customer')->get()->toArray();
 
                 return $this->response($result);
             }
@@ -127,7 +127,7 @@ class JobEntryController extends BaseController
         if ($this->check_api_key($request)) {
 
             if($this->check_permission('job-entry-delete')){
-                $this->job_entry->model()->where('id', $id)->delete();
+                $this->job_entry->destroy($id);
                 return $this->success();
             }
 

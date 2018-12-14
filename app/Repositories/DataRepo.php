@@ -9,6 +9,11 @@ class DataRepo
         return app(GroupChatRepository::class);
     }
 
+    public static function user(): UserRepository
+    {
+        return app(UserRepository::class);
+    }
+
     public static function customer(): CustomerRepository
     {
         return app(CustomerRepository::class);

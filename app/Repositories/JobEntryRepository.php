@@ -122,7 +122,7 @@ class JobEntryRepository extends BaseRepository
         $data = $this->setData($request);
 
         if(Input::hasFile('excel_file')){
-            $job_entry = $this->model()->find($id);
+            $job_entry = $this->find($id);
             if(file_exists($job_entry->excel_file)){
                 unlink($job_entry->excel_file);
             }
@@ -141,5 +141,14 @@ class JobEntryRepository extends BaseRepository
         $this->model()->where('id', $id)->update($data);
 
         return 'success';
+    }
+
+    public function destroy($id){
+        $job_entry = $this->find($id);
+        if(file_exists($job_entry->excel_file)){
+            unlink($job_entry->excel_file);
+        }
+
+        $this->delete($id);
     }
 }

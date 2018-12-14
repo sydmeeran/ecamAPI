@@ -189,7 +189,7 @@ class CustomerController extends BaseController
         if ($this->check_api_key($request)) {
             if($this->check_permission('customer-retrieve')){
 
-                $user = $this->customer->with(['businesses'])->toArray();
+                $user = $this->customer->getAll();
                 return $this->response($user);
             }
             return $this->permission_denied();

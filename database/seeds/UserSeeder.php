@@ -13,10 +13,15 @@ class UserSeeder extends Seeder
     public function run()
     {
         User::create([
-            'name' => "Super Admin",
+            'name' => "Toe Tet",
             'email' => "superadmin@gmail.com",
+            'position' => "Super Admin",
+            'nrc_no' => '9/AMaZa(N)839282',
+            'phone_no' => '0923832323',
+            'address' => 'no.12, 23rd street, Yangon',
             'password' => bcrypt('password'),
-            'role_id' => 1
+            'role_id' => 1,
+            'profile_photo' => 'db/profile_photos/default.jpg'
         ]);
     }
 }
