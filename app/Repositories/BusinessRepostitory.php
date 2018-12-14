@@ -8,7 +8,6 @@
 
 namespace App\Repositories;
 
-
 use App\Business;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
@@ -105,6 +104,20 @@ class BusinessRepostitory extends BaseRepository
     }
 
     public function store(Request $request, $customer_id){
+//        $validator = $this->validation($request);
+//        if($validator->fails()){
+//            return $validator;
+//        }
+        $license_photo_name = $this->storeLicensePhoto($request);
+        $data = $this->setData($request);
+        $data['license_photo'] = $license_photo_name;
+
+        $this->create_business($data, $customer_id);
+
+        return 'success';
+    }
+
+    public function register(Request $request, $customer_id){
         $validator = $this->validation($request);
         if($validator->fails()){
             return $validator;
@@ -143,17 +156,17 @@ class BusinessRepostitory extends BaseRepository
     }
 
     public function updateLicensePhoto(Request $request, $id){
-        if(Input::hasFile('license_photo')){
+        /**
+         * @var UploadedFile $license_photo
+         */
+        if (Input::hasFile('nrc_photo')) {
             $business = $this->find($id);
             if(file_exists($business->license_photo)){
                 unlink($business->license_photo);
             }
-            $license_photo = $request->file('license_photo');
-            $name =  $this->uuid($this->prefix, 15).'.'.$license_photo->getClientOriginalExtension();
-            $license_photo_name = $license_photo->move(public_path('db/license_photos'), $name);
-            return 'db/license_photos/'.$license_photo_name->getFilename();
+            return $this->storeLicensePhoto($request);
         }
-        return 'no file';
+        return $this->storeLicensePhoto($request);
     }
 
     public function update(Request $request, $id){
@@ -162,11 +175,17 @@ class BusinessRepostitory extends BaseRepository
             return $validator;
         }
 
-        $license_photo_name = $this->updateLicensePhoto($request, $id);
-
         $data = $this->setData($request);
-        if($license_photo_name !== "no file"){
-            $data['license_photo'] = $license_photo_name;
+
+        if(Input::hasFile('license_photo')){
+
+            $business = $this->find($id);
+            if(file_exists($business->license_photo)){
+                unlink($business->license_photo);
+            }
+
+            $license_photo = $this->storeLicensePhoto($request);
+            $data['license_photo'] = $license_photo;
         }
 
         $this->model()->where('id', $id)->update($data);

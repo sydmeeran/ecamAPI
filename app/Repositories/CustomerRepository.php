@@ -33,13 +33,6 @@ class CustomerRepository extends BaseRepository
         return Validator::make($request->all(), [
             'company_name' => 'required|string',
 
-            'business_name' => 'required',
-            'license_no' => 'required',
-            'license_type' => 'required',
-            'license_photo' => 'required',
-            'license_photo.*' => 'image|mimes:jpeg,png,jpg|max:2048',
-            'address' => 'required',
-
             'owner_name' => 'required|string',
             'nrc_no' => 'required|string',
             'nrc_photo' => 'required',
@@ -58,13 +51,12 @@ class CustomerRepository extends BaseRepository
         ]);
     }
 
-    public function setData(Request $request, $nrc_photo_name){
+    public function setData(Request $request){
         $customer_data = [
             'company_name' => $request->input('company_name'),
 
             'owner_name' => $request->input('owner_name'),
             'nrc_no' => $request->input('nrc_no'),
-            'nrc_photo' => $nrc_photo_name,
             'phone_no' => $request->input('phone_no'),
             'email' => $request->input('email'),
 
@@ -101,7 +93,8 @@ class CustomerRepository extends BaseRepository
         }
         $nrc_photo_name = $this->storeNrcPhoto($request);
 
-        $data = $this->setData($request, $nrc_photo_name);
+        $data = $this->setData($request);
+        $data['nrc_photo'] = $nrc_photo_name;
         $data['company_id'] = $this->generateCompanyId();
 
         $customer = $this->model()->create($data);
@@ -143,29 +136,39 @@ class CustomerRepository extends BaseRepository
         return $this->validation($request);
     }
 
-    public function updateNrcPhoto(Request $request, $id){
+//    public function updateNrcPhoto(Request $request, $id){
+//        if (Input::hasFile('nrc_photo')) {
+//            $customer = $this->find($id);
+//            if(file_exists($customer->nrc_photo)){
+//                unlink($customer->nrc_photo);
+//            }
+//        }
+//        return $this->storeNrcPhoto($request);
+//    }
+
+    public function update(Request $request, $id){
+        $validator = $this->updateValidation($request);
+
+        if ($validator->fails()) {
+            return $validator;
+        }
+
+        $data = $this->setData($request);
+
         if (Input::hasFile('nrc_photo')) {
             $customer = $this->find($id);
             if(file_exists($customer->nrc_photo)){
                 unlink($customer->nrc_photo);
             }
+            $nrc_photo_name = $this->storeNrcPhoto($request);
+            $data['nrc_photo'] = $nrc_photo_name;
         }
-        return $this->storeNrcPhoto($request);
-    }
-
-    public function update(Request $request, $id){
-        $validator = $this->updateValidation($request);
-        if ($validator->fails()) {
-            return $validator;
-        }
-
-        $nrc_photo_name = $this->updateNrcPhoto($request, $id);
-
-        $data = $this->setData($request, $nrc_photo_name);
 
         $this->model()->where('id', $id)->update($data);
-//        Mail::to($customer->email)->send(new CustomerVerificationEmail($customer));
+
         return 'success';
+//        Mail::to($customer->email)->send(new CustomerVerificationEmail($customer));
+
 //        return $this->business->update($request, $id);
     }
 

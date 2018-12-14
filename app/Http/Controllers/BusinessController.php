@@ -17,7 +17,7 @@ class BusinessController extends BaseController
         $response = $this->check_api_auth($request, 'customer-update');
 
         if($response){
-            $status = $this->business->store($request, $customer_id);
+            $status = $this->business->register($request, $customer_id);
 
             if ($status === 'success') {
                 return $this->success();
