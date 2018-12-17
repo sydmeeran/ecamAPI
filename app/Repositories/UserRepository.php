@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\ValidationException;
 
 class UserRepository extends BaseRepository
 {
@@ -106,6 +107,19 @@ class UserRepository extends BaseRepository
 //        return $company_id;
 //    }
 
+    public function setUpdateProfileData(Request $request){
+        $data = [
+            'name' => $request->get('name'),
+            'email' => $request->get('email'),
+            'position' => $request->get('position'),
+            'nrc_no' => $request->get('nrc_no'),
+            'phone_no' => $request->get('phone_no'),
+            'address' => $request->get('address'),
+            'role_id' => $request->get('role_id')
+        ];
+        return $data;
+    }
+
     public function updateProfileValidation(Request $request){
         if($this->model()->where('email', $request->input('email'))->exists()){
             return Validator::make($request->all(), [
@@ -113,11 +127,11 @@ class UserRepository extends BaseRepository
                 'email' => 'required',
                 'position' => 'required|string',
                 'nrc_no' => 'required|string',
-                'nrc_photo.*' => 'image|mimes:jpeg,png,jpg|max:2048',
+                'nrc_photo' => 'image|mimes:jpeg,png,jpg|max:2048',
                 'phone_no' => 'required|string',
                 'address' => 'required|string',
                 'role_id' => 'required|int',
-                'profile_photo.*' => 'image|mimes:jpeg,png,jpg|max:2048',
+                'profile_photo' => 'image|mimes:jpeg,png,jpg|max:2048',
             ]);
         }
         return Validator::make($request->all(), [
@@ -125,11 +139,11 @@ class UserRepository extends BaseRepository
             'email' => 'required|unique:users',
             'position' => 'required|string',
             'nrc_no' => 'required|string',
-            'nrc_photo.*' => 'image|mimes:jpeg,png,jpg|max:2048',
+            'nrc_photo' => 'image|mimes:jpeg,png,jpg|max:2048',
             'phone_no' => 'required|string',
             'address' => 'required|string',
             'role_id' => 'required|int',
-            'profile_photo.*' => 'image|mimes:jpeg,png,jpg|max:2048',
+            'profile_photo' => 'image|mimes:jpeg,png,jpg|max:2048',
         ]);
     }
 
@@ -148,12 +162,13 @@ class UserRepository extends BaseRepository
 
         if ($validator->fails()) {
             return $validator;
+//            throw new ValidationException($validator);
         }
 
-        $data = $this->setData($request);
-
+        $data = $this->setUpdateProfileData($request);
+        $user = $this->find($id);
         if (Input::hasFile('profile_photo')) {
-            $user = $this->find($id);
+
             if(file_exists($user->profile_photo)){
                 unlink($user->profile_photo);
             }
@@ -162,12 +177,12 @@ class UserRepository extends BaseRepository
         }
 
         if (Input::hasFile('nrc_photo')) {
-            $user = $this->find($id);
+
             if(file_exists($user->nrc_photo)){
                 unlink($user->nrc_photo);
             }
             $nrc_photo_name = $this->storeNrcPhoto($request);
-            $data['profile_photo'] = $nrc_photo_name;
+            $data['nrc_photo'] = $nrc_photo_name;
         }
 
         $this->model()->where('id', $id)->update($data);
