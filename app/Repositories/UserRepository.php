@@ -11,6 +11,7 @@ namespace App\Repositories;
 use App\Mail\CustomerVerificationEmail;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
@@ -91,28 +92,29 @@ class UserRepository extends BaseRepository
 //        return $company_id;
 //    }
 
-    public function updateValidation(Request $request){
+    public function updateProfileValidation(Request $request){
         if($this->model()->where('email', $request->input('email'))->exists()){
             return Validator::make($request->all(), [
-                'company_name' => 'required|string',
-                'owner_name' => 'required|string',
+                'name' => 'required',
+                'email' => 'required',
+                'position' => 'required|string',
                 'nrc_no' => 'required|string',
-                'nrc_photo' => 'required',
-                'nrc_photo.*' => 'image|mimes:jpeg,png,jpg,svg|max:2048',
-                'phone_no' => 'required|string|max:12',
-                'email' => 'required|email',
-
-                'contact_name' => 'required|string',
-                'contact_position' => 'required|string',
-                'contact_number' => 'required|string',
-                'contact_email' => 'required|email',
-
-                'company_dica_link' => 'string',
-                'company_link' => 'string',
-                'otp' => 'required|string'
+                'phone_no' => 'required|string',
+                'address' => 'required|string',
+                'role_id' => 'required|int',
+                'profile_photo.*' => 'image|mimes:jpeg,png,jpg|max:2048',
             ]);
         }
-        return $this->validation($request);
+        return Validator::make($request->all(), [
+            'name' => 'required',
+            'email' => 'required|unique:users',
+            'position' => 'required|string',
+            'nrc_no' => 'required|string',
+            'phone_no' => 'required|string',
+            'address' => 'required|string',
+            'role_id' => 'required|int',
+            'profile_photo.*' => 'image|mimes:jpeg,png,jpg|max:2048',
+        ]);
     }
 
 //    public function updateNrcPhoto(Request $request, $id){
@@ -125,8 +127,8 @@ class UserRepository extends BaseRepository
 //        return $this->storeNrcPhoto($request);
 //    }
 
-    public function update(Request $request, $id){
-        $validator = $this->updateValidation($request);
+    public function update_profile(Request $request, $id){
+        $validator = $this->updateProfileValidation($request);
 
         if ($validator->fails()) {
             return $validator;
@@ -134,13 +136,13 @@ class UserRepository extends BaseRepository
 
         $data = $this->setData($request);
 
-        if (Input::hasFile('nrc_photo')) {
-            $customer = $this->find($id);
-            if(file_exists($customer->nrc_photo)){
-                unlink($customer->nrc_photo);
+        if (Input::hasFile('profile_photo')) {
+            $user = $this->find($id);
+            if(file_exists($user->profile_photo)){
+                unlink($user->profile_photo);
             }
-            $nrc_photo_name = $this->storeNrcPhoto($request);
-            $data['nrc_photo'] = $nrc_photo_name;
+            $profile_photo_name = $this->storeProfilePhoto($request);
+            $data['profile_photo'] = $profile_photo_name;
         }
 
         $this->model()->where('id', $id)->update($data);
@@ -148,7 +150,37 @@ class UserRepository extends BaseRepository
         return 'success';
 //        Mail::to($customer->email)->send(new CustomerVerificationEmail($customer));
 
-//        return $this->business->update($request, $id);
+    }
+
+    public function updatePasswordValidation($data){
+        return Validator::make($data, [
+            'current_password' => 'required|string|old_password',
+            'new_password' => 'required|string',
+            'confirm_password' => 'required|same:new_password'
+        ]);
+    }
+
+    public function update_password(Request $request, $id){
+        $data = [
+            'current_password' => $request->get('current_password'),
+            'new_password' => $request->get('new_password'),
+            'confirm_password' => $request->get('confirm_password')
+        ];
+        $validator = $this->updatePasswordValidation($data);
+
+        if ($validator->fails()) {
+            return $validator;
+        }
+
+        $password_data = [
+            'password' => bcrypt($data['new_password'])
+        ];
+
+        $this->model()->where('id', $id)->update($password_data);
+
+        return 'success';
+//        Mail::to($customer->email)->send(new CustomerVerificationEmail($customer));
+
     }
 
 

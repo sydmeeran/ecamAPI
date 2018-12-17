@@ -114,7 +114,7 @@ return [
     'uploaded' => 'The :attribute failed to upload.',
     'url' => 'The :attribute format is invalid.',
     'uuid' => 'The :attribute must be a valid UUID.',
-
+    'old_password' => 'Incorrect old password.',
     /*
     |--------------------------------------------------------------------------
     | Custom Validation Language Lines

@@ -7,6 +7,7 @@ use App\Role;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Validator;
 
 class UserController extends BaseController
@@ -58,9 +59,9 @@ class UserController extends BaseController
 
             $request->user()->token()->delete();
 
-            return response()->json($this->success);
+            return $this->success();
         }
-        return response()->json($this->unauthorized);
+        return $this->unauthorized();
     }
 
     public function auth_user(Request $request)
@@ -71,7 +72,7 @@ class UserController extends BaseController
             $user['role'] = $role[0];
             return $this->response($user);
         }
-        return response()->json($this->unauthorized);
+        return $this->unauthorized();
     }
 
     public function getAll(Request $request)
@@ -81,9 +82,9 @@ class UserController extends BaseController
                 $user = User::with('role')->get()->toArray();
                 return $this->response($user);
             }
-            return response()->json($this->permission_denied);
+            return $this->permission_denied();
         }
-        return response()->json($this->unauthorized);
+        return $this->unauthorized();
     }
 
     public function getAll_pagination(Request $request)
@@ -93,9 +94,9 @@ class UserController extends BaseController
                 $user = User::paginate(20);
                 return $this->response($user);
             }
-            return response()->json($this->permission_denied);
+            return $this->permission_denied();
         }
-        return response()->json($this->unauthorized);
+        return $this->unauthorized();
     }
 
     public function get(Request $request, $id)
@@ -116,9 +117,9 @@ class UserController extends BaseController
                 return $this->response($user);
             }
 
-            return response()->json($this->permission_denied);
+            return $this->permission_denied();
         }
-        return response()->json($this->unauthorized);
+        return $this->unauthorized();
     }
 
     public function search(Request $request){
@@ -133,9 +134,9 @@ class UserController extends BaseController
                 return $this->response($result);
             }
 
-            return response()->json($this->permission_denied);
+            return $this->permission_denied();
         }
-        return response()->json($this->unauthorized);
+        return $this->unauthorized();
     }
 
     public function delete(Request $request, $id){
@@ -146,72 +147,43 @@ class UserController extends BaseController
                 return response()->json($this->success);
             }
 
-            return response()->json($this->permission_denied);
+            return $this->permission_denied();
         }
-        return response()->json($this->unauthorized);
+        return $this->unauthorized();
     }
 
-    public function update(Request $request, $id)
+    public function update_profile(Request $request, $id)
     {
         if ($this->check_api_key($request)) {
             if ($this->check_permission('user-update')) {
 
-                $data = [
-                    'name' => $request->get('name'),
-                    'email' => $request->get('email'),
-                    'position' => $request->get('position'),
-                    'nrc_no' => $request->get('nrc_no'),
-                    'phone_no' => $request->get('phone_no'),
-                    'address' => $request->get('address'),
-                    'role_id' => $request->get('role_id')
-                ];
+                $status = $this->user->update_profile($request, $id);
 
-                $user = User::where('id', $id)->get()->toArray();
-
-                if($data['email'] == $user[0]['email']){
-                    $validator = Validator::make($request->all(), [
-                        'name' => 'required',
-                        'position' => 'required|string',
-                        'nrc_no' => 'required|string',
-                        'phone_no' => 'required|string',
-                        'address' => 'required|string',
-                        'role_id' => 'required|int',
-                        'profile_photo.*' => 'image|mimes:jpeg,png,jpg|max:2048',
-                    ]);
-
-                } else {
-                    $validator = Validator::make($request->all(), [
-                        'name' => 'required',
-                        'email' => 'required|unique:users',
-                        'position' => 'required|string',
-                        'nrc_no' => 'required|string',
-                        'phone_no' => 'required|string',
-                        'address' => 'required|string',
-                        'role_id' => 'required|int',
-                        'profile_photo.*' => 'image|mimes:jpeg,png,jpg|max:2048',
-                    ]);
+                if ($status === 'success') {
+                    return $this->success();
                 }
 
-                if ($validator->fails()) {
-                    return $this->errors($validator);
-                }
-
-                if (Input::hasFile('profile_photo')) {
-                    $user = $this->find($id);
-                    if(file_exists($user->profile_photo)){
-                        unlink($user->profile_photo);
-                    }
-                    $profile_photo_name = $this->storeNrcPhoto($request);
-                    $data['profile_photo'] = $profile_photo_name;
-                }
-
-                User::where('id', $id)->update($data);
-
-                return response()->json($this->success);
+                return $this->errors($status);
             }
-            return response()->json($this->permission_denied);
+            return $this->permission_denied();
         }
-        return response()->json($this->unauthorized);
+        return $this->unauthorized();
+    }
+
+    public function update_password(Request $request, $id){
+        if ($this->check_api_key($request)) {
+            if ($this->check_permission('user-update')) {
+
+                $status = $this->user->update_password($request, $id);
+
+                if ($status === 'success') {
+                    return $this->success();
+                }
+                return $this->errors($status);
+            }
+            return $this->permission_denied();
+        }
+        return $this->unauthorized();
     }
 
     public function active_deactive(Request $request, $id){
@@ -225,9 +197,9 @@ class UserController extends BaseController
                 return response()->json($this->success);
 
             }
-            return response()->json($this->permission_denied);
+            return $this->permission_denied();
         }
-        return response()->json($this->unauthorized);
+        return $this->unauthorized();
     }
 
 }

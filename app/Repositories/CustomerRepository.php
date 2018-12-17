@@ -72,6 +72,26 @@ class CustomerRepository extends BaseRepository
         return $customer_data;
     }
 
+    public function editSetData(Request $request){
+        $customer_data = [
+            'company_name' => $request->input('company_name'),
+
+            'owner_name' => $request->input('owner_name'),
+            'nrc_no' => $request->input('nrc_no'),
+            'phone_no' => $request->input('phone_no'),
+            'email' => $request->input('email'),
+
+            'contact_name' => $request->input('contact_name'),
+            'contact_position' => $request->input('contact_position'),
+            'contact_number' => $request->input('contact_number'),
+            'contact_email' => $request->input('contact_email'),
+
+            'company_dica_link' => $request->input('company_dica_link'),
+            'company_link' => $request->input('company_link'),
+        ];
+        return $customer_data;
+    }
+
     public function storeNrcPhoto(Request $request){
         /**
          * @var UploadedFile $nrc_photo
@@ -118,7 +138,6 @@ class CustomerRepository extends BaseRepository
                 'company_name' => 'required|string',
                 'owner_name' => 'required|string',
                 'nrc_no' => 'required|string',
-                'nrc_photo' => 'required',
                 'nrc_photo.*' => 'image|mimes:jpeg,png,jpg,svg|max:2048',
                 'phone_no' => 'required|string|max:12',
                 'email' => 'required|email',
@@ -130,10 +149,24 @@ class CustomerRepository extends BaseRepository
 
                 'company_dica_link' => 'string',
                 'company_link' => 'string',
-                'otp' => 'required|string'
             ]);
         }
-        return $this->validation($request);
+        return Validator::make($request->all(), [
+            'company_name' => 'required|string',
+            'owner_name' => 'required|string',
+            'nrc_no' => 'required|string',
+            'nrc_photo.*' => 'image|mimes:jpeg,png,jpg,svg|max:2048',
+            'phone_no' => 'required|string|max:12',
+            'email' => 'required|email|unique:customers,email',
+
+            'contact_name' => 'required|string',
+            'contact_position' => 'required|string',
+            'contact_number' => 'required|string',
+            'contact_email' => 'required|email',
+
+            'company_dica_link' => 'string',
+            'company_link' => 'string',
+        ]);
     }
 
 //    public function updateNrcPhoto(Request $request, $id){
@@ -153,7 +186,7 @@ class CustomerRepository extends BaseRepository
             return $validator;
         }
 
-        $data = $this->setData($request);
+        $data = $this->editSetData($request);
 
         if (Input::hasFile('nrc_photo')) {
             $customer = $this->find($id);
