@@ -18,8 +18,8 @@ class CreateFilesTable extends Migration
             $table->string('name');
             $table->string('cloud_service')->nullable();
             $table->string('path');
-            $table->string('model_type')->nullable()->index();
-            $table->string('model_id')->nullable()->index();
+            $table->string('related_model_type')->nullable()->index();
+            $table->string('related_model_id')->nullable()->index();
             $table->softDeletes();
             $table->timestamps();
         });

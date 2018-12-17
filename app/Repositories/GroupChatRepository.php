@@ -12,6 +12,7 @@ use App\GroupChat;
 use App\Transformers\GroupChatTransformer;
 use Arga\Storage\Cloudinary\CloudinaryClient;
 use Arga\Storage\Database\BaseRepository;
+use Arga\Storage\GoogleCloud\GoogleCloudClient;
 use Illuminate\Database\Eloquent\Builder;
 use League\Fractal\TransformerAbstract;
 
@@ -19,10 +20,13 @@ class GroupChatRepository extends BaseRepository
 {
     private $image;
 
+    private $file;
+
     public function __construct(TransformerAbstract $abstract = null)
     {
         $this->transformer = $abstract ?? new GroupChatTransformer();
         $this->image = app(CloudinaryClient::class);
+        $this->file = app(GoogleCloudClient::class);
     }
 
     /**
@@ -46,7 +50,7 @@ class GroupChatRepository extends BaseRepository
     {
         $this->validate($data, [
             'sender_id'   => 'required|exists:users,id',
-            'message'     => 'required|string|max:65535',
+            'message'     => 'nullable|string|max:65535',
             'assigned_id' => 'nullable|exists:users,id',
         ]);
 
@@ -76,6 +80,10 @@ class GroupChatRepository extends BaseRepository
             } else {
                 $this->image->update(array_column($image, 'id'), $chat);
             }
+        }
+
+        if ($file = array_get($data, 'file')) {
+            $this->file->attach($file['id'], $chat);
         }
     }
 

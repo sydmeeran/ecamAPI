@@ -9,6 +9,7 @@
 namespace Arga;
 
 use Arga\Storage\Cloudinary\CloudinaryServiceProvider;
+use Arga\Storage\GoogleCloud\GoogleCloudServiceProvider;
 use Illuminate\Support\ServiceProvider;
 
 class ArgaServiceProvider extends ServiceProvider
@@ -21,6 +22,7 @@ class ArgaServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->register(CloudinaryServiceProvider::class);
+        $this->app->register(GoogleCloudServiceProvider::class);
     }
 
     private function loadHelper()
