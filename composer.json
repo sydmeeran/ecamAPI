@@ -19,7 +19,9 @@
         "maatwebsite/excel": "^3.1",
         "phpoffice/phpspreadsheet": "^1.5",
         "rabbit-converter/rabbit-php": "dev-master",
-        "spatie/laravel-fractal": "^5.4"
+        "spatie/laravel-fractal": "^5.4",
+        "google/apiclient": "^2.0",
+        "superbalist/laravel-google-cloud-storage": "^2.0"
     },
     "require-dev": {
         "beyondcode/laravel-dump-server": "^1.0",

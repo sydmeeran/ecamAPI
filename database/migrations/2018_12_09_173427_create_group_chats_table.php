@@ -17,7 +17,7 @@ class CreateGroupChatsTable extends Migration
             $table->increments('id');
             $table->unsignedInteger('sender_id');
             $table->foreign('sender_id')->references('id')->on('users')->onDelete('cascade');
-            $table->text('message');
+            $table->text('message')->nullable();
             $table->unsignedInteger('assigned_id')->nullable();
             $table->foreign('assigned_id')->references('id')->on('users')->onDelete('cascade');
             $table->softDeletes();

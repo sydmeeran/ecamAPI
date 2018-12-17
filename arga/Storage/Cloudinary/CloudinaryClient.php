@@ -109,7 +109,7 @@ class CloudinaryClient
      * @param \Symfony\Component\HttpFoundation\File\UploadedFile $file
      * @param string $folder
      * @param array $options
-     * @return \Arga\Storage\Cloudinary\Image
+     * @return array
      * @throws \Exception
      */
     public function upload(UploadedFile $file, $folder = 'images/', $options = [])
