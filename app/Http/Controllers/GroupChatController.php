@@ -30,10 +30,12 @@ class GroupChatController extends Controller
 
         $message = array_get($request->get('message'), 'message');
         $image = array_get($request->get('message'), 'image');
+        $file = array_get($request->get('message'),'file');
 
         $data = array_merge($data, [
             'message' => $message,
             'image'   => $image,
+            'file'    => $file,
         ]);
 
         return $data;

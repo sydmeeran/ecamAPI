@@ -166,6 +166,7 @@ return [
          * Package Service Providers...
          */
         Arga\ArgaServiceProvider::class,
+        Superbalist\LaravelGoogleCloudStorage\GoogleCloudStorageServiceProvider::class,
         /*
          * Application Service Providers...
          */

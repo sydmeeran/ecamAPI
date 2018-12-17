@@ -7,6 +7,8 @@ use Arga\Storage\Cloudinary\HasImage;
 use Arga\Storage\Cloudinary\ImageableModel;
 use Arga\Storage\Database\BaseModel;
 use Arga\Storage\Database\Contracts\SerializableModel;
+use Arga\Storage\GoogleCloud\FileableModel;
+use Arga\Storage\GoogleCloud\HasFile;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Rabbit;
@@ -21,10 +23,11 @@ use Rabbit;
  * @property \Illuminate\Database\Eloquent\Relations\BelongsTo user
  * @property \Illuminate\Database\Eloquent\Relations\BelongsTo assigned
  */
-class GroupChat extends BaseModel implements SerializableModel, ImageableModel
+class GroupChat extends BaseModel implements SerializableModel, ImageableModel, FileableModel
 {
     use SoftDeletes;
     use HasImage;
+    use HasFile;
 
     protected $table = 'group_chats';
 
@@ -66,6 +69,7 @@ class GroupChat extends BaseModel implements SerializableModel, ImageableModel
             'message'     => [
                 'message' => $this->message,
                 'image'   => $this->getImage(),
+                'file'    => $this->getFile(),
             ],
             'assigned_id' => $this->assigned_id,
             'user'        => $this->user,
@@ -82,6 +86,7 @@ class GroupChat extends BaseModel implements SerializableModel, ImageableModel
             'message'     => [
                 'message' => $this->message,
                 'image'   => $this->getImage(),
+                'file'    => $this->getFile(),
             ],
             'assigned_id' => $this->assigned_id,
             'user'        => $this->user,

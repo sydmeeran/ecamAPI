@@ -72,7 +72,13 @@ return [
             'api_key'    => env('CLOUDINARY_API_KEY'),
             'api_secret' => env('CLOUDINARY_API_SECRET'),
         ],
-
+        'gcs'        => [
+            'driver'          => 'gcs',
+            'project_id'      => env('GOOGLE_CLOUD_PROJECT_ID', 'layla-123'),
+            'key_file'        => env('GOOGLE_CLOUD_KEY_FILE', storage_path('app/google/service-account-key.json')),
+            'bucket'          => env('GOOGLE_CLOUD_STORAGE_BUCKET', 'layla-123.appspot.com'),
+            'path_prefix'     => env('GOOGLE_CLOUD_STORAGE_PATH_PREFIX', null),
+            'storage_api_uri' => env('GOOGLE_CLOUD_STORAGE_API_URI', 'https://storage.googleapis.com/layla-123.appspot.com/'),
+        ],
     ],
-
 ];
