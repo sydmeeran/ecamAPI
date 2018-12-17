@@ -24,6 +24,7 @@ class AppServiceProvider extends ServiceProvider
         Validator::extend('old_password', function ($attribute, $value, $parameters, $validator) {
             return Hash::check($value, auth()->user()->getAuthPassword());
         });
+
     }
 
     /**
