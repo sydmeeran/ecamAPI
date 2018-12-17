@@ -30,6 +30,8 @@ class UserRepository extends BaseRepository
             'email' => 'required|unique:users',
             'position' => 'required|string',
             'nrc_no' => 'required|string',
+            'nrc_photo' => 'required',
+            'nrc_photo.*' => 'image|mimes:jpeg,png,jpg|max:2048',
             'phone_no' => 'required|string',
             'address' => 'required|string',
             'password' => 'required',
@@ -65,6 +67,16 @@ class UserRepository extends BaseRepository
 
     }
 
+    public function storeNrcPhoto(Request $request){
+        /**
+         * @var UploadedFile $nrc_photo
+         */
+        $nrc_photo = $request->file('nrc_photo');
+        $nrc_photo_name = $nrc_photo->move(public_path('db/nrc_photos'), $this->uuid(date('m'), 15).'.'.$nrc_photo->getClientOriginalExtension());
+        return 'db/nrc_photos/'.$nrc_photo_name->getFilename();
+
+    }
+
     public function store(Request $request){
         $validator = $this->validation($request);
 
@@ -73,10 +85,12 @@ class UserRepository extends BaseRepository
         }
 
         $profile_photo_name = $this->storeProfilePhoto($request);
+        $nrc_photo_name = $this->storeNrcPhoto($request);
 
         $data = $this->setData($request);
 
         $data['profile_photo'] = $profile_photo_name;
+        $data['nrc_photo'] = $nrc_photo_name;
 
         $user = $this->model()->create($data);
 
@@ -99,6 +113,7 @@ class UserRepository extends BaseRepository
                 'email' => 'required',
                 'position' => 'required|string',
                 'nrc_no' => 'required|string',
+                'nrc_photo.*' => 'image|mimes:jpeg,png,jpg|max:2048',
                 'phone_no' => 'required|string',
                 'address' => 'required|string',
                 'role_id' => 'required|int',
@@ -110,6 +125,7 @@ class UserRepository extends BaseRepository
             'email' => 'required|unique:users',
             'position' => 'required|string',
             'nrc_no' => 'required|string',
+            'nrc_photo.*' => 'image|mimes:jpeg,png,jpg|max:2048',
             'phone_no' => 'required|string',
             'address' => 'required|string',
             'role_id' => 'required|int',
@@ -143,6 +159,15 @@ class UserRepository extends BaseRepository
             }
             $profile_photo_name = $this->storeProfilePhoto($request);
             $data['profile_photo'] = $profile_photo_name;
+        }
+
+        if (Input::hasFile('nrc_photo')) {
+            $user = $this->find($id);
+            if(file_exists($user->nrc_photo)){
+                unlink($user->nrc_photo);
+            }
+            $nrc_photo_name = $this->storeNrcPhoto($request);
+            $data['profile_photo'] = $nrc_photo_name;
         }
 
         $this->model()->where('id', $id)->update($data);
