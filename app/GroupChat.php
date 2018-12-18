@@ -61,6 +61,16 @@ class GroupChat extends BaseModel implements SerializableModel, ImageableModel, 
         return Carbon::parse($this->created_at)->format('d-M-Y g:i A');
     }
 
+    public function getUser()
+    {
+        $user = $this->user;
+        if ($user instanceof User) {
+            return $user->toAll();
+        }
+
+        return null;
+    }
+
     public function toOriginal(): array
     {
         return [
@@ -89,7 +99,7 @@ class GroupChat extends BaseModel implements SerializableModel, ImageableModel, 
                 'file'    => $this->getFile(),
             ],
             'assigned_id' => $this->assigned_id,
-            'user'        => $this->user,
+            'user'        => $this->getUser(),
             'assigned'    => $this->assigned,
             'send_date'   => $this->getCreatedAt(),
         ];

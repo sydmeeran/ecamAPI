@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Repositories\DataRepo;
+use App\Transformers\GroupChatTransformer;
 use Illuminate\Http\Request;
 
 class GroupChatController extends Controller
@@ -16,7 +17,9 @@ class GroupChatController extends Controller
 
     public function index()
     {
-        $messages = $this->repo->get();
+        $messages = $this->repo
+            ->setTransformer(new GroupChatTransformer(true))
+            ->get();
 
         return $messages;
     }
