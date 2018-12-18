@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Role;
 use App\UUID;
+use Illuminate\Auth\AuthenticationException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -23,7 +24,7 @@ class BaseController extends Controller
     ];
 
     protected $permission_denied = [
-        'status' => 'permission denied'
+        'message' => 'permission denied'
     ];
 
     protected function success(){
@@ -31,15 +32,15 @@ class BaseController extends Controller
     }
 
     protected function unauthorized(){
-        return response()->json($this->unauthorized);
+        throw new UnauthorizedException();
     }
 
     protected function unauthenticated(){
-        return response()->json($this->unauthenticated);
+        throw new AuthenticationException();
     }
 
     protected function permission_denied(){
-        return response()->json($this->permission_denied);
+        return response()->json($this->permission_denied, 403);
     }
 
     protected function errors($validator){

@@ -5,10 +5,13 @@ namespace App\Http\Controllers;
 use App\Repositories\DataRepo;
 use App\Role;
 use App\User;
+use Illuminate\Auth\AuthenticationException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\UnauthorizedException;
+use Illuminate\Validation\ValidationException;
 
 class UserController extends BaseController
 {
@@ -19,6 +22,10 @@ class UserController extends BaseController
         $this->user = DataRepo::user();
     }
 
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     * @throws AuthenticationException
+     */
     public function login()
     {
         if (Auth::attempt(['email' => request('email'), 'password' => request('password')])) {

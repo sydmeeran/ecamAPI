@@ -82,7 +82,7 @@ class UserRepository extends BaseRepository
         $validator = $this->validation($request);
 
         if ($validator->fails()) {
-            return $validator;
+            throw new ValidationException($validator);
         }
 
         $profile_photo_name = $this->storeProfilePhoto($request);
