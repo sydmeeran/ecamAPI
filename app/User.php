@@ -10,7 +10,7 @@ use Laravel\Passport\HasApiTokens;
 
 /**
  * Class User
- *
+ * @property \Doctrine\DBAL\Schema\Column id
  * @property \Doctrine\DBAL\Schema\Column name
  * @property \Doctrine\DBAL\Schema\Column email
  * @property \Doctrine\DBAL\Schema\Column position
@@ -68,6 +68,7 @@ class User extends Authenticatable implements SerializableModel
     public function toOriginal(): array
     {
         return [
+            'id'            => $this->id,
             'name'          => $this->name,
             'email'         => $this->email,
             'position'      => $this->position,
@@ -84,6 +85,7 @@ class User extends Authenticatable implements SerializableModel
     public function toAll(): array
     {
         return [
+            'id'                => $this->id,
             'name'              => $this->name,
             'email'             => $this->email,
             'position'          => $this->position,
