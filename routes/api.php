@@ -18,6 +18,9 @@ use Illuminate\Http\Request;
 //});
 
 // Users
+/**
+ * @deprecated
+ */
 Route::post('/users/login', 'UserController@login');
 
 Route::group(['middleware' => 'auth:api'], function () {
@@ -85,3 +88,22 @@ Route::post('file/upload', 'FileController@store');
 
 // Permissions
 //Route::post('/permissions/store', 'PermissionController@store');
+
+/**
+ * Auth
+ */
+Route::group([
+    'namespace' => 'Api\Auth',
+], function () {
+    Route::post('user/login', 'LoginController@login');
+    Route::post('user/logout', 'LoginController@logout')->middleware('auth:api');
+});
+
+Route::group([
+    'namespace'  => 'Api',
+    'middleware' => [
+        'auth:api',
+    ],
+], function () {
+    Route::resource('user', 'UserController');
+});
