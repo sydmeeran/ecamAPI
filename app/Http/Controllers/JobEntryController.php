@@ -32,13 +32,7 @@ class JobEntryController extends BaseController
     {
         $check = $this->check_api_auth($request, 'job-entry-create');
         if($check){
-            $status = $this->job_entry->store($request);
-
-            if($status === 'success'){
-                return $this->success();
-            }
-
-            return $this->errors($status);
+            return $this->job_entry->store($request);
         }
         return $check;
     }

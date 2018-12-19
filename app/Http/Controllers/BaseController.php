@@ -93,7 +93,7 @@ class BaseController extends Controller
         ]);
     }
 
-    protected function check_permission($permission, $user_permissions = array()){
+    protected function check_permission($permission){
         $role_id = Auth::user()->role_id;
         $role = Role::where('id', $role_id)->with('permissions')->get()->toArray();
         foreach($role[0]['permissions'] as $role_permission){

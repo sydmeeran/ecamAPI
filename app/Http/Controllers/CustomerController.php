@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Business;
 use App\Customer;
+use App\Exceptions\EmptyCustomerException;
 use App\Mail\CustomerVerificationEmail;
 
 use App\Repositories\DataRepo;
+use http\Env\Response;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Hash;
@@ -193,6 +195,18 @@ class CustomerController extends BaseController
                 return $this->response($user);
             }
             return $this->permission_denied();
+        }
+        return $this->unauthorized();
+    }
+
+    public function getAllByJobEntry(Request $request)
+    {
+        if ($this->check_api_key($request)) {
+            $user = $this->customer->getAll();
+            if(empty($user)){
+                throw new EmptyCustomerException();
+            }
+            return $this->response($user);
         }
         return $this->unauthorized();
     }

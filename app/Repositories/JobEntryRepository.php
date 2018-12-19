@@ -12,6 +12,7 @@ namespace App\Repositories;
 use App\Imports\PnlExcelImport;
 use App\JobEntry;
 use App\PnlExcel;
+use Dotenv\Exception\ValidationException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Validator;
@@ -36,6 +37,7 @@ class JobEntryRepository extends BaseRepository
     {
         return Validator::make($request->all(), [
             'type' => 'required|string',
+            'date' => 'required|string',
             'company_type' => 'required|string',
             'excel_type' => 'required|string',
             'excel_file' => 'required|mimes:xlsx,csv|max:2048',
@@ -47,6 +49,7 @@ class JobEntryRepository extends BaseRepository
     {
         $job_entry_data = [
             'type' => $request->input('type'),
+            'date' => $request->input('date'),
             'company_type' => $request->input('company_type'),
             'excel_type' => $request->input('excel_type'),
             'customer_id' => $request->input('customer_id'),
@@ -70,7 +73,7 @@ class JobEntryRepository extends BaseRepository
     {
         $validator = $this->validation($request);
         if ($validator->fails()) {
-            return $validator;
+            return new ValidationException($validator);
         }
 
         $data = $this->setData($request);
@@ -82,18 +85,17 @@ class JobEntryRepository extends BaseRepository
         $job_entry = $this->model()->create($data);
 
         if ($data['excel_type'] == "pnl") {
-            $this->pnl->register($excel_file, $job_entry->id);
+            return $this->pnl->register($excel_file, $job_entry->id);
         } else {
-            $this->balance_sheet->register($excel_file, $job_entry->id);
+            return $this->balance_sheet->register($excel_file, $job_entry->id);
         }
-
-        return 'success';
     }
 
     public function updateValidation(Request $request)
     {
         return Validator::make($request->all(), [
             'type' => 'required|string',
+            'date' => 'required|string',
             'company_type' => 'required|string',
             'excel_type' => 'required|string',
             'excel_file' => 'mimes:xlsx,csv|max:2048',
@@ -116,7 +118,7 @@ class JobEntryRepository extends BaseRepository
     {
         $validator = $this->updateValidation($request);
         if ($validator->fails()) {
-            return $validator;
+            return new ValidationException($validator);
         }
 
         $data = $this->setData($request);
@@ -138,9 +140,7 @@ class JobEntryRepository extends BaseRepository
             }
         }
 
-        $this->model()->where('id', $id)->update($data);
-
-        return 'success';
+        return $this->model()->where('id', $id)->update($data);
     }
 
     public function destroy($id){

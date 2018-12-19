@@ -44,10 +44,10 @@ class RoleController extends BaseController
 
                 return response()->json($this->success);
             }
-            return response()->json($this->permission_denied);
+            return $this->permission_denied();
         }
 
-        return response()->json($this->unauthorized);
+        return $this->unauthorized();
     }
 
     public function update(Request $request, $id)
@@ -93,9 +93,9 @@ class RoleController extends BaseController
 
                 return response()->json($this->success);
             }
-            return response()->json($this->permission_denied);
+            return $this->permission_denied();
         }
-        return response()->json($this->unauthorized);
+        return $this->unauthorized();
     }
 
     public function getAll(Request $request){
@@ -108,7 +108,7 @@ class RoleController extends BaseController
 //            return response()->json($this->unauthorized);
         }
 
-        return response()->json($this->unauthorized);
+        return $this->unauthorized();
     }
 
     public function get(Request $request, $id){
@@ -116,14 +116,14 @@ class RoleController extends BaseController
             if($this->check_permission('role-retrieve')){
                 $role = Role::where('id', $id)->with('permissions')->get()->toArray();
                 if(empty($role)){
-                    return $this->response($role);
+                    return $this->empty_data();
                 }
                 return $this->response($role[0]);
             }
-            return response()->json($this->permission_denied);
+            return $this->permission_denied();
         }
 
-        return response()->json($this->unauthorized);
+        return $this->unauthorized();
     }
 
     public function delete(Request $request, $id){
@@ -137,8 +137,9 @@ class RoleController extends BaseController
                 return response()->json($this->success);
             }
 
-            return response()->json($this->unauthorized);
+            return $this->permission_denied();
         }
-        return response()->json($this->unauthorized);
+
+        return $this->unauthorized();
     }
 }

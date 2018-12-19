@@ -1329,16 +1329,16 @@
         },
         {
             "name": "google/cloud-core",
-            "version": "v1.25.0",
+            "version": "v1.25.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/googleapis/google-cloud-php-core.git",
-                "reference": "7c91113b0a352f5d0ee70530a6e2634e91847dc0"
+                "reference": "106c78d25b14f55167338d71737507be2bf8400c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/googleapis/google-cloud-php-core/zipball/7c91113b0a352f5d0ee70530a6e2634e91847dc0",
-                "reference": "7c91113b0a352f5d0ee70530a6e2634e91847dc0",
+                "url": "https://api.github.com/repos/googleapis/google-cloud-php-core/zipball/106c78d25b14f55167338d71737507be2bf8400c",
+                "reference": "106c78d25b14f55167338d71737507be2bf8400c",
                 "shasum": ""
             },
             "require": {
@@ -1353,7 +1353,7 @@
             },
             "require-dev": {
                 "erusev/parsedown": "^1.6",
-                "google/gax": "^0.37",
+                "google/gax": "^0.38.0",
                 "opis/closure": "^3",
                 "phpdocumentor/reflection": "^3.0",
                 "phpunit/phpunit": "^4.8|^5.0",
@@ -1385,7 +1385,7 @@
                 "Apache-2.0"
             ],
             "description": "Google Cloud PHP shared dependency, providing functionality useful to all components.",
-            "time": "2018-12-10T22:57:51+00:00"
+            "time": "2018-12-18T18:55:23+00:00"
         },
         {
             "name": "google/cloud-storage",
@@ -1776,16 +1776,16 @@
         },
         {
             "name": "laravel/framework",
-            "version": "v5.7.18",
+            "version": "v5.7.19",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "d329797ae0e2ece220d85a5b59ffe659ce2050ae"
+                "reference": "5c1d1ec7e8563ea31826fd5eb3f6791acf01160c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/d329797ae0e2ece220d85a5b59ffe659ce2050ae",
-                "reference": "d329797ae0e2ece220d85a5b59ffe659ce2050ae",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/5c1d1ec7e8563ea31826fd5eb3f6791acf01160c",
+                "reference": "5c1d1ec7e8563ea31826fd5eb3f6791acf01160c",
                 "shasum": ""
             },
             "require": {
@@ -1918,7 +1918,7 @@
                 "framework",
                 "laravel"
             ],
-            "time": "2018-12-17T16:47:43+00:00"
+            "time": "2018-12-18T14:00:38+00:00"
         },
         {
             "name": "laravel/nexmo-notification-channel",
@@ -4141,16 +4141,16 @@
         },
         {
             "name": "superbalist/laravel-google-cloud-storage",
-            "version": "2.0.0",
+            "version": "2.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Superbalist/laravel-google-cloud-storage.git",
-                "reference": "ea9a428080449f2918df87901d2c5a2f4e6106a6"
+                "reference": "d29f6324ed4859bb03c2fad59514681437a399cf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Superbalist/laravel-google-cloud-storage/zipball/ea9a428080449f2918df87901d2c5a2f4e6106a6",
-                "reference": "ea9a428080449f2918df87901d2c5a2f4e6106a6",
+                "url": "https://api.github.com/repos/Superbalist/laravel-google-cloud-storage/zipball/d29f6324ed4859bb03c2fad59514681437a399cf",
+                "reference": "d29f6324ed4859bb03c2fad59514681437a399cf",
                 "shasum": ""
             },
             "require": {
@@ -4166,6 +4166,11 @@
             "extra": {
                 "branch-alias": {
                     "dev-master": "1.0-dev"
+                },
+                "laravel": {
+                    "providers": [
+                        "Superbalist\\LaravelGoogleCloudStorage\\GoogleCloudStorageServiceProvider"
+                    ]
                 }
             },
             "autoload": {
@@ -4184,7 +4189,7 @@
                 }
             ],
             "description": "A Google Cloud Storage filesystem for Laravel",
-            "time": "2018-02-07T15:10:00+00:00"
+            "time": "2018-12-18T09:05:37+00:00"
         },
         {
             "name": "swiftmailer/swiftmailer",
