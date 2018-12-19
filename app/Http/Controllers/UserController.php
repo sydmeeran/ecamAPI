@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Repositories\DataRepo;
 use App\Role;
 use App\User;
-use Arga\Utils\ActionMiddlewareTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Input;
@@ -13,8 +12,6 @@ use Illuminate\Support\Facades\Validator;
 
 class UserController extends BaseController
 {
-    use ActionMiddlewareTrait;
-
     protected $user;
 
     public function __construct()
