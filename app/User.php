@@ -10,6 +10,7 @@ use Laravel\Passport\HasApiTokens;
 
 /**
  * Class User
+ *
  * @property \Doctrine\DBAL\Schema\Column id
  * @property \Doctrine\DBAL\Schema\Column name
  * @property \Doctrine\DBAL\Schema\Column email
@@ -21,10 +22,13 @@ use Laravel\Passport\HasApiTokens;
  * @property \Doctrine\DBAL\Schema\Column role_id
  * @property \Doctrine\DBAL\Schema\Column is_active
  * @property \Doctrine\DBAL\Schema\Column profile_photo
+ * @property \Illuminate\Database\Eloquent\Relations\BelongsTo $role
  */
 class User extends Authenticatable implements SerializableModel
 {
     use Notifiable, HasApiTokens;
+
+    const PASSPORT_ACCESS_TOKEN_NAME = 'web-api-user';
 
     /**
      * The attributes that are mass assignable.
@@ -58,6 +62,16 @@ class User extends Authenticatable implements SerializableModel
     public function role()
     {
         return $this->belongsTo(Role::class, 'role_id');
+    }
+
+    public function isPermission($permission): bool
+    {
+        $role = $this->role;
+        if ($role instanceof Role) {
+            return $role->permissions()->where('permission', $permission)->exists();
+        }
+
+        return false;
     }
 
     public function getProfilePhotoUrl()
