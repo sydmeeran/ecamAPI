@@ -12,6 +12,7 @@ namespace App\Repositories;
 use App\Imports\PnlExcelImport;
 use App\JobEntry;
 use App\PnlExcel;
+use Carbon\Carbon;
 use Dotenv\Exception\ValidationException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
@@ -37,7 +38,8 @@ class JobEntryRepository extends BaseRepository
     {
         return Validator::make($request->all(), [
             'type' => 'required|string',
-            'date' => 'required|string',
+            'start_date' => 'required|string',
+            'end_date' => 'required|string',
             'company_type' => 'required|string',
             'excel_type' => 'required|string',
             'excel_file' => 'required|mimes:xlsx,csv|max:2048',
@@ -49,11 +51,33 @@ class JobEntryRepository extends BaseRepository
     {
         $job_entry_data = [
             'type' => $request->input('type'),
-            'date' => $request->input('date'),
             'company_type' => $request->input('company_type'),
+            'start_date' => $request->input('start_date'),
+            'end_date' => $request->input('end_date'),
             'excel_type' => $request->input('excel_type'),
             'customer_id' => $request->input('customer_id'),
         ];
+        if($job_entry_data['type'] === 'd'){
+            $start_date = $request->input('start_date');
+            $end_date = $request->input('end_date');
+        } elseif ($job_entry_data['type'] === 'm'){
+//            $start_date = Carbon::createFromFormat('d-m-Y', $job_entry_data['start_date'])
+//            $start_date = new \DateTime(strtotime($job_entry_data['start_date']));
+//            $start_date = $start_date->modify('first day of '.$job_entry_data['start_date'])->format('d-m-Y');
+//
+//            $end_date = new \DateTime(strtotime($job_entry_data['end_date']));
+//            $end_date = $end_date->modify('last day of '.$job_entry_data['end_date'])->format('d-m-Y');
+        } elseif ($job_entry_data['type'] === 'y'){
+            $start_date = $job_entry_data['start_date'];
+            $start_date = date("01-04-Y", strtotime($start_date));
+
+//            $start_date = $job_entry_data['start_date'];
+            $end_date = date("31-03-Y", strtotime($start_date."+365 day"));
+        }
+
+        $job_entry_data['start_date'] = new \DateTime($start_date);
+        $job_entry_data['end_date'] = new \DateTime($end_date);
+
         return $job_entry_data;
     }
 
@@ -95,7 +119,8 @@ class JobEntryRepository extends BaseRepository
     {
         return Validator::make($request->all(), [
             'type' => 'required|string',
-            'date' => 'required|string',
+            'start_date' => 'required|string',
+            'end_date' => 'required|string',
             'company_type' => 'required|string',
             'excel_type' => 'required|string',
             'excel_file' => 'mimes:xlsx,csv|max:2048',

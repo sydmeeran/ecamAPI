@@ -9,7 +9,7 @@ class JobEntry extends Model
     protected $table = 'job_entries';
 
     protected $fillable = [
-      'type', 'date', 'company_type', 'excel_type', 'excel_file', 'customer_id'
+      'type', 'start_date', 'end_date', 'company_type', 'excel_type', 'excel_file', 'customer_id'
     ];
 
     public function customer(){
