@@ -14,6 +14,7 @@ use App\JobEntry;
 use App\PnlExcel;
 use Carbon\Carbon;
 use Dotenv\Exception\ValidationException;
+use Faker\Provider\DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Validator;
@@ -61,12 +62,11 @@ class JobEntryRepository extends BaseRepository
             $start_date = $request->input('start_date');
             $end_date = $request->input('end_date');
         } elseif ($job_entry_data['type'] === 'm'){
-//            $start_date = Carbon::createFromFormat('d-m-Y', $job_entry_data['start_date'])
-//            $start_date = new \DateTime(strtotime($job_entry_data['start_date']));
-//            $start_date = $start_date->modify('first day of '.$job_entry_data['start_date'])->format('d-m-Y');
-//
-//            $end_date = new \DateTime(strtotime($job_entry_data['end_date']));
-//            $end_date = $end_date->modify('last day of '.$job_entry_data['end_date'])->format('d-m-Y');
+            $start_date = new \DateTime($job_entry_data['start_date']);
+            $start_date = $start_date->modify('first day of '.$job_entry_data['start_date'])->format('d-m-Y');
+
+            $end_date = new \DateTime($job_entry_data['end_date']);
+            $end_date = $end_date->modify('last day of '.$job_entry_data['end_date'])->format('d-m-Y');
         } elseif ($job_entry_data['type'] === 'y'){
             $start_date = $job_entry_data['start_date'];
             $start_date = date("01-04-Y", strtotime($start_date));
