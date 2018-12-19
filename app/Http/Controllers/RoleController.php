@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\RoleDeleteException;
 use App\Role;
 use App\RolePermission;
+use App\User;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -127,6 +130,9 @@ class RoleController extends BaseController
         if ($this->check_api_key($request)) {
 
             if($this->check_permission('role-delete')){
+                if(User::where('role_id', $id)->exists()){
+                    throw new RoleDeleteException();
+                }
                 Role::where('id', $id)->delete();
                 return response()->json($this->success);
             }

@@ -101,10 +101,11 @@ class UserRepository extends BaseRepository
         $data['profile_photo'] = $profile_photo_name;
         $data['nrc_photo'] = $nrc_photo_name;
 
-        $user = $this->model()->create($data);
+//        $user = $this->model()->create($data);
+        return $this->model()->create($data);
 
         //        Mail::to($user->email)->send(new CustomerVerificationEmail($user));
-        return 'success';
+//        return 'success';
     }
 
     //    protected function generateCompanyId(){
@@ -174,8 +175,7 @@ class UserRepository extends BaseRepository
         $validator = $this->updateProfileValidation($request);
 
         if ($validator->fails()) {
-            return $validator;
-            //            throw new ValidationException($validator);
+            throw new ValidationException($validator);
         }
 
         $data = $this->setUpdateProfileData($request);
@@ -198,9 +198,8 @@ class UserRepository extends BaseRepository
             $data['nrc_photo'] = $nrc_photo_name;
         }
 
-        $this->model()->where('id', $id)->update($data);
+        return $this->model()->where('id', $id)->update($data);
 
-        return 'success';
         //        Mail::to($customer->email)->send(new CustomerVerificationEmail($customer));
 
     }
@@ -224,16 +223,15 @@ class UserRepository extends BaseRepository
         $validator = $this->updatePasswordValidation($data);
 
         if ($validator->fails()) {
-            return $validator;
+            throw new ValidationException($validator);
         }
 
         $password_data = [
             'password' => bcrypt($data['new_password']),
         ];
 
-        $this->model()->where('id', $id)->update($password_data);
+        return $this->model()->where('id', $id)->update($password_data);
 
-        return 'success';
         //        Mail::to($customer->email)->send(new CustomerVerificationEmail($customer));
 
     }

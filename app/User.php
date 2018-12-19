@@ -39,7 +39,7 @@ class User extends Authenticatable implements SerializableModel
         'nrc_photo',
         'phone_no',
         'address',
-        //'password',
+        'password',
         'role_id',
         'is_active',
         'profile_photo',

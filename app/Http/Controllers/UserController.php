@@ -46,13 +46,7 @@ class UserController extends BaseController
         if ($this->check_api_key($request)) {
             if ($this->check_permission('user-create')) {
 
-                $status = $this->user->store($request);
-
-                if($status === 'success'){
-                    return $this->success();
-                }
-
-                return $this->errors($status);
+                return $this->user->store($request);
 
             }
             return $this->permission_denied();
@@ -113,12 +107,12 @@ class UserController extends BaseController
             if($this->check_permission('user-retrieve')){
                 $user = User::where('id', $id)->get()->toArray();
                 if(empty($user)){
-                    return $this->response($user);
+                    return $this->empty_data();
                 }
                 $user = $user[0];
                 $role = Role::where('id', $user['role_id'])->with('permissions')->get()->toArray();
                 if(empty($role)){
-                    return $this->response($role);
+                    return $this->empty_data();
                 }
                 $user['role'] = $role[0];
                 return $this->response($user);
@@ -164,13 +158,8 @@ class UserController extends BaseController
         if ($this->check_api_key($request)) {
             if ($this->check_permission('user-update')) {
 
-                $status = $this->user->update_profile($request, $id);
+                return $this->user->update_profile($request, $id);
 
-                if ($status === 'success') {
-                    return $this->success();
-                }
-
-                return $this->errors($status);
             }
             return $this->permission_denied();
         }
@@ -181,12 +170,8 @@ class UserController extends BaseController
         if ($this->check_api_key($request)) {
             if ($this->check_permission('user-update')) {
 
-                $status = $this->user->update_password($request, $id);
+                return $this->user->update_password($request, $id);
 
-                if ($status === 'success') {
-                    return $this->success();
-                }
-                return $this->errors($status);
             }
             return $this->permission_denied();
         }

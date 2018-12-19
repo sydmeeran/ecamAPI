@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Role;
 use App\UUID;
 use Illuminate\Auth\AuthenticationException;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -12,20 +13,29 @@ class BaseController extends Controller
 {
 
     protected $success = [
-        'status' => 'success'
+        'message' => 'success'
     ];
 
     protected $unauthorized = [
-        'status' => 'unauthorized'
+        'message' => 'unauthorized'
     ];
 
     protected $unauthenticated = [
-        'status' => 'unauthenticated'
+        'message' => 'unauthenticated'
     ];
 
     protected $permission_denied = [
         'message' => 'permission denied'
     ];
+
+    protected $empty_data = [
+        'message' => 'Data Not Available'
+    ];
+
+    protected $role_exists = [
+        'message' => 'User Has Registered With This Role'
+    ];
+
 
     protected function success(){
         return response()->json($this->success);
@@ -41,6 +51,14 @@ class BaseController extends Controller
 
     protected function permission_denied(){
         return response()->json($this->permission_denied, 403);
+    }
+
+    protected function empty_data(){
+        return response()->json($this->empty_data, 401);
+    }
+
+    protected function role_exists(){
+        return response()->json($this->role_exists, 401);
     }
 
     protected function errors($validator){
