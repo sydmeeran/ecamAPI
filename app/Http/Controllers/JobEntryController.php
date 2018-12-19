@@ -42,13 +42,8 @@ class JobEntryController extends BaseController
         if ($this->check_api_key($request)) {
             if ($this->check_permission('job-entry-update')) {
 
-                $status = $this->job_entry->update($request, $id);
+                return $this->job_entry->update($request, $id);
 
-                if ($status === 'success') {
-                    return $this->success();
-                }
-
-                return $this->errors($status);
             }
             return $this->permission_denied();
         }
