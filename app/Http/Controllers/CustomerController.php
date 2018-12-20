@@ -177,12 +177,12 @@ class CustomerController extends BaseController
     public function getAll(Request $request)
     {
         if ($this->check_api_key($request)) {
-            if($this->check_permission('customer-retrieve')){
+//            if($this->check_permission('customer-retrieve')){
 
                 $user = $this->customer->getAll();
                 return $this->response($user);
-            }
-            return $this->permission_denied();
+//            }
+//            return $this->permission_denied();
         }
         return $this->unauthorized();
     }

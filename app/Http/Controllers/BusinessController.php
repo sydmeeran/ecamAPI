@@ -63,6 +63,19 @@ class BusinessController extends BaseController
         return $this->unauthorized();
     }
 
+    public function getAll(Request $request)
+    {
+        if ($this->check_api_key($request)) {
+//            if($this->check_permission('customer-retrieve')){
+
+            $business = $this->business->getAll();
+            return $this->response($business);
+//            }
+//            return $this->permission_denied();
+        }
+        return $this->unauthorized();
+    }
+
     public function getByCustomer(Request $request, $customer_id)
     {
         if ($this->check_api_key($request)) {
