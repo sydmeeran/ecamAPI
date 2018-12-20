@@ -50,13 +50,7 @@ class CustomerController extends BaseController
         if ($this->check_api_key($request)) {
             if ($this->check_permission('customer-create')) {
 
-                $status = $this->customer->store($request);
-
-                if($status === 'success'){
-                    return $this->success();
-                }
-
-                return $this->errors($status);
+                return $this->customer->store($request);
             }
             return $this->permission_denied();
         }
@@ -68,13 +62,7 @@ class CustomerController extends BaseController
         if ($this->check_api_key($request)) {
             if ($this->check_permission('customer-update')) {
 
-                $status = $this->customer->update($request, $id);
-
-                if ($status === 'success') {
-                    return $this->success();
-                }
-
-                return $this->errors($status);
+                return $this->customer->update($request, $id);
             }
             return $this->permission_denied();
         }

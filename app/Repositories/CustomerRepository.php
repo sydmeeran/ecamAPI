@@ -14,6 +14,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\ValidationException;
 
 class CustomerRepository extends BaseRepository
 {
@@ -35,15 +36,14 @@ class CustomerRepository extends BaseRepository
 
             'owner_name' => 'required|string',
             'nrc_no' => 'required|string',
-            'nrc_photo' => 'required',
             'nrc_photo.*' => 'image|mimes:jpeg,png,jpg|max:2048',
             'phone_no' => 'required|string|max:12',
             'email' => 'required|email|unique:customers,email',
 
-            'contact_name' => 'required|string',
-            'contact_position' => 'required|string',
-            'contact_number' => 'required|string',
-            'contact_email' => 'required|email',
+            'contact_name' => 'string',
+            'contact_position' => 'string',
+            'contact_number' => 'string',
+            'contact_email' => 'email',
 
             'company_dica_link' => 'string',
             'company_link' => 'string',
@@ -107,14 +107,17 @@ class CustomerRepository extends BaseRepository
         $business_validator = $this->business->validation($request);
 
         if ($validator->fails()) {
-            return $validator;
+            throw new ValidationException($validator);
         } elseif ($business_validator->fails()) {
-            return $business_validator;
+            throw new ValidationException($business_validator);
         }
-        $nrc_photo_name = $this->storeNrcPhoto($request);
-
         $data = $this->setData($request);
-        $data['nrc_photo'] = $nrc_photo_name;
+        if(Input::hasFile('nrc_photo')) {
+            $nrc_photo_name = $this->storeNrcPhoto($request);
+            $data['nrc_photo'] = $nrc_photo_name;
+        } else {
+            $data['nrc_photo'] = null;
+        }
         $data['company_id'] = $this->generateCompanyId();
 
         $customer = $this->model()->create($data);
@@ -142,10 +145,10 @@ class CustomerRepository extends BaseRepository
                 'phone_no' => 'required|string|max:12',
                 'email' => 'required|email',
 
-                'contact_name' => 'required|string',
-                'contact_position' => 'required|string',
-                'contact_number' => 'required|string',
-                'contact_email' => 'required|email',
+                'contact_name' => 'string',
+                'contact_position' => 'string',
+                'contact_number' => 'string',
+                'contact_email' => 'email',
 
                 'company_dica_link' => 'string',
                 'company_link' => 'string',
@@ -159,10 +162,10 @@ class CustomerRepository extends BaseRepository
             'phone_no' => 'required|string|max:12',
             'email' => 'required|email|unique:customers,email',
 
-            'contact_name' => 'required|string',
-            'contact_position' => 'required|string',
-            'contact_number' => 'required|string',
-            'contact_email' => 'required|email',
+            'contact_name' => 'string',
+            'contact_position' => 'string',
+            'contact_number' => 'string',
+            'contact_email' => 'email',
 
             'company_dica_link' => 'string',
             'company_link' => 'string',

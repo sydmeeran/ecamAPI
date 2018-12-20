@@ -17,12 +17,7 @@ class BusinessController extends BaseController
         $response = $this->check_api_auth($request, 'customer-update');
 
         if($response){
-            $status = $this->business->register($request, $customer_id);
-
-            if ($status === 'success') {
-                return $this->success();
-            }
-            return $this->errors($status);
+            return $this->business->register($request, $customer_id);
         }
         return $response;
     }
@@ -32,12 +27,7 @@ class BusinessController extends BaseController
 
         if($response){
 
-            $status = $this->business->update($request, $id);
-
-            if ($status === 'success') {
-                return $this->success();
-            }
-            return $this->errors($status);
+            return $this->business->update($request, $id);
         }
         return $response;
     }

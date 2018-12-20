@@ -19,13 +19,13 @@ class CreateCustomersTable extends Migration
             $table->string('company_name');
             $table->string('owner_name');
             $table->string('nrc_no');
-            $table->string('nrc_photo');
+            $table->string('nrc_photo')->nullable();
             $table->string('phone_no');
             $table->string('email');
-            $table->string('contact_name');
-            $table->string('contact_position');
-            $table->string('contact_number');
-            $table->string('contact_email');
+            $table->string('contact_name')->nullable();
+            $table->string('contact_position')->nullable();
+            $table->string('contact_number')->nullable();
+            $table->string('contact_email')->nullable();
             $table->string('otp', 10);
             $table->string('company_dica_link')->nullable();
             $table->string('company_link')->nullable();

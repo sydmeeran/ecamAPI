@@ -12,6 +12,7 @@ use App\Business;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\ValidationException;
 
 class BusinessRepostitory extends BaseRepository
 {
@@ -31,7 +32,6 @@ class BusinessRepostitory extends BaseRepository
             'business_name' => 'required',
             'license_no' => 'required',
             'license_type' => 'required',
-            'license_photo' => 'required',
             'license_photo.*' => 'image|mimes:jpeg,png,jpg|max:2048',
             'address' => 'required',
         ]);
@@ -59,7 +59,8 @@ class BusinessRepostitory extends BaseRepository
     }
 
     public function create_business($data, $customer_id){
-        if(is_array($data['license_photo'])){
+        if(is_array($data['license_no'])){
+            $data['license_photo'] = [];
             $businesses = $this->combine_array($data['business_name'], $data['license_no'], $data['license_type'], $data['license_photo'], $data['address']);
 
             foreach($businesses as $business){
@@ -82,6 +83,7 @@ class BusinessRepostitory extends BaseRepository
                 'customer_id' => $customer_id
             ]);
         }
+        return 'success';
 
     }
 
@@ -104,13 +106,14 @@ class BusinessRepostitory extends BaseRepository
     }
 
     public function store(Request $request, $customer_id){
-//        $validator = $this->validation($request);
-//        if($validator->fails()){
-//            return $validator;
-//        }
-        $license_photo_name = $this->storeLicensePhoto($request);
         $data = $this->setData($request);
-        $data['license_photo'] = $license_photo_name;
+
+        if(Input::hasFile('license_photo')){
+            $license_photo_name = $this->storeLicensePhoto($request);
+            $data['license_photo'] = $license_photo_name;
+        } else {
+            $data['license_photo'] = null;
+        }
 
         $this->create_business($data, $customer_id);
 
@@ -120,15 +123,17 @@ class BusinessRepostitory extends BaseRepository
     public function register(Request $request, $customer_id){
         $validator = $this->validation($request);
         if($validator->fails()){
-            return $validator;
+            throw new ValidationException($validator);
         }
-        $license_photo_name = $this->storeLicensePhoto($request);
         $data = $this->setData($request);
-        $data['license_photo'] = $license_photo_name;
+        if(Input::hasFile('license_photo')){
+            $license_photo_name = $this->storeLicensePhoto($request);
+            $data['license_photo'] = $license_photo_name;
+        } else {
+            $data['license_photo'] = null;
+        }
 
-        $this->create_business($data, $customer_id);
-
-        return 'success';
+        return $this->create_business($data, $customer_id);
     }
 
 //    public function update(Request $request){
@@ -155,19 +160,19 @@ class BusinessRepostitory extends BaseRepository
         ]);
     }
 
-    public function updateLicensePhoto(Request $request, $id){
-        /**
-         * @var UploadedFile $license_photo
-         */
-        if (Input::hasFile('nrc_photo')) {
-            $business = $this->find($id);
-            if(file_exists($business->license_photo)){
-                unlink($business->license_photo);
-            }
-            return $this->storeLicensePhoto($request);
-        }
-        return $this->storeLicensePhoto($request);
-    }
+//    public function updateLicensePhoto(Request $request, $id){
+//        /**
+//         * @var UploadedFile $license_photo
+//         */
+//        if (Input::hasFile('license_photo')) {
+//            $business = $this->find($id);
+//            if(file_exists($business->license_photo)){
+//                unlink($business->license_photo);
+//            }
+//            return $this->storeLicensePhoto($request);
+//        }
+//        return $this->storeLicensePhoto($request);
+//    }
 
     public function update(Request $request, $id){
         $validator = $this->updateValidation($request);
