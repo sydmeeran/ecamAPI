@@ -7,6 +7,7 @@ use Illuminate\Auth\AuthenticationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Validation\UnauthorizedException;
+use Illuminate\Validation\ValidationException;
 
 class Handler extends ExceptionHandler
 {
@@ -50,34 +51,13 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
-        if ($request->wantsJson()) {
-            return $this->toJson($exception);
-        }
-
         $response = parent::render($request, $exception);
 
-        return $response;
-    }
-
-    /**
-     * @param \Exception $exception
-     * @return \Illuminate\Http\JsonResponse
-     */
-    protected function toJson(Exception $exception)
-    {
-        $response = $exception;
-
-        if ($exception instanceof ModelNotFoundException) {
-            $response = response()->json([
+        if ($request->wantsJson() && $exception instanceof ModelNotFoundException) {
+            return $response = response()->json([
                 'status'  => false,
                 'message' => 'Data Not Found',
             ]);
-        }
-
-        if($exception instanceof AuthenticationException) {
-            $response = response()->json([
-                'error' => 'Unauthenticated',
-            ], 401);
         }
 
         return $response;
