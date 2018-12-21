@@ -53,5 +53,11 @@ class PermissionSeeder extends Seeder
                 'permission' => 'job-entry-'.$p
             ]);
         }
+
+        foreach($permission as $p){
+            Permission::create([
+                'permission' => 'quotation-'.$p
+            ]);
+        }
     }
 }

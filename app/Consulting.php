@@ -9,6 +9,6 @@ class Consulting extends Model
     protected $table = 'consulting';
 
     protected $fillable = [
-        'customer_id', 'value'
+        'company_type', 'value', 'quotation_id'
     ];
 }

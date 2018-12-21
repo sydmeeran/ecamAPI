@@ -103,14 +103,17 @@ class CustomerRepository extends BaseRepository
     }
 
     public function store(Request $request){
+
         $validator = $this->validation($request);
         $business_validator = $this->business->validation($request);
 
         if ($validator->fails()) {
+            dd(1);
             throw new ValidationException($validator);
         } elseif ($business_validator->fails()) {
             throw new ValidationException($business_validator);
         }
+
         $data = $this->setData($request);
         if(Input::hasFile('nrc_photo')) {
             $nrc_photo_name = $this->storeNrcPhoto($request);

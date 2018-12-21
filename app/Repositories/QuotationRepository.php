@@ -17,13 +17,12 @@ use Illuminate\Validation\ValidationException;
 
 class QuotationRepository extends BaseRepository
 {
-    protected $monthly_accounting_service, $auditing, $annual, $consulting, $taxation;
+    protected $accounting_service, $auditing, $annual, $consulting, $taxation;
 
     public function __construct()
     {
-        $this->monthly_accounting_service = DataRepo::monthly_accounting_service();
+        $this->accounting_service = DataRepo::accounting_service();
         $this->auditing = DataRepo::auditing();
-        $this->annual = DataRepo::annual();
         $this->consulting = DataRepo::consulting();
         $this->taxation = DataRepo::taxation();
     }
@@ -62,27 +61,57 @@ class QuotationRepository extends BaseRepository
     }
 
     public function store(Request $request){
+
         $validator = $this->validation($request);
         if($validator->fails()){
             throw new ValidationException($validator);
         }
 
         $data = $this->setData($request);
+
         $quotation = $this->model()->create($data);
 
-        if($data['accounting_service']){
-            $this->monthly_accounting_service->store($request, $quotation->id);
+        if($request->input('accounting_check')){
+            $this->accounting_service->store($request, $quotation->id);
         }
-        if($data['auditing']){
+        if($request->input('auditing_check')){
             $this->auditing->store($request, $quotation->id);
         }
-        if($data['consulting']){
+        if($request->input('consulting_check')){
             $this->consulting->store($request, $quotation->id);
         }
-        if($data['taxation']){
+        if($request->input('taxation_check')){
             $this->taxation->store($request, $quotation->id);
         }
 
         return 'success';
     }
+
+    public function update(Request $request, $id){
+
+        $validator = $this->validation($request);
+        if($validator->fails()){
+            throw new ValidationException($validator);
+        }
+
+        $data = $this->setData($request);
+
+        $this->model()->where('id', $id)->update($data);
+
+        if($request->input('accounting_check')){
+            $this->accounting_service->update($request, $id);
+        }
+        if($request->input('auditing_check')){
+            $this->auditing->update($request, $id);
+        }
+        if($request->input('consulting_check')){
+            $this->consulting->update($request, $id);
+        }
+        if($request->input('taxation_check')){
+            $this->taxation->update($request, $id);
+        }
+
+        return 'success';
+    }
+
 }

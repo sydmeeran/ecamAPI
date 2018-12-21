@@ -51,7 +51,7 @@ class DataRepo
         return app(QuotationRepository::class);
     }
 
-    public static function monthly_accounting_service(): AccountingServiceRepository
+    public static function accounting_service(): AccountingServiceRepository
     {
         return app(AccountingServiceRepository::class);
     }
@@ -61,10 +61,6 @@ class DataRepo
         return app(AuditingRepository::class);
     }
 
-    public static function annual(): AnnualRepository
-    {
-        return app(AnnualRepository::class);
-    }
 
     public static function consulting(): ConsultingRepository
     {

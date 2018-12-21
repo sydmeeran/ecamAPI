@@ -74,7 +74,10 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::post('/job-entries/search', 'JobEntryController@search');
 
     // Quotation
+    Route::get('/quotations/pagination', 'QuotationController@pagination');
+    Route::get('/quotations/get/{id}', 'QuotationController@get');
     Route::post('/quotations/store', 'QuotationController@store');
+    Route::post('/quotations/delete/{id}', 'QuotationController@delete');
 });
 
 Route::get('/permissions/get-all', 'PermissionController@getAll');
@@ -95,18 +98,18 @@ Route::post('file/upload', 'FileController@store');
 /**
  * Auth
  */
-Route::group([
-    'namespace' => 'Api\Auth',
-], function () {
-    Route::post('user/login', 'LoginController@login');
-    Route::post('user/logout', 'LoginController@logout')->middleware('auth:api');
-});
-
-Route::group([
-    'namespace'  => 'Api',
-    'middleware' => [
-        'auth:api',
-    ],
-], function () {
-    Route::resource('user', 'UserController');
-});
+//Route::group([
+//    'namespace' => 'Api\Auth',
+//], function () {
+//    Route::post('user/login', 'LoginController@login');
+//    Route::post('user/logout', 'LoginController@logout')->middleware('auth:api');
+//});
+//
+//Route::group([
+//    'namespace'  => 'Api',
+//    'middleware' => [
+//        'auth:api',
+//    ],
+//], function () {
+//    Route::resource('user', 'UserController');
+//});

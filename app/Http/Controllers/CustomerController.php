@@ -180,6 +180,9 @@ class CustomerController extends BaseController
 //            if($this->check_permission('customer-retrieve')){
 
                 $user = $this->customer->getAll();
+                if(empty($user)){
+                    throw new EmptyCustomerException();
+                }
                 return $this->response($user);
 //            }
 //            return $this->permission_denied();

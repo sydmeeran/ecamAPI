@@ -25,23 +25,63 @@ class TaxationRepository extends BaseRepository
 
     public function validation($data){
         return Validator::make($data, [
+            'type' => 'required',
+            'value' => 'required',
+            'months' => 'string|nullable',
+            'years' => 'string|nullable',
             'quotation_id' => 'required',
-            'month' => 'required',
         ]);
     }
 
+    public function setData(Request $request, $quotation_id){
+        return [
+            'type' => $request->input('taxation_radio'),
+            'months' => $request->input('taxation_months'),
+            'years' => $request->input('taxation_years'),
+            'quotation_id' => $quotation_id,
+        ];
+    }
+
     public function store(Request $request, $quotation_id){
-        $months = $request->input('taxation_months');
-        foreach($months as $month){
-            $data = [
-                'quotation_id' => $quotation_id,
-                'month' => $month
-            ];
-            $validator = $this->validation($data);
-            if($validator->fails()){
-                throw new ValidationException($validator);
-            }
-            $this->model()->create($data);
+        $data = $this->setData($request, $quotation_id);
+
+        if($data['type'] == 'm'){
+            $data['value'] = $request->input('taxation_monthly_value');
+            $data['months'] = implode(",", $request->input('taxation_months'));
+        } elseif($data['type'] == 'y') {
+            $data['value'] = $request->input('taxation_yearly_value');
+            $data['years'] = implode(",", $request->input('taxation_years'));
         }
+
+        $validator = $this->validation($data);
+        if($validator->fails()){
+            throw new ValidationException($validator);
+        }
+
+        $this->model()->create($data);
+
+        return 'success';
+    }
+
+    public function update(Request $request, $quotation_id){
+        $data = $this->setData($request, $quotation_id);
+        if($data['type'] == 'm'){
+            $data['value'] = $request->input('accounting_monthly_value');
+            $data['months'] = implode(",", $request->input('accounting_months'));
+        } elseif($data['type'] == 'y') {
+            $data['value'] = $request->input('accounting_yearly_value');
+            $data['years'] = implode(",", $request->input('accounting_years'));
+        }
+
+        $validator = $this->validation($data);
+        if($validator->fails()){
+            throw new ValidationException($validator);
+        }
+
+        $this->model()->where('quotation_id', $quotation_id)->delete();
+
+        $this->model()->create($data);
+
+        return 'success';
     }
 }
