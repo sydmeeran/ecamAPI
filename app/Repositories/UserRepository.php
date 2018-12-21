@@ -9,6 +9,7 @@
 namespace App\Repositories;
 
 use App\Mail\CustomerVerificationEmail;
+use App\Transformers\UserTransformer;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;

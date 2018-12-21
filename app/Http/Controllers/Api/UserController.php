@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Repositories\DataRepo;
+use App\Permission;
+use Arga\Accountant\DataRepo;
 use Arga\Utils\ActionMiddlewareTrait;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
@@ -18,25 +19,40 @@ class UserController extends Controller
         $this->repo = DataRepo::user();
 
         $this->actionMiddleware([
-            'index'      => 'permission:user-retrieve',
-            'create'     => 'permission:user-create',
-            'edit'       => 'permission:user-retrieve',
-            'store'      => 'permission:user-update',
-            'update'     => 'permission:user-update',
-            'destroy'    => 'permission:user-delete',
-            'deactivate' => 'permission:user-deactive',
+            'index'      => Permission::USER_RETRIEVE,
+            'create'     => Permission::USER_CREATE,
+            'edit'       => Permission::USER_UPDATE,
+            'store'      => Permission::USER_CREATE,
+            'update'     => Permission::USER_UPDATE,
+            'destroy'    => Permission::USER_DELETE,
+            'deactivate' => Permission::USER_DEACTIVATE,
         ]);
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $users = $this->repo->getAll();
+        $paginate = $request->get('paginate');
+        if ($paginate) {
+            return $this->repo->paginate();
+        }
 
-        return $users;
+        return $this->repo->get();
     }
 
     public function create()
     {
         return ok();
+    }
+
+    public function destroy($id)
+    {
+        $this->repo->destroy($id);
+
+        return ok();
+    }
+
+    public function show($id)
+    {
+        return $this->repo->find($id);
     }
 }

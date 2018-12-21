@@ -35,6 +35,6 @@ trait ActionMiddlewareTrait
             $middleware = array_get($this->_actionMiddleware, 'default');
         }
 
-        $this->middleware($middleware);
+        $this->middleware('permission:'.$middleware);
     }
 }

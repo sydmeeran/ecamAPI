@@ -111,6 +111,7 @@ class User extends Authenticatable implements SerializableModel
             'is_active'         => $this->is_active,
             'profile_photo'     => $this->profile_photo,
             'profile_photo_url' => $this->getProfilePhotoUrl(),
+            'detail' => true,
         ];
     }
 }
