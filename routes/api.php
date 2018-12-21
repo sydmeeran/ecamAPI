@@ -18,9 +18,7 @@ use Illuminate\Http\Request;
 //});
 
 // Users
-/**
- * @deprecated
- */
+/** @deprecated */
 Route::post('/users/login', 'UserController@login');
 
 Route::group(['middleware' => 'auth:api'], function () {
