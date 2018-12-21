@@ -74,6 +74,9 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::post('/job-entries/delete/{id}', 'JobEntryController@delete');
     Route::get('/job-entries/get-by-customer/{id}', 'JobEntryController@getByCustomer');
     Route::post('/job-entries/search', 'JobEntryController@search');
+
+    // Quotation
+    Route::post('/quotations/store', 'QuotationController@store');
 });
 
 Route::get('/permissions/get-all', 'PermissionController@getAll');
