@@ -45,6 +45,7 @@ class ConsultingRepository extends BaseRepository
 
         $validator = $this->validation($data);
         if($validator->fails()){
+            Quotation::destroy($quotation_id);
             throw new ValidationException($validator);
         }
 
@@ -58,7 +59,6 @@ class ConsultingRepository extends BaseRepository
 
         $validator = $this->validation($data);
         if($validator->fails()){
-            Quotation::destroy($quotation_id);
             throw new ValidationException($validator);
         }
 
