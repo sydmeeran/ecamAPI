@@ -16,6 +16,10 @@ class Quotation extends Model
         return $this->belongsTo(Customer::class, 'customer_id');
     }
 
+    public function business(){
+        return $this->belongsTo(Business::class, 'business_id');
+    }
+
     public function accounting_service(){
         return $this->hasOne(AccountingService::class);
     }

@@ -28,7 +28,7 @@ class QuotationController extends BaseController
     public function pagination(Request $request)
     {
         if ($this->check_api_key($request)) {
-            $quotation = $this->quotation->model()->with('customer')->paginate(20);
+            $quotation = $this->quotation->model()->with('customer')->with('business')->paginate(20);
             return $this->response($quotation);
         }
         return $this->unauthorized();
@@ -36,7 +36,7 @@ class QuotationController extends BaseController
 
     public function get(Request $request, $id){
         if ($this->check_api_key($request)) {
-            $quotation = $this->quotation->with(['customer', 'accounting_service', 'auditing', 'consulting', 'taxation'], $id);
+            $quotation = $this->quotation->with(['customer', 'business', 'accounting_service', 'auditing', 'consulting', 'taxation'], $id);
             if(empty($quotation)){
                 return $this->empty_data();
             }

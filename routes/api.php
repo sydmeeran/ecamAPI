@@ -78,6 +78,7 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::get('/quotations/get/{id}', 'QuotationController@get');
     Route::post('/quotations/store', 'QuotationController@store');
     Route::post('/quotations/delete/{id}', 'QuotationController@delete');
+    Route::post('/quotations/update/{id}', 'QuotationController@update');
 });
 
 Route::get('/permissions/get-all', 'PermissionController@getAll');

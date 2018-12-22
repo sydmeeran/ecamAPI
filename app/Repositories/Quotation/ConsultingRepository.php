@@ -25,7 +25,7 @@ class ConsultingRepository extends BaseRepository
 
     public function validation($data){
         return Validator::make($data, [
-            'company_type' => 'required',
+            'license_type' => 'required',
             'value' => 'required',
             'quotation_id' => 'required',
         ]);
@@ -33,7 +33,7 @@ class ConsultingRepository extends BaseRepository
 
     public function setData(Request $request, $quotation_id){
         return [
-            'company_type' => $request->input('consulting_company_type'),
+            'license_type' => $request->input('consulting_license_type'),
             'value' => $request->input('consulting_value'),
             'quotation_id' => $quotation_id,
         ];
@@ -54,13 +54,6 @@ class ConsultingRepository extends BaseRepository
 
     public function update(Request $request, $quotation_id){
         $data = $this->setData($request, $quotation_id);
-        if($data['type'] == 'm'){
-            $data['value'] = $request->input('accounting_monthly_value');
-            $data['months'] = implode(",", $request->input('accounting_months'));
-        } elseif($data['type'] == 'y') {
-            $data['value'] = $request->input('accounting_yearly_value');
-            $data['years'] = implode(",", $request->input('accounting_years'));
-        }
 
         $validator = $this->validation($data);
         if($validator->fails()){

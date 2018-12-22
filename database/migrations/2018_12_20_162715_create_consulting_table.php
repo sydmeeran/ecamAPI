@@ -15,7 +15,7 @@ class CreateConsultingTable extends Migration
     {
         Schema::create('consulting', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('company_type');
+            $table->string('license_type');
             $table->unsignedInteger('quotation_id');
             $table->integer('value');
             $table->timestamps();

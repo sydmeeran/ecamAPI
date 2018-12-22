@@ -24,11 +24,20 @@ class AccountingServiceRepository extends BaseRepository
     }
 
     public function validation($data){
+        if($data['type'] == "m"){
+            return Validator::make($data, [
+                'type' => 'required',
+                'value' => 'required',
+                'months' => 'required|string',
+                'years' => 'string|nullable',
+                'quotation_id' => 'required',
+            ]);
+        }
         return Validator::make($data, [
             'type' => 'required',
             'value' => 'required',
             'months' => 'string|nullable',
-            'years' => 'string|nullable',
+            'years' => 'required|string',
             'quotation_id' => 'required',
         ]);
     }
@@ -42,10 +51,10 @@ class AccountingServiceRepository extends BaseRepository
 
     public function store(Request $request, $quotation_id){
         $data = $this->setData($request, $quotation_id);
-        if($data['type'] == 'm'){
+        if($data['type'] == 'm' && !is_null($request->input('accounting_months'))){
             $data['value'] = $request->input('accounting_monthly_value');
             $data['months'] = implode(",", $request->input('accounting_months'));
-        } elseif($data['type'] == 'y') {
+        } elseif($data['type'] == 'y' && !is_null($request->input('accounting_years'))) {
             $data['value'] = $request->input('accounting_yearly_value');
             $data['years'] = implode(",", $request->input('accounting_years'));
         }
