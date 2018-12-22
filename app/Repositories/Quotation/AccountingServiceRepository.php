@@ -10,6 +10,7 @@ namespace App\Repositories\Quotation;
 
 
 use App\AccountingService;
+use App\Quotation;
 use App\Repositories\BaseRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -61,6 +62,7 @@ class AccountingServiceRepository extends BaseRepository
 
         $validator = $this->validation($data);
         if($validator->fails()){
+            Quotation::destroy($quotation_id);
             throw new ValidationException($validator);
         }
 

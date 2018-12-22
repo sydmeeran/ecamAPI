@@ -10,6 +10,7 @@ namespace App\Repositories\Quotation;
 
 
 use App\Consulting;
+use App\Quotation;
 use App\Repositories\BaseRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -57,6 +58,7 @@ class ConsultingRepository extends BaseRepository
 
         $validator = $this->validation($data);
         if($validator->fails()){
+            Quotation::destroy($quotation_id);
             throw new ValidationException($validator);
         }
 

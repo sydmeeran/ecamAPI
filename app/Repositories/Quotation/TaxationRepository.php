@@ -9,6 +9,7 @@
 namespace App\Repositories\Quotation;
 
 
+use App\Quotation;
 use App\Taxation;
 use App\Repositories\BaseRepository;
 use Illuminate\Http\Request;
@@ -84,6 +85,7 @@ class TaxationRepository extends BaseRepository
 
         $validator = $this->validation($data);
         if($validator->fails()){
+            Quotation::destroy($quotation_id);
             throw new ValidationException($validator);
         }
 
