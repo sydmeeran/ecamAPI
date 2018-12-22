@@ -74,10 +74,10 @@ class TaxationRepository extends BaseRepository
 
     public function update(Request $request, $quotation_id){
         $data = $this->setData($request, $quotation_id);
-        if($data['type'] == 'm'){
+        if($data['type'] == 'm' && !is_null($request->input('taxation_months'))){
             $data['value'] = $request->input('taxation_monthly_value');
             $data['months'] = implode(",", $request->input('taxation_months'));
-        } elseif($data['type'] == 'y') {
+        } elseif($data['type'] == 'y' && !is_null($request->input('taxation_years'))) {
             $data['value'] = $request->input('taxation_yearly_value');
             $data['years'] = implode(",", $request->input('taxation_years'));
         }
