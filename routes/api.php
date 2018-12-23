@@ -79,6 +79,13 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::post('/quotations/store', 'QuotationController@store');
     Route::post('/quotations/delete/{id}', 'QuotationController@delete');
     Route::post('/quotations/update/{id}', 'QuotationController@update');
+
+    // Invoice
+    Route::get('/invoices/pagination', 'InvoiceController@pagination');
+    Route::get('/invoices/get/{id}', 'InvoiceController@get');
+    Route::post('/invoices/store', 'InvoiceController@store');
+    Route::post('/invoices/delete/{id}', 'InvoiceController@delete');
+    Route::post('/invoices/update/{id}', 'InvoiceController@update');
 });
 
 Route::get('/permissions/get-all', 'PermissionController@getAll');

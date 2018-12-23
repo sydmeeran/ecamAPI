@@ -6,37 +6,40 @@ use App\Repositories\DataRepo;
 use Arga\Utils\ActionMiddlewareTrait;
 use Illuminate\Http\Request;
 
-class QuotationController extends BaseController
+class InvoiceController extends BaseController
 {
     use ActionMiddlewareTrait;
 
-    protected $quotation;
+    protected $invoice, $quotation;
 
     public function __construct(){
 
+        $this->invoice = DataRepo::invoice();
         $this->quotation = DataRepo::quotation();
 
         $this->actionMiddleware([
-           'store' => 'quotation-create',
-           'pagination' => 'quotation-retrieve',
-           'get' => 'quotation-retrieve',
-           'update' => 'quotation-update',
-           'delete' => 'quotation-delete',
+            'store' => 'invoice-create',
+            'pagination' => 'invoice-retrieve',
+            'get' => 'invoice-retrieve',
+            'update' => 'invoice-update',
+            'delete' => 'invoice-delete',
         ]);
     }
 
     public function pagination(Request $request)
     {
         if ($this->check_api_key($request)) {
-            $quotation = $this->quotation->model()->with('customer')->with('business')->with('invoice')->paginate(20);
-            return $this->response($quotation);
+            $invoice = $this->quotation->model()->whereHas('invoice')->with('customer')->with('business')->with('invoice')->paginate(20);
+            return $this->response($invoice);
         }
         return $this->unauthorized();
     }
 
     public function get(Request $request, $id){
         if ($this->check_api_key($request)) {
-            $quotation = $this->quotation->with(['customer', 'business', 'accounting_service', 'auditing', 'consulting', 'taxation', 'invoice'], $id);
+            $invoice = $this->invoice->find($id);
+
+            $quotation = $this->quotation->with(['customer', 'business', 'accounting_service', 'auditing', 'consulting', 'taxation', 'invoice'], $invoice->quotation_id);
             if(empty($quotation)){
                 return $this->empty_data();
             }
@@ -48,7 +51,7 @@ class QuotationController extends BaseController
 
     public function store(Request $request){
         if ($this->check_api_key($request)) {
-            return $this->quotation->store($request);
+            return $this->invoice->store($request);
         }
         return $this->unauthorized();
     }
@@ -56,7 +59,7 @@ class QuotationController extends BaseController
     public function update(Request $request, $id)
     {
         if ($this->check_api_key($request)) {
-            return $this->quotation->update($request, $id);
+            return $this->invoice->update($request, $id);
         }
         return $this->unauthorized();
     }
@@ -81,12 +84,10 @@ class QuotationController extends BaseController
 
     public function delete(Request $request, $id){
         if ($this->check_api_key($request)) {
-                $this->quotation->delete($id);
-                return $this->success();
-            }
+            $this->invoice->delete($id);
+            return $this->success();
+        }
 
         return $this->unauthorized();
     }
-
-
 }

@@ -108,7 +108,6 @@ class CustomerRepository extends BaseRepository
         $business_validator = $this->business->validation($request);
 
         if ($validator->fails()) {
-            dd(1);
             throw new ValidationException($validator);
         } elseif ($business_validator->fails()) {
             throw new ValidationException($business_validator);
@@ -125,7 +124,7 @@ class CustomerRepository extends BaseRepository
 
         $customer = $this->model()->create($data);
 
-        Mail::to($customer->email)->send(new CustomerVerificationEmail($customer));
+//        Mail::to($customer->email)->send(new CustomerVerificationEmail($customer));
 
         return $this->business->store($request, $customer->id);
     }

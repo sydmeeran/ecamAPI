@@ -72,4 +72,9 @@ class DataRepo
         return app(TaxationRepository::class);
     }
 
+    public static function invoice(): InvoiceRepository
+    {
+        return app(InvoiceRepository::class);
+    }
+
 }

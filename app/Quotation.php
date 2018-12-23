@@ -35,4 +35,8 @@ class Quotation extends Model
     public function taxation(){
         return $this->hasOne(Taxation::class);
     }
+
+    public function invoice(){
+        return $this->hasOne(Invoice::class);
+    }
 }
