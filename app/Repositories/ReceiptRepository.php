@@ -31,16 +31,20 @@ class ReceiptRepository extends BaseRepository
 
     public function validation(Request $request)
     {
-        $validator = Validator::make($request->all(), [
+        if($request->input('type') == 'bank'){
+            return Validator::make($request->all(), [
+                'invoice_id' => 'required',
+                'type' => 'required',
+                'bank' => 'required|string',
+                'bank_date' => 'required|string',
+            ]);
+        }
+        return Validator::make($request->all(), [
             'invoice_id' => 'required',
             'type' => 'required',
-            'bank' => 'string|nullable',
-            'bank_date' => 'string|nullable',
-            'cash_date' => 'string|nullable',
-            'description' => 'string|nullable',
+            'cash_date' => 'required|string',
+            'description' => 'required|string',
         ]);
-
-        return $validator;
     }
 
     public function setData(Request $request)

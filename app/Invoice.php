@@ -39,4 +39,8 @@ class Invoice extends Model
     public function taxation(){
         return $this->hasOne(Taxation::class);
     }
+
+    public function receipt(){
+        return $this->hasOne(Receipt::class);
+    }
 }

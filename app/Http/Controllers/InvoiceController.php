@@ -29,7 +29,7 @@ class InvoiceController extends BaseController
     public function pagination(Request $request)
     {
         if ($this->check_api_key($request)) {
-            $invoice = $this->invoice->model()->with('customer')->with('business')->paginate(20);
+            $invoice = $this->invoice->model()->with('customer')->with('business')->with('receipt')->paginate(20);
             return $this->response($invoice);
         }
         return $this->unauthorized();
@@ -37,7 +37,7 @@ class InvoiceController extends BaseController
 
     public function get(Request $request, $id){
         if ($this->check_api_key($request)) {
-            $invoice = $this->invoice->with(['customer', 'business', 'accounting_service', 'auditing', 'consulting', 'taxation'], $id);
+            $invoice = $this->invoice->with(['customer', 'business', 'receipt', 'accounting_service', 'auditing', 'consulting', 'taxation'], $id);
             if(empty($invoice)){
                 return $this->empty_data();
             }

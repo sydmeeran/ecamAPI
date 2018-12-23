@@ -23,7 +23,7 @@ class CreateReceiptsTable extends Migration
             $table->string('description')->nullable();
             $table->timestamps();
 
-            $table->foreign('invoice_id')->references('id')->on('invoices');
+            $table->foreign('invoice_id')->references('id')->on('invoices')->onDelete('cascade');
         });
     }
 
