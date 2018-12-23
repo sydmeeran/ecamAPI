@@ -6,50 +6,51 @@ use App\Repositories\DataRepo;
 use Arga\Utils\ActionMiddlewareTrait;
 use Illuminate\Http\Request;
 
-class InvoiceController extends BaseController
+class ReceiptController extends BaseController
 {
     use ActionMiddlewareTrait;
 
-    protected $invoice, $quotation;
+    protected $invoice, $receipt;
 
     public function __construct(){
 
         $this->invoice = DataRepo::invoice();
-        $this->quotation = DataRepo::quotation();
+        $this->receipt = DataRepo::receipt();
 
         $this->actionMiddleware([
-            'store' => 'invoice-create',
-            'pagination' => 'invoice-retrieve',
-            'get' => 'invoice-retrieve',
-            'update' => 'invoice-update',
-            'delete' => 'invoice-delete',
+            'store' => 'receipt-create',
+            'pagination' => 'receipt-retrieve',
+            'get' => 'receipt-retrieve',
+            'update' => 'receipt-update',
+            'delete' => 'receipt-delete',
         ]);
     }
 
     public function pagination(Request $request)
     {
         if ($this->check_api_key($request)) {
-            $invoice = $this->invoice->model()->with('customer')->with('business')->paginate(20);
-            return $this->response($invoice);
+            $receipt = $this->receipt->model()->with('invoice')->paginate(20);
+            return $this->response($receipt);
         }
         return $this->unauthorized();
     }
 
     public function get(Request $request, $id){
         if ($this->check_api_key($request)) {
-            $invoice = $this->invoice->with(['customer', 'business', 'accounting_service', 'auditing', 'consulting', 'taxation'], $id);
-            if(empty($invoice)){
+            $receipt = $this->receipt->with(['invoice'], $id);
+//            $invoice = $this->invoice->with(['customer', 'business', 'accounting_service', 'auditing', 'consulting', 'taxation'], $receipt->invoice_id);
+            if(empty($receipt)){
                 return $this->empty_data();
             }
-            $invoice = $invoice[0];
-            return $this->response($invoice);
+            $receipt = $receipt[0];
+            return $this->response($receipt);
         }
         return $this->unauthorized();
     }
 
     public function store(Request $request){
         if ($this->check_api_key($request)) {
-            return $this->invoice->store($request);
+            return $this->receipt->store($request);
         }
         return $this->unauthorized();
     }
@@ -76,7 +77,7 @@ class InvoiceController extends BaseController
 
     public function delete(Request $request, $id){
         if ($this->check_api_key($request)) {
-            $this->invoice->delete($id);
+            $this->receipt->delete($id);
             return $this->success();
         }
 

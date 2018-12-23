@@ -77,4 +77,9 @@ class DataRepo
         return app(InvoiceRepository::class);
     }
 
+    public static function receipt(): ReceiptRepository
+    {
+        return app(ReceiptRepository::class);
+    }
+
 }
