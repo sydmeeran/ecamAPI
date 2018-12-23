@@ -70,25 +70,20 @@ class InvoiceRepository extends BaseRepository
         }
 
         $data = $this->setData($request);
-        $update_data = array_except($data, 'quotation_id');
 
-        $this->quotation->model()->where('id', $data['quotation_id'])->update($update_data);
-
-        $this->model()->create([
-           'quotation_id' => $data['quotation_id']
-        ]);
+        $invoice = $this->model()->create($data);
 
         if($request->input('accounting_check')){
-            $this->accounting_service->update($request, $data['quotation_id']);
+            $this->accounting_service->storeByInvoice($request, $invoice->id);
         }
         if($request->input('auditing_check')){
-            $this->auditing->update($request, $data['quotation_id']);
+            $this->auditing->storeByInvoice($request, $invoice->id);
         }
         if($request->input('consulting_check')){
-            $this->consulting->update($request, $data['quotation_id']);
+            $this->consulting->storeByInvoice($request, $invoice->id);
         }
         if($request->input('taxation_check')){
-            $this->taxation->update($request, $data['quotation_id']);
+            $this->taxation->storeByInvoice($request, $invoice->id);
         }
 
         return 'success';

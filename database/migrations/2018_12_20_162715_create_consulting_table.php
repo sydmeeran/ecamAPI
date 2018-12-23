@@ -15,12 +15,15 @@ class CreateConsultingTable extends Migration
     {
         Schema::create('consulting', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('service_type')->default("quotation");
             $table->string('license_type');
-            $table->unsignedInteger('quotation_id');
+            $table->unsignedInteger('quotation_id')->nullable();
+            $table->unsignedInteger('invoice_id')->nullable();
             $table->integer('value');
             $table->timestamps();
 
             $table->foreign('quotation_id')->references('id')->on('quotations')->onDelete('cascade');
+            $table->foreign('invoice_id')->references('id')->on('invoices')->onDelete('cascade');
         });
     }
 

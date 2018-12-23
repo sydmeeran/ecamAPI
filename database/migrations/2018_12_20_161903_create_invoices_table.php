@@ -15,10 +15,18 @@ class CreateInvoicesTable extends Migration
     {
         Schema::create('invoices', function (Blueprint $table) {
             $table->increments('id');
+            $table->unsignedInteger('customer_id');
+            $table->unsignedInteger('business_id');
             $table->unsignedInteger('quotation_id');
+            $table->integer('sub_total');
+            $table->integer('discount');
+            $table->integer('tax')->default(0);
+            $table->float('total');
             $table->timestamps();
 
+            $table->foreign('customer_id')->references('id')->on('customers');
             $table->foreign('quotation_id')->references('id')->on('quotations');
+            $table->foreign('business_id')->references('id')->on('businesses')->onDelete('cascade');
         });
     }
 

@@ -95,4 +95,51 @@ class TaxationRepository extends BaseRepository
 
         return 'success';
     }
+
+    public function invoiceValidation($data){
+        if($data['type'] == "m"){
+            return Validator::make($data, [
+                'type' => 'required',
+                'value' => 'required',
+                'months' => 'required|string',
+                'years' => 'string|nullable',
+                'invoice_id' => 'required',
+            ]);
+        }
+        return Validator::make($data, [
+            'type' => 'required',
+            'value' => 'required',
+            'months' => 'string|nullable',
+            'years' => 'required|string',
+            'invoice_id' => 'required',
+        ]);
+    }
+
+    public function setInvoiceData(Request $request, $invoice_id){
+        return [
+            'type' => $request->input('taxation_radio'),
+            'service_type' => 'quotation',
+            'invoice_id' => $invoice_id,
+        ];
+    }
+
+    public function storeByInvoice(Request $request, $invoice_id){
+        $data = $this->setInvoiceData($request, $invoice_id);
+        if($data['type'] == 'm' && !is_null($request->input('taxation_months'))){
+            $data['value'] = $request->input('taxation_monthly_value');
+            $data['months'] = implode(",", $request->input('taxation_months'));
+        } elseif($data['type'] == 'y' && !is_null($request->input('taxation_years'))) {
+            $data['value'] = $request->input('taxation_yearly_value');
+            $data['years'] = implode(",", $request->input('taxation_years'));
+        }
+
+        $validator = $this->invoiceValidation($data);
+        if($validator->fails()){
+            throw new ValidationException($validator);
+        }
+
+        $this->model()->create($data);
+
+        return 'success';
+    }
 }

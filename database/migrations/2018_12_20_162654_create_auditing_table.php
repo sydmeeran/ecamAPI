@@ -16,13 +16,16 @@ class CreateAuditingTable extends Migration
         Schema::create('auditing', function (Blueprint $table) {
             $table->increments('id');
             $table->string('type');
+            $table->string('service_type')->default("quotation");
             $table->string('value');
             $table->string('months')->nullable();
             $table->string('years')->nullable();
-            $table->unsignedInteger('quotation_id');
+            $table->unsignedInteger('quotation_id')->nullable();
+            $table->unsignedInteger('invoice_id')->nullable();
             $table->timestamps();
 
             $table->foreign('quotation_id')->references('id')->on('quotations')->onDelete('cascade');
+            $table->foreign('invoice_id')->references('id')->on('invoices')->onDelete('cascade');
         });
     }
 

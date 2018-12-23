@@ -37,14 +37,12 @@ class InvoiceController extends BaseController
 
     public function get(Request $request, $id){
         if ($this->check_api_key($request)) {
-            $invoice = $this->invoice->find($id);
-
-            $quotation = $this->quotation->with(['customer', 'business', 'accounting_service', 'auditing', 'consulting', 'taxation', 'invoice'], $invoice->quotation_id);
-            if(empty($quotation)){
+            $invoice = $this->invoice->with(['customer', 'business', 'accounting_service', 'auditing', 'consulting', 'taxation'], $id);
+            if(empty($invoice)){
                 return $this->empty_data();
             }
-            $quotation = $quotation[0];
-            return $this->response($quotation);
+            $invoice = $invoice[0];
+            return $this->response($invoice);
         }
         return $this->unauthorized();
     }
@@ -56,13 +54,7 @@ class InvoiceController extends BaseController
         return $this->unauthorized();
     }
 
-    public function update(Request $request, $id)
-    {
-        if ($this->check_api_key($request)) {
-            return $this->invoice->update($request, $id);
-        }
-        return $this->unauthorized();
-    }
+
 
 //    public function search(Request $request){
 //        if ($this->check_api_key($request)) {

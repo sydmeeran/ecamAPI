@@ -9,6 +9,14 @@ class Auditing extends Model
     protected $table = 'auditing';
 
     protected $fillable = [
-        'type', 'value', 'months', 'years', 'quotation_id'
+        'type', 'service_type', 'value', 'months', 'years', 'quotation_id', 'invoice_id'
     ];
+
+    public function quotation(){
+        return $this->belongsTo(Quotation::class, 'quotation_id');
+    }
+
+    public function invoice(){
+        return $this->belongsTo(Invoice::class, 'invoice_id');
+    }
 }
