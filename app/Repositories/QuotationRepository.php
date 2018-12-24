@@ -8,10 +8,12 @@
 
 namespace App\Repositories;
 
+use App\Mail\QuotationEmail;
 use App\Quotation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
+use Mail;
 
 class QuotationRepository extends BaseRepository
 {
@@ -84,7 +86,8 @@ class QuotationRepository extends BaseRepository
         }
 
         $customer = $this->customer->find($quotation->customer_id);
-        Mail::to($customer->email)->send(new CustomerVerificationEmail($customer));
+
+        Mail::to($customer->email)->send(new QuotationEmail($quotation, $customer));
 
         return 'success';
     }
