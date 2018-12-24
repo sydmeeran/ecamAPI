@@ -9,6 +9,7 @@ use App\Mail\CustomerVerificationEmail;
 
 use App\Repositories\DataRepo;
 use http\Env\Response;
+use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Hash;
@@ -78,6 +79,28 @@ class CustomerController extends BaseController
         ]);
 
         return redirect('https://www.google.com');
+    }
+
+    public function send_mail(Request $request, $id){
+//        if ($this->check_api_key($request)) {
+            $customer = $this->customer->find($id)->toArray();
+            Mail::to($customer['email'])->send(new CustomerVerificationEmail($customer));
+//        }
+//        return $this->unauthorized();
+    }
+
+    public function verify(Request $request){
+        if ($this->check_api_key($request)) {
+            $email = $request->input('email');
+            $otp = $request->input('otp');
+
+            $this->customer->model()->where('email', $email)->where('otp', $otp)->update([
+                'is_active' => 1
+            ]);
+
+            return redirect('http://www.accountant.com.mm');
+        }
+        return $this->unauthorized();
     }
 
     function generateCode($length = 8) {

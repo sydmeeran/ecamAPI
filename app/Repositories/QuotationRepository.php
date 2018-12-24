@@ -85,9 +85,11 @@ class QuotationRepository extends BaseRepository
             $this->taxation->store($request, $quotation->id);
         }
 
-        $customer = $this->customer->find($quotation->customer_id);
+        $customer = $this->customer->find($quotation->customer_id)->toArray();
 
-        Mail::to($customer->email)->send(new QuotationEmail($quotation, $customer));
+        $quotation = $this->with(['accounting_service', 'auditing', 'consulting', 'taxation'], $quotation->id)->toArray();
+
+        Mail::to($customer['email'])->send(new QuotationEmail($quotation, $customer));
 
         return 'success';
     }

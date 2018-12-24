@@ -7,20 +7,20 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class QuotationEmail extends Mailable
+class InvoiceEmail extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $quotation, $customer;
+    public $invoice, $customer;
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($quotation, $customer)
+    public function __construct($invoice, $customer)
     {
-        $this->quotation = $quotation[0];
+        $this->invoice = $invoice[0];
 
         $this->customer = $customer;
     }
@@ -34,9 +34,9 @@ class QuotationEmail extends Mailable
     {
         return $this->from(env('MAIL_FROM'), env('MAIL_NAME'))
             ->subject('Thanks for your registration!')
-            ->view('mails.quotation')
+            ->view('mails.invoice')
             ->with([
-                'quotation' => $this->quotation,
+                'invoice' => $this->invoice,
                 'customer' => $this->customer
             ]);
     }

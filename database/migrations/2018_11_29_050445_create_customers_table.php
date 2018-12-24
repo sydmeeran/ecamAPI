@@ -30,7 +30,7 @@ class CreateCustomersTable extends Migration
             $table->string('company_dica_link')->nullable();
             $table->string('company_link')->nullable();
             $table->boolean('is_use')->default(0);
-            $table->boolean('is_active')->default(1);
+            $table->boolean('is_active')->default(0);
             $table->boolean('is_suspend')->default(0);
             $table->rememberToken();
             $table->timestamps();

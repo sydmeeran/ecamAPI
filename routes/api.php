@@ -54,6 +54,7 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::post('/customers/search', 'CustomerController@search');
     Route::post('/customers/{id}/active-deactive', 'CustomerController@active_deactive');
     Route::post('/customers/{id}/append-suspend', 'CustomerController@append_suspend');
+    Route::post('/customers/send/mail/{id}', 'CustomerController@send_mail');
 
     // Businesses
     Route::post('/businesses/register/{customer_id}', 'BusinessController@register');
@@ -103,6 +104,7 @@ Route::group(['middleware' => 'auth:api'], function () {
 
 Route::get('/permissions/get-all', 'PermissionController@getAll');
 Route::post('/customers/use', 'CustomerController@use');
+Route::post('/customers/verify', 'CustomerController@verify');
 
 Route::get('group-messages', 'GroupChatController@index');
 Route::post('group-messages', 'GroupChatController@store');

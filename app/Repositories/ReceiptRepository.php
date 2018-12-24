@@ -9,19 +9,22 @@
 namespace App\Repositories;
 
 
+use App\Mail\ReceiptEmail;
 use App\Receipt;
 use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
+use Mail;
 
 class ReceiptRepository extends BaseRepository
 {
-    protected $invoice;
+    protected $invoice, $customer;
 
     public function __construct()
     {
         $this->invoice = DataRepo::invoice();
+        $this->customer = DataRepo::customer();
     }
 
     public function model()
@@ -70,7 +73,14 @@ class ReceiptRepository extends BaseRepository
 
         $data = $this->setData($request);
 
-        $this->model()->create($data);
+        $receipt = $this->model()->create($data);
+
+        $invoice = $this->invoice->with(['customer', 'business'], $data['invoice_id'])->toArray();
+        $invoice = $invoice[0];
+        $customer = $invoice['customer'];
+        $business = $invoice['business'];
+
+        Mail::to($customer['email'])->send(new ReceiptEmail($receipt, $customer, $business));
 
         return 'success';
     }

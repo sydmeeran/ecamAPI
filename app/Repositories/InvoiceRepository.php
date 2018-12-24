@@ -11,13 +11,16 @@ namespace App\Repositories;
 
 use App\Invoice;
 use App\InvoiceRemark;
+use App\Mail\InvoiceEmail;
+use App\Mail\InvoiceMail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
+use Mail;
 
 class InvoiceRepository extends BaseRepository
 {
-    protected $quotation, $accounting_service, $auditing, $annual, $consulting, $taxation;
+    protected $quotation, $accounting_service, $auditing, $annual, $consulting, $taxation, $customer;
 
     public function __construct()
     {
@@ -26,6 +29,7 @@ class InvoiceRepository extends BaseRepository
         $this->auditing = DataRepo::auditing();
         $this->consulting = DataRepo::consulting();
         $this->taxation = DataRepo::taxation();
+        $this->customer = DataRepo::customer();
     }
 
     public function model()
@@ -86,6 +90,12 @@ class InvoiceRepository extends BaseRepository
         if($request->input('taxation_check')){
             $this->taxation->storeByInvoice($request, $invoice->id);
         }
+
+        $customer = $this->customer->find($invoice->customer_id)->toArray();
+
+        $invoice = $this->with(['accounting_service', 'auditing', 'consulting', 'taxation'], $invoice->id)->toArray();
+
+        Mail::to($customer['email'])->send(new InvoiceEmail($invoice, $customer));
 
         return 'success';
     }

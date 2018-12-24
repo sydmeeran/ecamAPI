@@ -3,19 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <title>Document</title></head>
-<body style="background-color: #5000C0;">
+<body style="background-color: #5000C0; margin: 0px 70px;">
 <img style="padding: 20px; display: block; margin-left: auto; margin-right: auto;"
      src="{{ env('DOMAIN_NAME') }}/image/acc.png" alt="">
-<div style="margin: 10px 40px; padding: 0px 40px 20px 40px; background-color: white;">
+<div style="margin: 10px 40px; padding: 0px 3px 20px 3px; background-color: white;">
     <img style="padding: 3px" src="{{ env('DOMAIN_NAME') }}/image/customer_verification.jpg" alt="">
-    <p style="padding: 12px; margin: 0px 10px 20px 0px; font-size: 20px;">
-        We are excited to announce redesigned Cloudways,
-        a new look that resonates more with our audience,
-        along with the enhancements in Staging,
-        a new Let’s Encrypt Wildcard SSL feature,
-        an empowering Startup Program, and more.
-    </p>
-    <form action="{{ env('APP_URL') }}/api/customers/use" method="POST">
+    <div style="padding: 0px 50px 0px 50px;">
+        <p style="padding: 12px; margin: 0px 10px 20px 0px; font-size: 20px;">
+            We are excited to announce redesigned Cloudways,
+            a new look that resonates more with our audience,
+            along with the enhancements in Staging,
+            a new Let’s Encrypt Wildcard SSL feature,
+            an empowering Startup Program, and more.
+        </p>
+    </div>
+    <form action="{{ env('DOMAIN_NAME') }}/customers/verify" method="POST">
         @csrf
         <input type="hidden" name="otp" value="{{ $otp }}">
         <input type="hidden" name="email" value="{{ $email }}">
@@ -30,12 +32,8 @@
         " value="Verify Account">
     </form>
 </div>
-<div style="margin: 10px 20px; padding: 0px 20px; background-color: #5000C0; color: #5000C0;">
-    We are excited to announce redesigned Cloudways,
-    a new look that resonates more with our audience,
-    along with the enhancements in Staging,
-    a new Let’s Encrypt Wildcard SSL feature,
-    an empowering Startup Program, and more.
+<div style="margin: 10px 20px; padding: 30px 20px; background-color: #5000C0; color: #5000C0;">
+
 </div>
 </body>
 </html>
