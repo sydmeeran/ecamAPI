@@ -10,6 +10,7 @@ namespace App\Repositories;
 
 
 use App\Invoice;
+use App\InvoiceRemark;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
@@ -112,6 +113,30 @@ class InvoiceRepository extends BaseRepository
         if($request->input('taxation_check')){
             $this->taxation->update($request, $id);
         }
+
+        return 'success';
+    }
+
+    public function remarkValidation($data){
+        return Validator::make($data, [
+            'invoice_id' => 'required',
+            'remark' => 'required|string'
+        ]);
+    }
+
+    public function remarkStore(Request $request){
+        $data = [
+            'invoice_id' => $request->input('invoice_id'),
+            'remark' => $request->input('remark')
+        ];
+
+        $validator = $this->remarkValidation($data);
+
+        if($validator->fails()){
+            throw new ValidationException($validator);
+        }
+
+        InvoiceRemark::create($data);
 
         return 'success';
     }

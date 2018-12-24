@@ -57,23 +57,30 @@ class ReceiptController extends BaseController
 
 
 
-//    public function search(Request $request){
-//        if ($this->check_api_key($request)) {
-//
-//            if($this->check_permission('job-entry-retrieve')){
-//                $keyword = $request->get('keyword');
-//                $result = $this->job_entry->model()->where( 'company_type', 'LIKE', '%' . $keyword . '%' )
-//                    ->orWhere ( 'excel_type', 'LIKE', '%' . $keyword . '%' )
-//                    ->orWhere ( 'excel_file', 'LIKE', '%' . $keyword . '%' )
-//                    ->with('customer')->get()->toArray();
-//
-//                return $this->response($result);
-//            }
-//
-//            return $this->permission_denied();
-//        }
-//        return $this->unauthorized();
-//    }
+    public function search(Request $request){
+        if ($this->check_api_key($request)) {
+
+            if($this->check_permission('receipt-retrieve')){
+                $keyword = $request->get('keyword');
+                $result = $this->quotation->model()
+                    ->with(['customer' => function($query) use ($keyword){
+                        $query->where('owner_name', 'like', '%'.$keyword.'%')
+                            ->orWhere('company_name', 'like', '%'.$keyword.'%');
+                    }])
+                    ->with(['business' => function($query) use ($keyword){
+                        $query->where('business_name', 'like', '%'.$keyword.'%');
+                    }])
+                    ->with('business')->with('customer')
+                    ->get();
+
+                return $this->response($result);
+            }
+
+            return $this->permission_denied();
+        }
+        return $this->unauthorized();
+    }
+
 
     public function delete(Request $request, $id){
         if ($this->check_api_key($request)) {

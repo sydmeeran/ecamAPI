@@ -15,4 +15,16 @@ class Business extends Model
     public function customer(){
         return $this->belongsTo(Customer::class, 'customer_id');
     }
+
+    public function quotation(){
+        return $this->hasMany(Quotation::class);
+    }
+
+    public function invoice(){
+        return $this->hasMany(Invoice::class);
+    }
+
+    public function receipt(){
+        return $this->hasMany(Receipt::class);
+    }
 }

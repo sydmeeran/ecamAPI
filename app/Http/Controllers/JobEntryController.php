@@ -100,9 +100,13 @@ class JobEntryController extends BaseController
             if($this->check_permission('job-entry-retrieve')){
                 $keyword = $request->get('keyword');
                 $result = $this->job_entry->model()->where( 'company_type', 'LIKE', '%' . $keyword . '%' )
+                    ->with(['customer' => function($query) use ($keyword){
+                        $query->where('owner_name', 'like', '%'.$keyword.'%')
+                            ->orWhere('company_name', 'like', '%'.$keyword.'%');
+                    }])
                     ->orWhere ( 'excel_type', 'LIKE', '%' . $keyword . '%' )
                     ->orWhere ( 'excel_file', 'LIKE', '%' . $keyword . '%' )
-                    ->with('customer')->get()->toArray();
+                    ->with('customer')->get();
 
                 return $this->response($result);
             }

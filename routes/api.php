@@ -79,20 +79,26 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::post('/quotations/store', 'QuotationController@store');
     Route::post('/quotations/delete/{id}', 'QuotationController@delete');
     Route::post('/quotations/update/{id}', 'QuotationController@update');
+    Route::post('/quotations/search', 'QuotationController@search');
 
     // Invoice
     Route::get('/invoices/pagination', 'InvoiceController@pagination');
     Route::get('/invoices/get/{id}', 'InvoiceController@get');
     Route::post('/invoices/store', 'InvoiceController@store');
     Route::post('/invoices/delete/{id}', 'InvoiceController@delete');
-//    Route::post('/invoices/update/{id}', 'InvoiceController@update');
+    Route::post('/invoices/search', 'InvoiceController@search');
+
+    // Payment Reminder
+    Route::get('/payment-reminders/pagination', 'PaymentReminderController@pagination');
+    Route::get('/payment-reminders/success', 'PaymentReminderController@paymentSuccess');
+    Route::post('/payment-reminders/remark/store', 'PaymentReminderController@remarkStore');
 
     // Receipt
     Route::get('/receipts/pagination', 'ReceiptController@pagination');
     Route::get('/receipts/get/{id}', 'ReceiptController@get');
     Route::post('/receipts/store', 'ReceiptController@store');
     Route::post('/receipts/delete/{id}', 'ReceiptController@delete');
-//    Route::post('/receipts/update/{id}', 'ReceiptController@update');
+    Route::post('/receipts/search', 'ReceiptController@search');
 });
 
 Route::get('/permissions/get-all', 'PermissionController@getAll');

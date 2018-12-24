@@ -35,4 +35,16 @@ class Customer extends Model
         return $this->hasMany(JobEntry::class);
     }
 
+    public function quotation(){
+        return $this->hasMany(Quotation::class);
+    }
+
+    public function invoice(){
+        return $this->hasMany(Invoice::class);
+    }
+
+    public function receipt(){
+        return $this->hasMany(Receipt::class);
+    }
+
 }

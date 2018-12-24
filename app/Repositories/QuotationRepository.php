@@ -15,7 +15,7 @@ use Illuminate\Validation\ValidationException;
 
 class QuotationRepository extends BaseRepository
 {
-    protected $accounting_service, $auditing, $annual, $consulting, $taxation;
+    protected $accounting_service, $auditing, $annual, $consulting, $taxation, $customer;
 
     public function __construct()
     {
@@ -23,6 +23,7 @@ class QuotationRepository extends BaseRepository
         $this->auditing = DataRepo::auditing();
         $this->consulting = DataRepo::consulting();
         $this->taxation = DataRepo::taxation();
+        $this->customer = DataRepo::customer();
     }
 
     public function model()
@@ -81,6 +82,9 @@ class QuotationRepository extends BaseRepository
         if($request->input('taxation_check')){
             $this->taxation->store($request, $quotation->id);
         }
+
+        $customer = $this->customer->find($quotation->customer_id);
+        Mail::to($customer->email)->send(new CustomerVerificationEmail($customer));
 
         return 'success';
     }

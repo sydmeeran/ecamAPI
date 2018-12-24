@@ -59,5 +59,26 @@ class PermissionSeeder extends Seeder
                 'permission' => 'quotation-'.$p
             ]);
         }
+
+        Permission::create([
+            'permission' => 'invoice-retrieve'
+        ]);
+        Permission::create([
+            'permission' => 'invoice-create'
+        ]);
+        Permission::create([
+            'permission' => 'invoice-delete'
+        ]);
+
+        Permission::create([
+            'permission' => 'receipt-retrieve'
+        ]);
+        Permission::create([
+            'permission' => 'receipt-create'
+        ]);
+        Permission::create([
+            'permission' => 'receipt-delete'
+        ]);
+
     }
 }

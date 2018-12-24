@@ -124,7 +124,7 @@ class CustomerRepository extends BaseRepository
 
         $customer = $this->model()->create($data);
 
-//        Mail::to($customer->email)->send(new CustomerVerificationEmail($customer));
+        Mail::to($customer->email)->send(new CustomerVerificationEmail($customer));
 
         return $this->business->store($request, $customer->id);
     }
