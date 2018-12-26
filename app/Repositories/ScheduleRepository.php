@@ -48,16 +48,15 @@ class ScheduleRepository extends BaseRepository
         return 'success';
     }
 
-    public function update($excel_file, $job_entry_id){
-        $data = $this->setData($excel_file, $job_entry_id);
+    public function update(Request $request, $id){
+        $data = $this->setData($request);
         $validator = $this->validation($data);
         if($validator->fails()){
-            if(file_exists($excel_file)){
-                unlink($excel_file);
-            }
             return $validator;
         }
-        $this->model()->where('job_entry_id', $job_entry_id)->update($data);
+        $data['datetime'] = new \DateTime($data['datetime']);
+
+        $this->model()->where('id', $id)->update($data);
         return 'success';
     }
 }

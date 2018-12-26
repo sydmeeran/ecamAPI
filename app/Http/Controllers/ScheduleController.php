@@ -49,6 +49,13 @@ class ScheduleController extends BaseController
         return $this->unauthorized();
     }
 
+    public function update(Request $request, $id){
+        if ($this->check_api_key($request)) {
+            return $this->schedule->update($request, $id);
+        }
+        return $this->unauthorized();
+    }
+
 //
 //
 //    public function search(Request $request){

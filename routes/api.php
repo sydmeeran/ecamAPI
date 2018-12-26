@@ -107,6 +107,7 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::get('/schedules/get/{id}', 'ScheduleController@get');
     Route::get('/schedules/get', 'ScheduleController@getAll');
     Route::post('/schedules/store', 'ScheduleController@store');
+    Route::post('/schedules/update/{id}', 'ScheduleController@update');
     Route::post('/schedules/delete/{id}', 'ScheduleController@delete');
     Route::post('/schedules/search', 'ScheduleController@search');
 });

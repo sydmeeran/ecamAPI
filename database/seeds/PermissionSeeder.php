@@ -14,45 +14,45 @@ class PermissionSeeder extends Seeder
     {
         $permission = ['create', 'retrieve', 'update', 'delete'];
 
-//        Permission::create([
-//            'permission' => 'all'
-//        ]);
-//
-//        foreach($permission as $p){
-//            Permission::create([
-//                'permission' => 'role-'.$p
-//            ]);
-//        }
-//
-//        foreach($permission as $p){
-//            Permission::create([
-//                'permission' => 'user-'.$p
-//            ]);
-//        }
-//
-//        Permission::create([
-//            'permission' => 'user-deactive'
-//        ]);
-//
-//        foreach($permission as $p){
-//            Permission::create([
-//                'permission' => 'customer-'.$p
-//            ]);
-//        }
-//
-//        Permission::create([
-//            'permission' => 'customer-deactive'
-//        ]);
-//
-//        Permission::create([
-//            'permission' => 'customer-suspend'
-//        ]);
-//
-//        foreach($permission as $p){
-//            Permission::create([
-//                'permission' => 'job-entry-'.$p
-//            ]);
-//        }
+        Permission::create([
+            'permission' => 'all'
+        ]);
+
+        foreach($permission as $p){
+            Permission::create([
+                'permission' => 'role-'.$p
+            ]);
+        }
+
+        foreach($permission as $p){
+            Permission::create([
+                'permission' => 'user-'.$p
+            ]);
+        }
+
+        Permission::create([
+            'permission' => 'user-deactive'
+        ]);
+
+        foreach($permission as $p){
+            Permission::create([
+                'permission' => 'customer-'.$p
+            ]);
+        }
+
+        Permission::create([
+            'permission' => 'customer-deactive'
+        ]);
+
+        Permission::create([
+            'permission' => 'customer-suspend'
+        ]);
+
+        foreach($permission as $p){
+            Permission::create([
+                'permission' => 'job-entry-'.$p
+            ]);
+        }
 
         foreach($permission as $p){
             Permission::create([
@@ -78,6 +78,10 @@ class PermissionSeeder extends Seeder
         ]);
         Permission::create([
             'permission' => 'receipt-delete'
+        ]);
+
+        Permission::create([
+            'permission' => 'schedule-delete'
         ]);
 
     }

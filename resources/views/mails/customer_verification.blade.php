@@ -14,7 +14,6 @@
         </p>
     </div>
     <form action="{{ env('DOMAIN_NAME') }}/customer/verify/email" method="GET">
-        @csrf
         <input type="hidden" name="otp" value="{{ $otp }}">
         <input type="hidden" name="email" value="{{ $email }}">
         <input type="submit" style="
