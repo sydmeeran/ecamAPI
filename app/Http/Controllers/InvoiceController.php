@@ -38,7 +38,7 @@ class InvoiceController extends BaseController
 
     public function get(Request $request, $id){
         if ($this->check_api_key($request)) {
-            $invoice = $this->invoice->with(['customer', 'business', 'receipt', 'accounting_service', 'auditing', 'consulting', 'taxation', 'remarks'], $id);
+            $invoice = $this->invoice->with(['customer', 'business', 'receipt', 'accounting_service', 'auditing', 'consulting', 'taxation', 'remarks'], $id)->toArray();
             if(empty($invoice)){
                 return $this->empty_data();
             }

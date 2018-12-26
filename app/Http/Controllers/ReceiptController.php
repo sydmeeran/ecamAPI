@@ -37,8 +37,11 @@ class ReceiptController extends BaseController
 
     public function get(Request $request, $id){
         if ($this->check_api_key($request)) {
-            $receipt = $this->receipt->find($id);
-            $receipt = $this->invoice->with(['receipt', 'customer', 'business', 'accounting_service', 'auditing', 'consulting', 'taxation'], $receipt->invoice_id);
+            $receipt = $this->receipt->model()->where('id', $id)->get()->toArray();
+            if(empty($receipt)){
+                return $this->empty_data();
+            }
+            $receipt = $this->invoice->with(['receipt', 'customer', 'business', 'accounting_service', 'auditing', 'consulting', 'taxation'], $receipt[0]['invoice_id'])->toArray();
 //            $invoice = $this->invoice->with(['customer', 'business', 'accounting_service', 'auditing', 'consulting', 'taxation'], $receipt->invoice_id);
             if(empty($receipt)){
                 return $this->empty_data();

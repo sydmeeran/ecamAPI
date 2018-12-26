@@ -83,7 +83,7 @@ class JobEntryController extends BaseController
 
                 $job_entry = $this->job_entry->with(['customer', 'pnl_excel', 'balance_sheet_excel'], $id)->toArray();
                 if(empty($job_entry)){
-                    return $this->response($job_entry);
+                    return $this->empty_data();
                 }
                 $job_entry = $job_entry[0];
                 return $this->response($job_entry);

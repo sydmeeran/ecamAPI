@@ -244,7 +244,7 @@ class CustomerController extends BaseController
             if($this->check_permission('customer-retrieve')){
                 $user = $this->customer->with(['businesses'], $id)->toArray();
                 if(empty($user)){
-                    return $this->response($user);
+                    return $this->empty_data();
                 }
                 $user = $user[0];
                 return $this->response($user);

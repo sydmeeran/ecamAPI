@@ -36,7 +36,7 @@ class QuotationController extends BaseController
 
     public function get(Request $request, $id){
         if ($this->check_api_key($request)) {
-            $quotation = $this->quotation->with(['customer', 'business', 'accounting_service', 'auditing', 'consulting', 'taxation', 'invoice'], $id);
+            $quotation = $this->quotation->with(['customer', 'business', 'accounting_service', 'auditing', 'consulting', 'taxation', 'invoice'], $id)->toArray();
             if(empty($quotation)){
                 return $this->empty_data();
             }
