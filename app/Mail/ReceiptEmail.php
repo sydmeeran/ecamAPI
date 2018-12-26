@@ -11,20 +11,16 @@ class ReceiptEmail extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $receipt, $customer, $business;
+    public $invoice;
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($receipt, $customer, $business)
+    public function __construct($invoice)
     {
-        $this->receipt = $receipt[0];
-
-        $this->customer = $customer;
-
-        $this->business = $business;
+        $this->invoice = $invoice[0];
     }
 
     /**
@@ -38,9 +34,7 @@ class ReceiptEmail extends Mailable
             ->subject('Thanks for your registration!')
             ->view('mails.receipt')
             ->with([
-                'receipt' => $this->receipt,
-                'customer' => $this->customer,
-                'business' => $this->business
+                'invoice' => $this->invoice,
             ]);
     }
 }
