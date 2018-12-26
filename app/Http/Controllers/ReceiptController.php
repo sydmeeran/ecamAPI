@@ -29,7 +29,7 @@ class ReceiptController extends BaseController
     public function pagination(Request $request)
     {
         if ($this->check_api_key($request)) {
-            $receipt = $this->receipt->model()->with('invoice')->paginate(20);
+            $receipt = $this->invoice->model()->whereHas('receipt')->with('receipt')->with('customer')->with('business')->paginate(20);
             return $this->response($receipt);
         }
         return $this->unauthorized();
@@ -37,7 +37,8 @@ class ReceiptController extends BaseController
 
     public function get(Request $request, $id){
         if ($this->check_api_key($request)) {
-            $receipt = $this->receipt->with(['invoice'], $id);
+            $receipt = $this->receipt->find($id);
+            $receipt = $this->invoice->with(['receipt', 'customer', 'business', 'accounting_service', 'auditing', 'consulting', 'taxation'], $receipt->invoice_id);
 //            $invoice = $this->invoice->with(['customer', 'business', 'accounting_service', 'auditing', 'consulting', 'taxation'], $receipt->invoice_id);
             if(empty($receipt)){
                 return $this->empty_data();
