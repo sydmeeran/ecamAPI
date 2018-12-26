@@ -9,7 +9,7 @@ class Quotation extends Model
     protected $table = 'quotations';
 
     protected $fillable = [
-        'customer_id', 'business_id', 'sub_total', 'discount', 'tax', 'total'
+        'quotation_id', 'customer_id', 'business_id', 'sub_total', 'discount', 'tax', 'total'
     ];
 
     public function customer(){

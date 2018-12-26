@@ -20,10 +20,11 @@ use Mail;
 
 class InvoiceRepository extends BaseRepository
 {
-    protected $quotation, $accounting_service, $auditing, $annual, $consulting, $taxation, $customer;
+    protected $quotation, $accounting_service, $auditing, $annual, $consulting, $taxation, $customer, $prefix;
 
     public function __construct()
     {
+        $this->prefix = date('y');
         $this->quotation = DataRepo::quotation();
         $this->accounting_service = DataRepo::accounting_service();
         $this->auditing = DataRepo::auditing();
@@ -67,6 +68,14 @@ class InvoiceRepository extends BaseRepository
         return $data;
     }
 
+    protected function generateInvoiceId(){
+        $invoice_id = $this->prefix.generateNumber(6);
+        while($this->model()->where('invoice_id', $invoice_id)->exists()){
+            $invoice_id = $this->prefix.generateNumber(6);
+        }
+        return $invoice_id;
+    }
+
     public function store(Request $request){
 
         $validator = $this->validation($request);
@@ -75,6 +84,7 @@ class InvoiceRepository extends BaseRepository
         }
 
         $data = $this->setData($request);
+        $data['invoice_id'] = $this->generateInvoiceId();
 
         $invoice = $this->model()->create($data);
 

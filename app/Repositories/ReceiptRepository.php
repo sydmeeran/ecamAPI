@@ -19,10 +19,11 @@ use Mail;
 
 class ReceiptRepository extends BaseRepository
 {
-    protected $invoice, $customer;
+    protected $invoice, $customer, $prefix;
 
     public function __construct()
     {
+        $this->prefix = date('y');
         $this->invoice = DataRepo::invoice();
         $this->customer = DataRepo::customer();
     }
@@ -64,6 +65,14 @@ class ReceiptRepository extends BaseRepository
         return $data;
     }
 
+    protected function generateReceiptId(){
+        $receipt_id = $this->prefix.generateNumber(6);
+        while($this->model()->where('receipt_id', $receipt_id)->exists()){
+            $receipt_id = $this->prefix.generateNumber(6);
+        }
+        return $receipt_id;
+    }
+
     public function store(Request $request){
 
         $validator = $this->validation($request);
@@ -72,6 +81,7 @@ class ReceiptRepository extends BaseRepository
         }
 
         $data = $this->setData($request);
+        $data['receipt_id'] = $this->generateReceiptId();
 
         $receipt = $this->model()->create($data);
 

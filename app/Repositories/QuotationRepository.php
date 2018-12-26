@@ -17,10 +17,11 @@ use Mail;
 
 class QuotationRepository extends BaseRepository
 {
-    protected $accounting_service, $auditing, $annual, $consulting, $taxation, $customer;
+    protected $accounting_service, $auditing, $annual, $consulting, $taxation, $customer, $prefix;
 
     public function __construct()
     {
+        $this->prefix = date('y');
         $this->accounting_service = DataRepo::accounting_service();
         $this->auditing = DataRepo::auditing();
         $this->consulting = DataRepo::consulting();
@@ -61,6 +62,14 @@ class QuotationRepository extends BaseRepository
         return $data;
     }
 
+    protected function generateQuotationId(){
+        $quotation_id = $this->prefix.generateNumber(6);
+        while($this->model()->where('quotation_id', $quotation_id)->exists()){
+            $quotation_id = $this->prefix.generateNumber(6);
+        }
+        return $quotation_id;
+    }
+
     public function store(Request $request){
 
         $validator = $this->validation($request);
@@ -69,6 +78,7 @@ class QuotationRepository extends BaseRepository
         }
 
         $data = $this->setData($request);
+        $data['quotation_id'] = $this->generateQuotationId();
 
         $quotation = $this->model()->create($data);
 

@@ -9,7 +9,7 @@ class Invoice extends Model
     protected $table = 'invoices';
 
     protected $fillable = [
-        'quotation_id', 'customer_id', 'business_id', 'sub_total', 'discount', 'tax', 'total'
+        'quotation_id', 'invoice_id', 'customer_id', 'business_id', 'sub_total', 'discount', 'tax', 'total'
     ];
 
     public function quotation(){

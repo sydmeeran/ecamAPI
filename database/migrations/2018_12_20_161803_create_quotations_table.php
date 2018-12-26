@@ -15,6 +15,7 @@ class CreateQuotationsTable extends Migration
     {
         Schema::create('quotations', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('quotation_id');
             $table->unsignedInteger('customer_id');
             $table->unsignedInteger('business_id');
             $table->integer('sub_total');
