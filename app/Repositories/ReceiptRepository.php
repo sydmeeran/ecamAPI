@@ -75,12 +75,9 @@ class ReceiptRepository extends BaseRepository
 
         $receipt = $this->model()->create($data);
 
-        $invoice = $this->invoice->with(['customer', 'business'], $data['invoice_id'])->toArray();
-        $invoice = $invoice[0];
-        $customer = $invoice['customer'];
-        $business = $invoice['business'];
+        $invoice = $this->invoice->with(['customer', 'business', 'accounting_service', 'auditing', 'consulting', 'taxation', 'receipt'], $receipt->invoice_id)->toArray();
 
-        Mail::to($customer['email'])->send(new ReceiptEmail($receipt, $customer, $business));
+        Mail::to($invoice[0]['customer']['email'])->send(new ReceiptEmail($invoice));
 
         return 'success';
     }

@@ -8,6 +8,7 @@ use App\Exceptions\EmptyCustomerException;
 use App\Mail\CustomerVerificationEmail;
 
 use App\Repositories\DataRepo;
+use Arga\Utils\ActionMiddlewareTrait;
 use http\Env\Response;
 use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Http\Request;
@@ -18,11 +19,25 @@ use Illuminate\Support\Facades\Validator;
 
 class CustomerController extends BaseController
 {
+    use ActionMiddlewareTrait;
+
     protected $customer;
 
     public function __construct()
     {
         $this->customer = DataRepo::customer();
+
+        $this->actionMiddleware([
+            'register' => 'customer-create',
+            'pagination' => 'customer-retrieve',
+            'update' => 'customer-update',
+            'get' => 'customer-retrieve',
+            'search' => 'customer-retrieve',
+            'active_deactive' => 'customer-deactive',
+            'append_suspend' => 'customer-suspend',
+            'delete' => 'customer-delete',
+            'send_mail' => 'customer-create'
+        ]);
     }
 
     /**
@@ -49,11 +64,9 @@ class CustomerController extends BaseController
     public function register(Request $request)
     {
         if ($this->check_api_key($request)) {
-            if ($this->check_permission('customer-create')) {
 
-                return $this->customer->store($request);
-            }
-            return $this->permission_denied();
+            return $this->customer->store($request);
+
         }
         return $this->unauthorized();
     }
@@ -61,16 +74,14 @@ class CustomerController extends BaseController
     public function update(Request $request, $id)
     {
         if ($this->check_api_key($request)) {
-            if ($this->check_permission('customer-update')) {
 
-                return $this->customer->update($request, $id);
-            }
-            return $this->permission_denied();
+            return $this->customer->update($request, $id);
         }
         return $this->unauthorized();
     }
 
-    public function use(Request $request){
+    public function use(Request $request)
+    {
         $email = $request->input('email');
         $otp = $request->input('otp');
 
@@ -81,29 +92,18 @@ class CustomerController extends BaseController
         return redirect('https://www.google.com');
     }
 
-    public function send_mail(Request $request, $id){
-//        if ($this->check_api_key($request)) {
+    public function send_mail(Request $request, $id)
+    {
+        if ($this->check_api_key($request)) {
             $customer = $this->customer->find($id)->toArray();
             Mail::to($customer['email'])->send(new CustomerVerificationEmail($customer));
-//        }
-//        return $this->unauthorized();
-    }
-
-    public function verify(Request $request){
-        if ($this->check_api_key($request)) {
-            $email = $request->input('email');
-            $otp = $request->input('otp');
-
-            $this->customer->model()->where('email', $email)->where('otp', $otp)->update([
-                'is_active' => 1
-            ]);
-
-            return redirect('http://www.accountant.com.mm');
+            return 'success';
         }
         return $this->unauthorized();
     }
 
-    function generateCode($length = 8) {
+    function generateCode($length = 8)
+    {
         $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
         $charactersLength = strlen($characters);
         $randomString = '';
@@ -202,11 +202,11 @@ class CustomerController extends BaseController
         if ($this->check_api_key($request)) {
 //            if($this->check_permission('customer-retrieve')){
 
-                $user = $this->customer->getAll();
-                if(empty($user)){
-                    throw new EmptyCustomerException();
-                }
-                return $this->response($user);
+            $user = $this->customer->getAll();
+            if (empty($user)) {
+                throw new EmptyCustomerException();
+            }
+            return $this->response($user);
 //            }
 //            return $this->permission_denied();
         }
@@ -217,7 +217,7 @@ class CustomerController extends BaseController
     {
         if ($this->check_api_key($request)) {
             $user = $this->customer->getAll();
-            if(empty($user)){
+            if (empty($user)) {
                 throw new EmptyCustomerException();
             }
             return $this->response($user);
@@ -225,14 +225,13 @@ class CustomerController extends BaseController
         return $this->unauthorized();
     }
 
-    public function getAll_pagination(Request $request)
+    public function pagination(Request $request)
     {
         if ($this->check_api_key($request)) {
-            if($this->check_permission('customer-retrieve')){
-                $customer = $this->customer->paginate(20);
-                return $this->response($customer);
-            }
-            return $this->permission_denied();
+
+            $customer = $this->customer->paginate(20);
+            return $this->response($customer);
+
         }
         return $this->unauthorized();
     }
@@ -241,86 +240,76 @@ class CustomerController extends BaseController
     {
         if ($this->check_api_key($request)) {
 
-            if($this->check_permission('customer-retrieve')){
-                $user = $this->customer->with(['businesses'], $id)->toArray();
-                if(empty($user)){
-                    return $this->empty_data();
-                }
-                $user = $user[0];
-                return $this->response($user);
-            }
 
-            return $this->permission_denied();
+            $user = $this->customer->with(['businesses'], $id)->toArray();
+            if (empty($user)) {
+                return $this->empty_data();
+            }
+            $user = $user[0];
+            return $this->response($user);
+
         }
         return $this->unauthorized();
     }
 
-    public function search(Request $request){
+    public function search(Request $request)
+    {
         if ($this->check_api_key($request)) {
 
-            if($this->check_permission('customer-retrieve')){
-                $keyword = $request->get('keyword');
-                $result = $this->customer->model()->where( 'owner_name', 'LIKE', '%' . $keyword . '%' )
-                    ->orWhere ( 'email', 'LIKE', '%' . $keyword . '%' )
-                    ->orWhere ( 'phone_no', 'LIKE', '%' . $keyword . '%' )
-                    ->orWhere ( 'company_name', 'LIKE', '%' . $keyword . '%' )
-                    ->orWhere ( 'contact_name', 'LIKE', '%' . $keyword . '%' )
-                    ->get()->toArray();
+            $keyword = $request->get('keyword');
+            $result = $this->customer->model()->where('owner_name', 'LIKE', '%' . $keyword . '%')
+                ->orWhere('email', 'LIKE', '%' . $keyword . '%')
+                ->orWhere('phone_no', 'LIKE', '%' . $keyword . '%')
+                ->orWhere('company_name', 'LIKE', '%' . $keyword . '%')
+                ->orWhere('contact_name', 'LIKE', '%' . $keyword . '%')
+                ->get()->toArray();
 
-                return $this->response($result);
-            }
-
-            return $this->permission_denied();
+            return $this->response($result);
         }
         return $this->unauthorized();
     }
 
-    public function active_deactive(Request $request, $id){
+    public function active_deactive(Request $request, $id)
+    {
         if ($this->check_api_key($request)) {
 
-            if($this->check_permission('customer-update')){
 
-                $this->customer->model()->where('id', $id)->update([
-                    'is_active' => $request->get('status')
-                ]);
-                return $this->success();
+            $this->customer->model()->where('id', $id)->update([
+                'is_active' => $request->get('status')
+            ]);
+            return $this->success();
 
-            }
-            return $this->permission_denied();
         }
         return $this->unauthorized();
     }
 
-    public function append_suspend(Request $request, $id){
+    public function append_suspend(Request $request, $id)
+    {
         if ($this->check_api_key($request)) {
 
-            if($this->check_permission('customer-update')){
 
-                $this->customer->model()->where('id', $id)->update([
-                    'is_suspend' => $request->get('status')
-                ]);
-                return $this->success();
+            $this->customer->model()->where('id', $id)->update([
+                'is_suspend' => $request->get('status')
+            ]);
+            return $this->success();
 
-            }
-            return $this->permission_denied();
         }
         return $this->unauthorized();
     }
 
-    public function delete(Request $request, $id){
+    public function delete(Request $request, $id)
+    {
         if ($this->check_api_key($request)) {
 
-            if($this->check_permission('customer-delete')){
-                $this->customer->model()->where('id', $id)->delete();
-                return $this->success();
-            }
+            $this->customer->model()->where('id', $id)->delete();
+            return $this->success();
 
-            return $this->permission_denied();
         }
         return $this->unauthorized();
     }
 
-    protected function combine_array($business_name_arrs, $license_no_arrs, $license_type_arrs, $license_photo_arrs, $address_arrs) {
+    protected function combine_array($business_name_arrs, $license_no_arrs, $license_type_arrs, $license_photo_arrs, $address_arrs)
+    {
         $result = array_map(function ($business_name_arrs, $license_no_arrs, $license_type_arrs, $license_photo_arrs, $address_arrs) {
             return array_combine(
                 ['business_name', 'license_no', 'license_type', 'license_photo', 'address'],

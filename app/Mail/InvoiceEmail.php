@@ -18,11 +18,9 @@ class InvoiceEmail extends Mailable
      *
      * @return void
      */
-    public function __construct($invoice, $customer)
+    public function __construct($invoice)
     {
         $this->invoice = $invoice[0];
-
-        $this->customer = $customer;
     }
 
     /**
@@ -37,7 +35,6 @@ class InvoiceEmail extends Mailable
             ->view('mails.invoice')
             ->with([
                 'invoice' => $this->invoice,
-                'customer' => $this->customer
             ]);
     }
 }

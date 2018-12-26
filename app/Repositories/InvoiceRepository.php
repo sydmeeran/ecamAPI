@@ -91,11 +91,11 @@ class InvoiceRepository extends BaseRepository
             $this->taxation->storeByInvoice($request, $invoice->id);
         }
 
-        $customer = $this->customer->find($invoice->customer_id)->toArray();
+//        $customer = $this->customer->find($invoice->customer_id)->toArray();
 
-        $invoice = $this->with(['accounting_service', 'auditing', 'consulting', 'taxation'], $invoice->id)->toArray();
+        $invoice = $this->with(['customer', 'business', 'accounting_service', 'auditing', 'consulting', 'taxation'], $invoice->id)->toArray();
 
-        Mail::to($customer['email'])->send(new InvoiceEmail($invoice, $customer));
+        Mail::to($invoice[0]['customer']['email'])->send(new InvoiceEmail($invoice));
 
         return 'success';
     }

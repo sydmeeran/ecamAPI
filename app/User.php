@@ -114,4 +114,8 @@ class User extends Authenticatable implements SerializableModel
             'detail' => true,
         ];
     }
+
+    public function schedule(){
+        return $this->hasMany(Schedule::class);
+    }
 }
