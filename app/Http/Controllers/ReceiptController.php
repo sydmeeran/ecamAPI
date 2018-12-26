@@ -66,7 +66,7 @@ class ReceiptController extends BaseController
 
             if($this->check_permission('receipt-retrieve')){
                 $keyword = $request->get('keyword');
-                $result = $this->quotation->model()
+                $result = $this->invoice->model()->whereHas('receipt')
                     ->with(['customer' => function($query) use ($keyword){
                         $query->where('owner_name', 'like', '%'.$keyword.'%')
                             ->orWhere('company_name', 'like', '%'.$keyword.'%');
@@ -74,7 +74,7 @@ class ReceiptController extends BaseController
                     ->with(['business' => function($query) use ($keyword){
                         $query->where('business_name', 'like', '%'.$keyword.'%');
                     }])
-                    ->with('business')->with('customer')
+                    ->with('business')->with('customer')->with('receipt')
                     ->get();
 
                 return $this->response($result);

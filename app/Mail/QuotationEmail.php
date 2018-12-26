@@ -11,18 +11,17 @@ class QuotationEmail extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $quotation, $customer;
+    public $quotation;
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($quotation, $customer)
+    public function __construct($quotation)
     {
         $this->quotation = $quotation[0];
 
-        $this->customer = $customer;
     }
 
     /**
@@ -36,8 +35,7 @@ class QuotationEmail extends Mailable
             ->subject('Thanks for your registration!')
             ->view('mails.quotation')
             ->with([
-                'quotation' => $this->quotation,
-                'customer' => $this->customer
+                'quotation' => $this->quotation
             ]);
     }
 }
