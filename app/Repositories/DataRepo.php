@@ -82,4 +82,9 @@ class DataRepo
         return app(ReceiptRepository::class);
     }
 
+    public static function schedule(): ScheduleRepository
+    {
+        return app(ScheduleRepository::class);
+    }
+
 }

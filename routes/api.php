@@ -47,7 +47,7 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::post('/customers/register', 'CustomerController@register');
     Route::get('/customers/get', 'CustomerController@getAll');
 //    Route::get('/customers/get-all-by-job-entry', 'CustomerController@getAllByJobEntry');
-    Route::get('/customers/get-all/pagination', 'CustomerController@getAll_pagination');
+    Route::get('/customers/get-all/pagination', 'CustomerController@pagination');
     Route::get('/customers/get/{id}', 'CustomerController@get');
     Route::post('/customers/update/{id}', 'CustomerController@update');
     Route::post('/customers/delete/{id}', 'CustomerController@delete');
@@ -100,6 +100,14 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::post('/receipts/store', 'ReceiptController@store');
     Route::post('/receipts/delete/{id}', 'ReceiptController@delete');
     Route::post('/receipts/search', 'ReceiptController@search');
+
+    // Schedule
+    Route::get('/schedules/pagination', 'ScheduleController@pagination');
+    Route::get('/schedules/get/{id}', 'ScheduleController@get');
+    Route::get('/schedules/get', 'ScheduleController@getAll');
+    Route::post('/schedules/store', 'ScheduleController@store');
+    Route::post('/schedules/delete/{id}', 'ScheduleController@delete');
+    Route::post('/schedules/search', 'ScheduleController@search');
 });
 
 Route::get('/permissions/get-all', 'PermissionController@getAll');

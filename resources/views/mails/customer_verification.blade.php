@@ -17,7 +17,7 @@
             an empowering Startup Program, and more.
         </p>
     </div>
-    <form action="{{ env('DOMAIN_NAME') }}/customers/verify" method="POST">
+    <form action="{{ env('DOMAIN_NAME') }}/customer/verify" method="POST">
         @csrf
         <input type="hidden" name="otp" value="{{ $otp }}">
         <input type="hidden" name="email" value="{{ $email }}">
