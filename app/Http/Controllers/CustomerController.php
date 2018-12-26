@@ -102,21 +102,6 @@ class CustomerController extends BaseController
         return $this->unauthorized();
     }
 
-    public function verify(Request $request)
-    {
-        if ($this->check_api_key($request)) {
-            $email = $request->input('email');
-            $otp = $request->input('otp');
-
-            $this->customer->model()->where('email', $email)->where('otp', $otp)->update([
-                'is_active' => 1
-            ]);
-
-            return 'success';
-        }
-        return $this->unauthorized();
-    }
-
     function generateCode($length = 8)
     {
         $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';

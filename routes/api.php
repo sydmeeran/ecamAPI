@@ -20,6 +20,7 @@ use Illuminate\Http\Request;
 // Users
 /** @deprecated */
 Route::post('/users/login', 'UserController@login');
+Route::post('/customers/verify', 'Backend\CustomerController@verify');
 
 Route::group(['middleware' => 'auth:api'], function () {
     // Users
@@ -112,7 +113,7 @@ Route::group(['middleware' => 'auth:api'], function () {
 
 Route::get('/permissions/get-all', 'PermissionController@getAll');
 Route::post('/customers/use', 'CustomerController@use');
-Route::post('/customers/verify', 'CustomerController@verify');
+
 
 Route::get('group-messages', 'GroupChatController@index');
 Route::post('group-messages', 'GroupChatController@store');

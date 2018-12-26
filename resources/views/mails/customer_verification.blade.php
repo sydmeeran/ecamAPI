@@ -10,14 +10,10 @@
     <img style="padding: 3px" src="{{ env('DOMAIN_NAME') }}/image/customer_verification.jpg" alt="">
     <div style="padding: 0px 50px 0px 50px;">
         <p style="padding: 12px; margin: 0px 10px 20px 0px; font-size: 20px;">
-            We are excited to announce redesigned Cloudways,
-            a new look that resonates more with our audience,
-            along with the enhancements in Staging,
-            a new Let’s Encrypt Wildcard SSL feature,
-            an empowering Startup Program, and more.
+            Thank you for registration ! Click button to verify your account.
         </p>
     </div>
-    <form action="{{ env('DOMAIN_NAME') }}/customer/verify" method="POST">
+    <form action="{{ env('DOMAIN_NAME') }}/customer/verify/email" method="GET">
         @csrf
         <input type="hidden" name="otp" value="{{ $otp }}">
         <input type="hidden" name="email" value="{{ $email }}">
