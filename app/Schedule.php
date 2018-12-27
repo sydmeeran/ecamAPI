@@ -9,7 +9,7 @@ class Schedule extends Model
     protected $table = 'schedules';
 
     protected $fillable = [
-      'event', 'datetime', 'user_id'
+      'title', 'from', 'to', 'description', 'user_id'
     ];
 
     public function user(){
