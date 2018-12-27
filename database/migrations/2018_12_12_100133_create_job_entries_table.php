@@ -15,7 +15,7 @@ class CreateJobEntriesTable extends Migration
     {
         Schema::create('job_entries', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('type', 5);
+            $table->string('type', 10);
             $table->date('start_date');
             $table->date('end_date');
             $table->string('company_type');

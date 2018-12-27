@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\QuotationEmail;
 use App\Repositories\DataRepo;
 use Arga\Utils\ActionMiddlewareTrait;
 use Illuminate\Http\Request;
+use Mail;
 
 class QuotationController extends BaseController
 {
@@ -67,20 +69,31 @@ class QuotationController extends BaseController
             if($this->check_permission('quotation-retrieve')){
                 $keyword = $request->get('keyword');
                 $result = $this->quotation->model()
-                    ->with(['customer' => function($query) use ($keyword){
+                    ->whereHas('customer', function($query) use ($keyword){
                         $query->where('owner_name', 'like', '%'.$keyword.'%')
                             ->orWhere('company_name', 'like', '%'.$keyword.'%');
-                    }])
-                    ->with(['business' => function($query) use ($keyword){
+                    })
+                    ->orWhereHas('business', function($query) use ($keyword){
                         $query->where('business_name', 'like', '%'.$keyword.'%');
-                    }])
-                    ->with('business')->with('customer')
+                    })
+                    ->orWhere('quotation_id', 'like', '%'.$keyword.'%')
+                    ->with(['business', 'customer'])
                     ->get();
 
                 return $this->response($result);
             }
 
             return $this->permission_denied();
+        }
+        return $this->unauthorized();
+    }
+
+    public function send_mail(Request $request, $id)
+    {
+        if ($this->check_api_key($request)) {
+            $quotation = $this->quotation->with(['customer', 'business','accounting_service', 'auditing', 'consulting', 'taxation'], $id)->toArray();
+            Mail::to($quotation[0]['customer']['email'])->send(new QuotationEmail($quotation));
+            return 'success';
         }
         return $this->unauthorized();
     }

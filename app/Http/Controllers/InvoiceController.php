@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\InvoiceEmail;
 use App\Receipt;
 use App\Repositories\DataRepo;
 use Arga\Utils\ActionMiddlewareTrait;
 use Illuminate\Http\Request;
+use Mail;
 
 class InvoiceController extends BaseController
 {
@@ -63,14 +65,15 @@ class InvoiceController extends BaseController
             if($this->check_permission('invoice-retrieve')){
                 $keyword = $request->get('keyword');
                 $result = $this->invoice->model()
-                    ->with(['customer' => function($query) use ($keyword){
+                    ->whereHas('customer', function($query) use ($keyword){
                         $query->where('owner_name', 'like', '%'.$keyword.'%')
                             ->orWhere('company_name', 'like', '%'.$keyword.'%');
-                    }])
-                    ->with(['business' => function($query) use ($keyword){
+                    })
+                    ->orWhereHas('business', function($query) use ($keyword){
                         $query->where('business_name', 'like', '%'.$keyword.'%');
-                    }])
-                    ->with('business')->with('customer')
+                    })
+                    ->orWhere('invoice_id', 'like', '%'.$keyword.'%')
+                    ->with(['business', 'customer'])
                     ->get();
 
                 return $this->response($result);
@@ -78,6 +81,16 @@ class InvoiceController extends BaseController
 
 
             return $this->permission_denied();
+        }
+        return $this->unauthorized();
+    }
+
+    public function send_mail(Request $request, $id)
+    {
+        if ($this->check_api_key($request)) {
+            $invoice = $this->invoice->with(['customer', 'business', 'accounting_service', 'auditing', 'consulting', 'taxation'], $id)->toArray();
+            Mail::to($invoice[0]['customer']['email'])->send(new InvoiceEmail($invoice));
+            return 'success';
         }
         return $this->unauthorized();
     }

@@ -240,7 +240,6 @@ class CustomerController extends BaseController
     {
         if ($this->check_api_key($request)) {
 
-
             $user = $this->customer->with(['businesses'], $id)->toArray();
             if (empty($user)) {
                 return $this->empty_data();
@@ -261,7 +260,7 @@ class CustomerController extends BaseController
                 ->orWhere('email', 'LIKE', '%' . $keyword . '%')
                 ->orWhere('phone_no', 'LIKE', '%' . $keyword . '%')
                 ->orWhere('company_name', 'LIKE', '%' . $keyword . '%')
-                ->orWhere('contact_name', 'LIKE', '%' . $keyword . '%')
+                ->orWhere('company_id', 'LIKE', '%' . $keyword . '%')
                 ->get()->toArray();
 
             return $this->response($result);

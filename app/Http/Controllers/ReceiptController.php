@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\ReceiptEmail;
 use App\Repositories\DataRepo;
 use Arga\Utils\ActionMiddlewareTrait;
 use Illuminate\Http\Request;
+use Mail;
 
 class ReceiptController extends BaseController
 {
@@ -66,21 +68,35 @@ class ReceiptController extends BaseController
 
             if($this->check_permission('receipt-retrieve')){
                 $keyword = $request->get('keyword');
-                $result = $this->invoice->model()->whereHas('receipt')
-                    ->with(['customer' => function($query) use ($keyword){
+                $result = $this->invoice->model()
+                    ->whereHas('customer', function($query) use ($keyword){
                         $query->where('owner_name', 'like', '%'.$keyword.'%')
                             ->orWhere('company_name', 'like', '%'.$keyword.'%');
-                    }])
-                    ->with(['business' => function($query) use ($keyword){
+                    })
+                    ->orWhereHas('business', function($query) use ($keyword){
                         $query->where('business_name', 'like', '%'.$keyword.'%');
-                    }])
-                    ->with('business')->with('customer')->with('receipt')
+                    })
+                    ->orWhereHas('receipt', function($query) use ($keyword){
+                        $query->where('receipt_id', 'like', '%'.$keyword.'%');
+                    })
+                    ->with(['business', 'customer', 'receipt'])
                     ->get();
 
                 return $this->response($result);
             }
 
             return $this->permission_denied();
+        }
+        return $this->unauthorized();
+    }
+
+    public function send_mail(Request $request, $id)
+    {
+        if ($this->check_api_key($request)) {
+            $receipt = $this->receipt->find($id);
+            $invoice = $this->invoice->with(['customer', 'business', 'accounting_service', 'auditing', 'consulting', 'taxation', 'receipt'], $receipt->invoice_id)->toArray();
+            Mail::to($invoice[0]['customer']['email'])->send(new ReceiptEmail($invoice));
+            return 'success';
         }
         return $this->unauthorized();
     }

@@ -82,6 +82,7 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::post('/quotations/delete/{id}', 'QuotationController@delete');
     Route::post('/quotations/update/{id}', 'QuotationController@update');
     Route::post('/quotations/search', 'QuotationController@search');
+    Route::post('/quotations/send/mail/{id}', 'QuotationController@send_mail');
 
     // Invoice
     Route::get('/invoices/pagination', 'InvoiceController@pagination');
@@ -89,6 +90,7 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::post('/invoices/store', 'InvoiceController@store');
     Route::post('/invoices/delete/{id}', 'InvoiceController@delete');
     Route::post('/invoices/search', 'InvoiceController@search');
+    Route::post('/invoices/send/mail/{id}', 'InvoiceController@send_mail');
 
     // Payment Reminder
     Route::get('/payment-reminders/pagination', 'PaymentReminderController@pagination');
@@ -101,6 +103,7 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::post('/receipts/store', 'ReceiptController@store');
     Route::post('/receipts/delete/{id}', 'ReceiptController@delete');
     Route::post('/receipts/search', 'ReceiptController@search');
+    Route::post('/receipts/send/mail/{id}', 'ReceiptController@send_mail');
 
     // Schedule
     Route::get('/schedules/pagination', 'ScheduleController@pagination');

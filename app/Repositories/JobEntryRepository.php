@@ -58,16 +58,16 @@ class JobEntryRepository extends BaseRepository
             'excel_type' => $request->input('excel_type'),
             'customer_id' => $request->input('customer_id'),
         ];
-        if($job_entry_data['type'] === 'd'){
+        if($job_entry_data['type'] === 'daily'){
             $start_date = $request->input('start_date');
             $end_date = $request->input('end_date');
-        } elseif ($job_entry_data['type'] === 'm'){
+        } elseif ($job_entry_data['type'] === 'monthly'){
             $start_date = new \DateTime($job_entry_data['start_date']);
             $start_date = $start_date->modify('first day of '.$job_entry_data['start_date'])->format('d-m-Y');
 
             $end_date = new \DateTime($job_entry_data['end_date']);
             $end_date = $end_date->modify('last day of '.$job_entry_data['end_date'])->format('d-m-Y');
-        } elseif ($job_entry_data['type'] === 'y'){
+        } elseif ($job_entry_data['type'] === 'yearly'){
             $start_date = $job_entry_data['start_date'];
             $start_date = date("01-04-Y", strtotime($start_date));
 
@@ -95,6 +95,8 @@ class JobEntryRepository extends BaseRepository
 
     public function store(Request $request)
     {
+
+
         $validator = $this->validation($request);
         if ($validator->fails()) {
             return new ValidationException($validator);
