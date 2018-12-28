@@ -30,7 +30,8 @@ class QuotationController extends BaseController
     public function pagination(Request $request)
     {
         if ($this->check_api_key($request)) {
-            $quotation = $this->quotation->model()->with('customer')->with('business')->with('invoice')->paginate(20);
+            $quotation = $this->quotation->model()
+                ->with('customer')->with('business')->with('active_invoice')->paginate(20);
             return $this->response($quotation);
         }
         return $this->unauthorized();

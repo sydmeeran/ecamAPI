@@ -37,6 +37,10 @@ class Quotation extends Model
     }
 
     public function invoice(){
-        return $this->hasOne(Invoice::class);
+        return $this->hasMany(Invoice::class);
+    }
+
+    public function active_invoice(){
+        return $this->invoice()->where('is_active', 1);
     }
 }

@@ -91,6 +91,7 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::post('/invoices/delete/{id}', 'InvoiceController@delete');
     Route::post('/invoices/search', 'InvoiceController@search');
     Route::post('/invoices/send/mail/{id}', 'InvoiceController@send_mail');
+    Route::post('/invoices/cancel/{id}', 'InvoiceController@cancel');
 
     // Payment Reminder
     Route::get('/payment-reminders/pagination', 'PaymentReminderController@pagination');

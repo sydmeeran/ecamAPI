@@ -23,6 +23,7 @@ class CreateInvoicesTable extends Migration
             $table->integer('discount');
             $table->integer('tax')->default(0);
             $table->float('total');
+            $table->boolean('is_active')->default(1);
             $table->timestamps();
 
             $table->foreign('customer_id')->references('id')->on('customers');
