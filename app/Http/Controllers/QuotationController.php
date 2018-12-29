@@ -99,6 +99,15 @@ class QuotationController extends BaseController
         return $this->unauthorized();
     }
 
+    public function cancel(Request $request, $id){
+        if ($this->check_api_key($request)) {
+            $this->quotation->model()->where('id', $id)->update(['is_active'=>0]);
+            return $this->success();
+        }
+
+        return $this->unauthorized();
+    }
+
     public function delete(Request $request, $id){
         if ($this->check_api_key($request)) {
                 $this->quotation->delete($id);

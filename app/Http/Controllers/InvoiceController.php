@@ -57,8 +57,6 @@ class InvoiceController extends BaseController
         return $this->unauthorized();
     }
 
-
-
     public function search(Request $request){
         if ($this->check_api_key($request)) {
 
