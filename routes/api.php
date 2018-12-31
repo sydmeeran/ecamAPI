@@ -20,22 +20,19 @@ use Illuminate\Http\Request;
 // Users
 /** @deprecated */
 Route::post('/users/login', 'UserController@login');
-Route::post('/customers/verify', 'Backend\CustomerController@verify');
+Route::post('/customers/verify', 'CustomerController@verify');
 
 Route::group(['middleware' => 'auth:api'], function () {
     // Users
-    Route::post('/users/register', 'UserController@register');
-    Route::get('/auth-user', 'UserController@auth_user');
-    Route::post('/users/logout', 'UserController@logout');
 
-    Route::get('/users/get-all', 'UserController@getAll');
-    Route::get('/users/get-all/pagination', 'UserController@getAll_pagination');
-    Route::get('/users/get/{id}', 'UserController@get');
-    Route::post('/users/delete/{id}', 'UserController@delete');
-    Route::post('/users/update-profile/{id}', 'UserController@update_profile');
-    Route::post('/users/update-password/{id}', 'UserController@update_password');
-    Route::post('/users/{id}/active-deactive', 'UserController@active_deactive');
-    Route::post('/users/search', 'UserController@search');
+//    Route::get('/users/get-all', 'UserController@getAll');
+//    Route::get('/users/get-all/pagination', 'UserController@getAll_pagination');
+//    Route::get('/users/get/{id}', 'UserController@get');
+//    Route::post('/users/delete/{id}', 'UserController@delete');
+//    Route::post('/users/update-profile/{id}', 'UserController@update_profile');
+//    Route::post('/users/update-password/{id}', 'UserController@update_password');
+//    Route::post('/users/{id}/active-deactive', 'UserController@active_deactive');
+//    Route::post('/users/search', 'UserController@search');
 
     // Roles
     Route::post('/roles/store', 'RoleController@store');
@@ -136,18 +133,30 @@ Route::post('file/upload', 'FileController@store');
 /**
  * Auth
  */
-//Route::group([
-//    'namespace' => 'Api\Auth',
-//], function () {
-//    Route::post('user/login', 'LoginController@login');
-//    Route::post('user/logout', 'LoginController@logout')->middleware('auth:api');
-//});
-//
-//Route::group([
-//    'namespace'  => 'Api',
-//    'middleware' => [
-//        'auth:api',
-//    ],
-//], function () {
-//    Route::resource('user', 'UserController');
-//});
+Route::group([
+    'namespace' => 'Api\Auth',
+], function () {
+    Route::post('users/login', 'LoginController@login');
+    Route::post('users/logout', 'LoginController@logout')->middleware('auth:api');
+});
+
+Route::group([
+    'namespace' => 'Api',
+    'middleware' => [
+        'auth:api',
+    ],
+], function () {
+    Route::get('/auth-user', 'UserController@auth_user');
+
+    /////////////////////////
+    // Users
+    Route::get('/users', 'UserController@index');
+    Route::post('/users/store', 'UserController@store');
+    Route::get('/users/get', 'UserController@getAll');
+    Route::get('/users/get/{id}', 'UserController@get');
+    Route::post('/users/delete/{id}', 'UserController@delete');
+    Route::post('/users/update-profile/{id}', 'UserController@update_profile');
+    Route::post('/users/update-password/{id}', 'UserController@update_password');
+    Route::post('/users/{id}/active-deactive', 'UserController@active_deactive');
+    Route::post('/users/search', 'UserController@search');
+});

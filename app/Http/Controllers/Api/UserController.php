@@ -2,57 +2,136 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Permission;
-use Arga\Accountant\DataRepo;
+use App\Repositories\DataRepo;
+use App\Role;
+use App\User;
 use Arga\Utils\ActionMiddlewareTrait;
-use App\Http\Controllers\Controller;
+use Illuminate\Auth\AuthenticationException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
-class UserController extends Controller
+class UserController extends BaseController
 {
     use ActionMiddlewareTrait;
 
-    protected $repo;
+    protected $user;
 
     public function __construct()
     {
-        $this->repo = DataRepo::user();
+        $this->user = DataRepo::user();
 
         $this->actionMiddleware([
-            'index'      => Permission::USER_RETRIEVE,
-            'create'     => Permission::USER_CREATE,
-            'edit'       => Permission::USER_UPDATE,
-            'store'      => Permission::USER_CREATE,
-            'update'     => Permission::USER_UPDATE,
-            'destroy'    => Permission::USER_DELETE,
-            'deactivate' => Permission::USER_DEACTIVATE,
+            'register' => 'user-create',
+            'getAll_pagination' => 'user-retrieve',
+            'get' => 'user-retrieve',
+            'search' => 'user-retrieve',
+            'delete' => 'user-delete',
+            'active_deactive' => 'user-deactive'
         ]);
+    }
+
+    public function store(Request $request)
+    {
+        if ($this->check_api_key($request)) {
+            return $this->user->store($request);
+        }
+        return $this->unauthorized();
+    }
+
+    public function auth_user(Request $request)
+    {
+        if ($this->check_api_key($request)) {
+            $user = Auth::user()->toArray();
+            $role = Role::where('id', $user['role_id'])->with('permissions')->get(['id', 'role'])->toArray();
+            $user['role'] = $role[0];
+            return $this->response($user);
+        }
+        return $this->unauthorized();
+    }
+
+    public function getAll(Request $request)
+    {
+        if ($this->check_api_key($request)) {
+            $user = User::with('role')->get()->toArray();
+            return $this->response($user);
+        }
+        return $this->unauthorized();
     }
 
     public function index(Request $request)
     {
-        $paginate = $request->get('paginate');
-        if ($paginate) {
-            return $this->repo->paginate();
+        if ($this->check_api_key($request)) {
+            $user = User::paginate(20);
+            return $this->response($user);
         }
-
-        return $this->repo->get();
+        return $this->unauthorized();
     }
 
-    public function create()
+    public function get(Request $request, $id)
     {
-        return ok();
+        if ($this->check_api_key($request)) {
+            $user = User::where('id', $id)->get()->toArray();
+            if (empty($user)) {
+                return $this->empty_data();
+            }
+            $user = $user[0];
+            $role = Role::where('id', $user['role_id'])->with('permissions')->get()->toArray();
+            if (empty($role)) {
+                return $this->empty_data();
+            }
+            $user['role'] = $role[0];
+            return $this->response($user);
+        }
+        return $this->unauthorized();
     }
 
-    public function destroy($id)
+    public function search(Request $request)
     {
-        $this->repo->destroy($id);
+        if ($this->check_api_key($request)) {
+            $keyword = $request->get('keyword');
+            $result = User::where('name', 'LIKE', '%' . $keyword . '%')
+                ->orWhere('email', 'LIKE', '%' . $keyword . '%')
+                ->get()->toArray();
 
-        return ok();
+            return $this->response($result);
+        }
+        return $this->unauthorized();
     }
 
-    public function show($id)
+    public function delete(Request $request, $id)
     {
-        return $this->repo->find($id);
+//        dd(1);
+        if ($this->check_api_key($request)) {
+            User::where('id', $id)->delete();
+            return response()->json($this->success);
+        }
+        return $this->unauthorized();
+    }
+
+    public function update_profile(Request $request, $id)
+    {
+        if ($this->check_api_key($request)) {
+            return $this->user->update_profile($request, $id);
+        }
+        return $this->unauthorized();
+    }
+
+    public function update_password(Request $request, $id)
+    {
+        if ($this->check_api_key($request)) {
+            return $this->user->update_password($request, $id);
+        }
+        return $this->unauthorized();
+    }
+
+    public function active_deactive(Request $request, $id)
+    {
+        if ($this->check_api_key($request)) {
+            User::where('id', $id)->update([
+                'is_active' => $request->get('status')
+            ]);
+            return response()->json($this->success);
+        }
+        return $this->unauthorized();
     }
 }

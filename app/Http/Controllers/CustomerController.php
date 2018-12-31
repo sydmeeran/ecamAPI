@@ -64,7 +64,6 @@ class CustomerController extends BaseController
     public function register(Request $request)
     {
         if ($this->check_api_key($request)) {
-
             return $this->customer->store($request);
 
         }
@@ -74,7 +73,6 @@ class CustomerController extends BaseController
     public function update(Request $request, $id)
     {
         if ($this->check_api_key($request)) {
-
             return $this->customer->update($request, $id);
         }
         return $this->unauthorized();
@@ -102,16 +100,20 @@ class CustomerController extends BaseController
         return $this->unauthorized();
     }
 
-    function generateCode($length = 8)
+    public function verify(Request $request)
     {
-        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-        $charactersLength = strlen($characters);
-        $randomString = '';
-        for ($i = 0; $i < $length; $i++) {
-            $randomString .= $characters[rand(0, $charactersLength - 1)];
+        if ($this->check_api_key($request)) {
+            $email = $request->input('email');
+            $otp = $request->input('otp');
+
+            $this->customer->model()->where('email', $email)->where('otp', $otp)->update([
+                'is_active' => 1
+            ]);
+            return 'success';
         }
-        return $randomString;
+        return $this->unauthorized();
     }
+
     /**
      * details api
      *
@@ -200,15 +202,11 @@ class CustomerController extends BaseController
     public function getAll(Request $request)
     {
         if ($this->check_api_key($request)) {
-//            if($this->check_permission('customer-retrieve')){
-
             $user = $this->customer->getAll();
             if (empty($user)) {
                 throw new EmptyCustomerException();
             }
             return $this->response($user);
-//            }
-//            return $this->permission_denied();
         }
         return $this->unauthorized();
     }
@@ -228,10 +226,8 @@ class CustomerController extends BaseController
     public function pagination(Request $request)
     {
         if ($this->check_api_key($request)) {
-
             $customer = $this->customer->paginate(20);
             return $this->response($customer);
-
         }
         return $this->unauthorized();
     }
@@ -239,7 +235,6 @@ class CustomerController extends BaseController
     public function get(Request $request, $id)
     {
         if ($this->check_api_key($request)) {
-
             $user = $this->customer->with(['businesses'], $id)->toArray();
             if (empty($user)) {
                 return $this->empty_data();
@@ -271,13 +266,10 @@ class CustomerController extends BaseController
     public function active_deactive(Request $request, $id)
     {
         if ($this->check_api_key($request)) {
-
-
             $this->customer->model()->where('id', $id)->update([
                 'is_active' => $request->get('status')
             ]);
             return $this->success();
-
         }
         return $this->unauthorized();
     }
@@ -285,13 +277,10 @@ class CustomerController extends BaseController
     public function append_suspend(Request $request, $id)
     {
         if ($this->check_api_key($request)) {
-
-
             $this->customer->model()->where('id', $id)->update([
                 'is_suspend' => $request->get('status')
             ]);
             return $this->success();
-
         }
         return $this->unauthorized();
     }
@@ -299,7 +288,6 @@ class CustomerController extends BaseController
     public function delete(Request $request, $id)
     {
         if ($this->check_api_key($request)) {
-
             $this->customer->model()->where('id', $id)->delete();
             return $this->success();
 

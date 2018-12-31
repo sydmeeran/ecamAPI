@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Repositories\DataRepo;
 use App\Role;
 use App\User;
+use Arga\Utils\ActionMiddlewareTrait;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -15,11 +16,22 @@ use Illuminate\Validation\ValidationException;
 
 class UserController extends BaseController
 {
+    use ActionMiddlewareTrait;
+
     protected $user;
 
     public function __construct()
     {
         $this->user = DataRepo::user();
+
+        $this->actionMiddleware([
+            'register' => 'user-create',
+            'getAll_pagination' => 'user-retrieve',
+            'get' => 'user-retrieve',
+            'search' => 'user-retrieve',
+            'delete' => 'user-delete',
+            'active_deactive' => 'user-deactive'
+        ]);
     }
 
     /**
@@ -44,12 +56,7 @@ class UserController extends BaseController
     public function register(Request $request)
     {
         if ($this->check_api_key($request)) {
-            if ($this->check_permission('user-create')) {
-
-                return $this->user->store($request);
-
-            }
-            return $this->permission_denied();
+            return $this->user->store($request);
         }
         return $this->unauthorized();
     }
@@ -79,11 +86,8 @@ class UserController extends BaseController
     public function getAll(Request $request)
     {
         if ($this->check_api_key($request)) {
-            if($this->check_permission('user-retrieve')){
-                $user = User::with('role')->get()->toArray();
-                return $this->response($user);
-            }
-            return $this->permission_denied();
+            $user = User::with('role')->get()->toArray();
+            return $this->response($user);
         }
         return $this->unauthorized();
     }
@@ -91,11 +95,8 @@ class UserController extends BaseController
     public function getAll_pagination(Request $request)
     {
         if ($this->check_api_key($request)) {
-            if($this->check_permission('user-retrieve')){
-                $user = User::paginate(20);
-                return $this->response($user);
-            }
-            return $this->permission_denied();
+            $user = User::paginate(20);
+            return $this->response($user);
         }
         return $this->unauthorized();
     }
@@ -103,52 +104,39 @@ class UserController extends BaseController
     public function get(Request $request, $id)
     {
         if ($this->check_api_key($request)) {
-
-            if($this->check_permission('user-retrieve')){
-                $user = User::where('id', $id)->get()->toArray();
-                if(empty($user)){
-                    return $this->empty_data();
-                }
-                $user = $user[0];
-                $role = Role::where('id', $user['role_id'])->with('permissions')->get()->toArray();
-                if(empty($role)){
-                    return $this->empty_data();
-                }
-                $user['role'] = $role[0];
-                return $this->response($user);
+            $user = User::where('id', $id)->get()->toArray();
+            if (empty($user)) {
+                return $this->empty_data();
             }
-
-            return $this->permission_denied();
+            $user = $user[0];
+            $role = Role::where('id', $user['role_id'])->with('permissions')->get()->toArray();
+            if (empty($role)) {
+                return $this->empty_data();
+            }
+            $user['role'] = $role[0];
+            return $this->response($user);
         }
         return $this->unauthorized();
     }
 
-    public function search(Request $request){
+    public function search(Request $request)
+    {
         if ($this->check_api_key($request)) {
+            $keyword = $request->get('keyword');
+            $result = User::where('name', 'LIKE', '%' . $keyword . '%')
+                ->orWhere('email', 'LIKE', '%' . $keyword . '%')
+                ->get()->toArray();
 
-            if($this->check_permission('user-retrieve')){
-                $keyword = $request->get('keyword');
-                $result = User::where ( 'name', 'LIKE', '%' . $keyword . '%' )
-                    ->orWhere ( 'email', 'LIKE', '%' . $keyword . '%' )
-                    ->get()->toArray();
-
-                return $this->response($result);
-            }
-
-            return $this->permission_denied();
+            return $this->response($result);
         }
         return $this->unauthorized();
     }
 
-    public function delete(Request $request, $id){
+    public function delete(Request $request, $id)
+    {
         if ($this->check_api_key($request)) {
-
-            if($this->check_permission('user-delete')){
-                User::where('id', $id)->delete();
-                return response()->json($this->success);
-            }
-
-            return $this->permission_denied();
+            User::where('id', $id)->delete();
+            return response()->json($this->success);
         }
         return $this->unauthorized();
     }
@@ -156,40 +144,26 @@ class UserController extends BaseController
     public function update_profile(Request $request, $id)
     {
         if ($this->check_api_key($request)) {
-            if ($this->check_permission('user-update')) {
-
-                return $this->user->update_profile($request, $id);
-
-            }
-            return $this->permission_denied();
+            return $this->user->update_profile($request, $id);
         }
         return $this->unauthorized();
     }
 
-    public function update_password(Request $request, $id){
+    public function update_password(Request $request, $id)
+    {
         if ($this->check_api_key($request)) {
-            if ($this->check_permission('user-update')) {
-
-                return $this->user->update_password($request, $id);
-
-            }
-            return $this->permission_denied();
+            return $this->user->update_password($request, $id);
         }
         return $this->unauthorized();
     }
 
-    public function active_deactive(Request $request, $id){
+    public function active_deactive(Request $request, $id)
+    {
         if ($this->check_api_key($request)) {
-
-            if($this->check_permission('user-update')){
-
-                User::where('id', $id)->update([
-                    'is_active' => $request->get('status')
-                ]);
-                return response()->json($this->success);
-
-            }
-            return $this->permission_denied();
+            User::where('id', $id)->update([
+                'is_active' => $request->get('status')
+            ]);
+            return response()->json($this->success);
         }
         return $this->unauthorized();
     }

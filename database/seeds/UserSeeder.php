@@ -35,7 +35,7 @@ class UserSeeder extends Seeder
             'phone_no' => '0923832323',
             'address' => 'no.12, 23rd street, Yangon',
             'password' => bcrypt('password'),
-            'role_id' => 1,
+            'role_id' => 2,
             'profile_photo' => null
         ]);
     }

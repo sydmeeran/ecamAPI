@@ -1,11 +1,12 @@
 <?php
 
-function msg_success_login($token)
+function msg_success_login($success)
 {
-    return [
-        'status' => true,
-        'token'  => $token,
-    ];
+    return response()->json([
+        'user' => $success['user'],
+        'token' => $success['token'],
+        'status' => true
+    ]);
 }
 
 function msg_unauthenticated()
