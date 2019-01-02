@@ -130,17 +130,6 @@ class JobEntryRepository extends BaseRepository
         ]);
     }
 
-    public function updateNrcPhoto(Request $request, $id)
-    {
-        if (Input::hasFile('nrc_photo')) {
-            $customer = $this->find($id);
-            if (file_exists($customer->nrc_photo)) {
-                unlink($customer->nrc_photo);
-            }
-        }
-        return $this->storeNrcPhoto($request);
-    }
-
     public function update(Request $request, $id)
     {
         $validator = $this->updateValidation($request);

@@ -21,6 +21,11 @@ class DataRepo
         return app(UserRepository::class);
     }
 
+    public static function role(): RoleRepository
+    {
+        return app(RoleRepository::class);
+    }
+
     public static function customer(): CustomerRepository
     {
         return app(CustomerRepository::class);

@@ -21,8 +21,8 @@ class UserController extends BaseController
         $this->user = DataRepo::user();
 
         $this->actionMiddleware([
-            'register' => 'user-create',
-            'getAll_pagination' => 'user-retrieve',
+            'store' => 'user-create',
+            'pagination' => 'user-retrieve',
             'get' => 'user-retrieve',
             'search' => 'user-retrieve',
             'delete' => 'user-delete',
@@ -58,7 +58,7 @@ class UserController extends BaseController
         return $this->unauthorized();
     }
 
-    public function index(Request $request)
+    public function pagination(Request $request)
     {
         if ($this->check_api_key($request)) {
             $user = User::paginate(20);
