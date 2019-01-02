@@ -84,5 +84,9 @@ class PermissionSeeder extends Seeder
             'permission' => 'schedule-delete'
         ]);
 
+        Permission::create([
+            'permission' => 'revenue-retrieve'
+        ]);
+
     }
 }

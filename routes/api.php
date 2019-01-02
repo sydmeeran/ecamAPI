@@ -239,4 +239,12 @@ Route::group([
     Route::post('/schedules/store', 'ScheduleController@store');
     Route::post('/schedules/update/{id}', 'ScheduleController@update');
     Route::post('/schedules/delete/{id}', 'ScheduleController@delete');
+
+    ////////////////////////////////////////
+    /// Revenue
+    Route::get('/revenues', 'RevenueController@index');
+    Route::post('/revenues/search', 'RevenueController@search');
+    Route::post('/revenues/search/date', 'RevenueController@search_by_date');
+
 });
+
