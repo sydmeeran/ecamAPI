@@ -24,9 +24,9 @@ class CreateBalanceSheetExcelTable extends Migration
 
             $table->foreign('job_entry_id')->references('id')->on('job_entries')->onDelete('cascade');
             $table->foreign('customer_id')->references('id')->on('customers')->onDelete('cascade');
-            $table->foreign('balance_sheet_amount_1_id')->references('id')->on('balance_sheet_amount_1')->onDelete('cascade');
-            $table->foreign('balance_sheet_amount_2_id')->references('id')->on('balance_sheet_amount_2')->onDelete('cascade');
-            $table->foreign('balance_sheet_variation_id')->references('id')->on('balance_sheet_variation')->onDelete('cascade');
+            $table->foreign('balance_sheet_amount_1_id')->references('id')->on('balance_sheet_amount_1');
+            $table->foreign('balance_sheet_amount_2_id')->references('id')->on('balance_sheet_amount_2');
+            $table->foreign('balance_sheet_variation_id')->references('id')->on('balance_sheet_variation');
         });
     }
 

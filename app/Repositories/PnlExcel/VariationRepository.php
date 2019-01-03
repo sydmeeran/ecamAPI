@@ -20,8 +20,8 @@ class VariationRepository extends BaseRepository
         return Variation::query();
     }
 
-    public function validation($data){
-        return Validator::make($data, [
+    public function validation($data, $excel_file){
+        $validator = Validator::make($data, [
             'income' => 'int|nullable',
             'total_income' => 'int|nullable',
             'cost_of_sales' => 'int|nullable',
@@ -61,6 +61,13 @@ class VariationRepository extends BaseRepository
             'total_other_expenses' => 'int|nullable',
             'net_profit_loss' => 'int|nullable',
         ]);
+
+        if($validator->fails()){
+            if(file_exists($excel_file)){
+                unlink($excel_file);
+            }
+            throw new ValidationException($validator);
+        }
     }
 
     public function setData($excel_file){
@@ -154,13 +161,8 @@ class VariationRepository extends BaseRepository
     public function store($excel_file){
         $variation_data = $this->setData($excel_file);
 
-        $validator = $this->validation($variation_data);
-        if($validator->fails()){
-            if(file_exists($excel_file)){
-                unlink($excel_file);
-            }
-            throw new ValidationException($validator);
-        }
+        $this->validation($variation_data, $excel_file);
+
         $variation = $this->model()->create($variation_data);
         return $variation->id;
     }

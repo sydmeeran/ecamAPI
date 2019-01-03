@@ -56,4 +56,12 @@ class BalanceSheetExcelRepository extends BaseRepository
         $this->model()->where('job_entry_id', $job_entry_id)->update($data);
         return 'success';
     }
+
+    public function destroy($balance_sheet){
+        $balance_sheet_data = $balance_sheet->toArray()[0];
+        $this->delete($balance_sheet_data['id']);
+        $this->amount_1->delete($balance_sheet_data['balance_sheet_amount_1_id']);
+        $this->amount_2->delete($balance_sheet_data['balance_sheet_amount_2_id']);
+        $this->variation->delete($balance_sheet_data['balance_sheet_variation_id']);
+    }
 }

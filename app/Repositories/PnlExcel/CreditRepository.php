@@ -20,8 +20,8 @@ class CreditRepository extends BaseRepository
         return Credit::query();
     }
 
-    public function validation($data){
-        return Validator::make($data, [
+    public function validation($data, $excel_file){
+        $validator = Validator::make($data, [
             'income' => 'int|nullable',
             'total_income' => 'int|nullable',
             'cost_of_sales' => 'int|nullable',
@@ -61,6 +61,13 @@ class CreditRepository extends BaseRepository
             'total_other_expenses' => 'int|nullable',
             'net_profit_loss' => 'int|nullable',
         ]);
+
+        if($validator->fails()){
+            if(file_exists($excel_file)){
+                unlink($excel_file);
+            }
+            throw new ValidationException($validator);
+        }
     }
 
     public function setData($excel_file){
@@ -153,13 +160,8 @@ class CreditRepository extends BaseRepository
 
     public function store($excel_file){
         $credit_data = $this->setData($excel_file);
-        $validator = $this->validation($credit_data);
-        if($validator->fails()){
-            if(file_exists($excel_file)){
-                unlink($excel_file);
-            }
-            throw new ValidationException($validator);
-        }
+        $this->validation($credit_data, $excel_file);
+
         $credit = $this->model()->create($credit_data);
         return $credit->id;
     }

@@ -97,7 +97,7 @@ class JobEntryRepository extends BaseRepository
     {
         $validator = $this->validation($request);
         if ($validator->fails()) {
-            return new ValidationException($validator);
+            throw new ValidationException($validator);
         }
 
         $data = $this->setData($request);
@@ -132,25 +132,25 @@ class JobEntryRepository extends BaseRepository
     {
         $validator = $this->updateValidation($request);
         if ($validator->fails()) {
-            return new ValidationException($validator);
+            throw new ValidationException($validator);
         }
 
         $data = $this->setData($request);
 
         if(Input::hasFile('excel_file')){
-            $job_entry = $this->find($id);
-            if(file_exists($job_entry->excel_file)){
-                unlink($job_entry->excel_file);
-            }
 
             $excel_file = $this->storeExcelFile($request, $data['excel_type'], $data['customer_id']);
 
             $data['excel_file'] = $excel_file;
-
             if ($data['excel_type'] == "pnl") {
-                $this->pnl->update($excel_file, $id);
+                $this->pnl->update($excel_file, $id, $data['customer_id']);
             } else {
                 $this->balance_sheet->update($excel_file, $id);
+            }
+
+            $job_entry = $this->find($id);
+            if(file_exists($job_entry->excel_file)){
+                unlink($job_entry->excel_file);
             }
         }
 

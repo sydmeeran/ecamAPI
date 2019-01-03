@@ -20,8 +20,8 @@ class DebitRepository extends BaseRepository
         return Debit::query();
     }
 
-    public function validation($data){
-        return Validator::make($data, [
+    public function validation($data, $excel_file){
+        $validator = Validator::make($data, [
             'income' => 'int|nullable',
             'total_income' => 'int|nullable',
             'cost_of_sales' => 'int|nullable',
@@ -61,6 +61,13 @@ class DebitRepository extends BaseRepository
             'total_other_expenses' => 'int|nullable',
             'net_profit_loss' => 'int|nullable',
         ]);
+
+        if($validator->fails()){
+            if(file_exists($excel_file)){
+                unlink($excel_file);
+            }
+            throw new ValidationException($validator);
+        }
     }
 
     public function setData($excel_file){
@@ -154,14 +161,10 @@ class DebitRepository extends BaseRepository
     public function store($excel_file){
         $debit_data = $this->setData($excel_file);
 
-        $validator = $this->validation($debit_data);
-        if($validator->fails()){
-            if(file_exists($excel_file)){
-                unlink($excel_file);
-            }
-            throw new ValidationException($validator);
-        }
+        $this->validation($debit_data, $excel_file);
+
         $debit = $this->model()->create($debit_data);
         return $debit->id;
     }
+
 }
