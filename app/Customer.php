@@ -47,4 +47,12 @@ class Customer extends Model
         return $this->hasMany(Receipt::class);
     }
 
+    public function pnl_excel(){
+        return $this->hasMany(PnlExcel::class);
+    }
+
+    public function balance_sheet_excel(){
+        return $this->hasMany(BalanceSheetExcel::class);
+    }
+
 }

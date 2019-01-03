@@ -95,8 +95,6 @@ class JobEntryRepository extends BaseRepository
 
     public function store(Request $request)
     {
-
-
         $validator = $this->validation($request);
         if ($validator->fails()) {
             return new ValidationException($validator);
@@ -111,9 +109,9 @@ class JobEntryRepository extends BaseRepository
         $job_entry = $this->model()->create($data);
 
         if ($data['excel_type'] == "pnl") {
-            return $this->pnl->register($excel_file, $job_entry->id);
+            return $this->pnl->store($excel_file, $job_entry->id, $job_entry->customer_id);
         } else {
-            return $this->balance_sheet->register($excel_file, $job_entry->id);
+            return $this->balance_sheet->store($excel_file, $job_entry->id, $job_entry->customer_id);
         }
     }
 

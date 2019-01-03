@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Models\PnlExcel\Debit;
 use Illuminate\Database\Eloquent\Model;
 
 class PnlExcel extends Model
@@ -9,10 +10,26 @@ class PnlExcel extends Model
     protected $table = 'pnl_excel';
 
     protected $fillable = [
-        'var1', 'var2', 'var3', 'job_entry_id'
+        'pnl_debit_id', 'pnl_credit_id', 'pnl_variation_id', 'job_entry_id', 'customer_id'
     ];
 
     public function job_entry(){
         return $this->belongsTo(JobEntry::class, 'job_entry_id');
+    }
+
+    public function pnl_debit(){
+        return $this->belongsTo(Debit::class, 'pnl_debit_id');
+    }
+
+    public function pnl_credit(){
+        return $this->belongsTo(Debit::class, 'pnl_credit_id');
+    }
+
+    public function pnl_variation(){
+        return $this->belongsTo(Debit::class, 'pnl_variation_id');
+    }
+
+    public function customer(){
+        return $this->belongsTo(Customer::class, 'customer_id');
     }
 }

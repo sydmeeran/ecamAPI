@@ -69,7 +69,7 @@ class JobEntryController extends BaseController
     public function get(Request $request, $id)
     {
         if ($this->check_api_key($request)) {
-            $job_entry = $this->job_entry->with(['customer', 'pnl_excel', 'balance_sheet_excel'], $id)->toArray();
+            $job_entry = $this->job_entry->with(['customer', 'pnl_excel_data', 'balance_sheet_excel_data'], $id)->toArray();
             if(empty($job_entry)){
                 return $this->empty_data();
             }

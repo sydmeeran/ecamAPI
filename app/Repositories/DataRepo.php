@@ -2,7 +2,11 @@
 
 namespace App\Repositories;
 
-use App\Annual;
+use App\Repositories\BalanceSheetExcel\Amount1Repository;
+use App\Repositories\BalanceSheetExcel\Amount2Repository;
+use App\Repositories\PnlExcel\CreditRepository;
+use App\Repositories\PnlExcel\DebitRepository;
+use App\Repositories\PnlExcel\VariationRepository;
 use App\Repositories\Quotation\AnnualRepository;
 use App\Repositories\Quotation\AuditingRepository;
 use App\Repositories\Quotation\ConsultingRepository;
@@ -41,14 +45,46 @@ class DataRepo
         return app(JobEntryRepository::class);
     }
 
+    // Pnl Excel
     public static function pnl_excel(): PnlExcelRepository
     {
         return app(PnlExcelRepository::class);
     }
 
+    public static function pnl_debit(): DebitRepository
+    {
+        return app(DebitRepository::class);
+    }
+
+    public static function pnl_credit(): CreditRepository
+    {
+        return app(CreditRepository::class);
+    }
+
+    public static function pnl_variation(): VariationRepository
+    {
+        return app(VariationRepository::class);
+    }
+
+    // Balance Sheet
     public static function balance_sheet_excel(): BalanceSheetExcelRepository
     {
         return app(BalanceSheetExcelRepository::class);
+    }
+
+    public static function balance_sheet_amount_1(): Amount1Repository
+    {
+        return app(Amount1Repository::class);
+    }
+
+    public static function balance_sheet_amount_2(): Amount2Repository
+    {
+        return app(Amount2Repository::class);
+    }
+
+    public static function balance_sheet_variation(): \App\Repositories\BalanceSheetExcel\VariationRepository
+    {
+        return app(\App\Repositories\BalanceSheetExcel\VariationRepository::class);
     }
 
     public static function quotation(): QuotationRepository
