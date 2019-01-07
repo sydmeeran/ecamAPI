@@ -15,36 +15,18 @@ class CreateBalanceSheetAmount2Table extends Migration
     {
         Schema::create('balance_sheet_amount_2', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('non_current_assets')->nullable();
-            $table->integer('computer_a_c')->nullable();
-            $table->integer('computer_accum_dep')->nullable();
-            $table->integer('furniture_fixture')->nullable();
-            $table->integer('furniture_fixtures_accum_dep')->nullable();
-            $table->integer('printer')->nullable();
-            $table->integer('printer_accum_dep')->nullable();
-            $table->integer('cctv_a_c')->nullable();
-            $table->integer('cctv_accum_dep')->nullable();
-            $table->integer('finger_print')->nullable();
-            $table->integer('finger_print_accum_dep')->nullable();
+            $table->json('non_current_assets')->nullable();
             $table->integer('total_non_current_assets')->nullable();
-            $table->integer('current_assets')->nullable();
-            $table->integer('inventory')->nullable();
-            $table->integer('trade_debtors')->nullable();
-            $table->integer('cash_in_hand')->nullable();
-            $table->integer('petty_cash')->nullable();
-            $table->integer('bank_account')->nullable();
-            $table->integer('prepaid')->nullable();
-            $table->integer('advance_commercial_tax')->nullable();
-            $table->integer('adv_income_tax')->nullable();
-            $table->integer('advance')->nullable();
+
+            $table->json('current_assets')->nullable();
             $table->integer('total_current_assets')->nullable();
             $table->integer('total_assets')->nullable();
-            $table->integer('non_current_liabilities')->nullable();
+
             $table->integer('long_term_loan')->nullable();
             $table->integer('non_current_deferred_income')->nullable();
             $table->integer('deferred_tax')->nullable();
             $table->integer('total_non_current_liabilities')->nullable();
-            $table->integer('current_liabilities')->nullable();
+
             $table->integer('trade_creditors')->nullable();
             $table->integer('current_deferred_income')->nullable();
             $table->integer('salary_payable')->nullable();
@@ -66,6 +48,7 @@ class CreateBalanceSheetAmount2Table extends Migration
             $table->integer('equity')->nullable();
             $table->integer('owner_shareholders_equity')->nullable();
             $table->integer('capital')->nullable();
+
             $table->integer('total_owner_shareholders_equity')->nullable();
             $table->integer('retained_earnings')->nullable();
             $table->integer('profit_loss_for_the_year')->nullable();
