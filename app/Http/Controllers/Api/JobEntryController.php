@@ -12,9 +12,10 @@ class JobEntryController extends BaseController
 
     protected $job_entry;
 
-    public function __construct()
+    public function __construct(Request $request)
     {
-        $this->job_entry = DataRepo::job_entry();
+        $this->check_api_key($request);
+
         $this->actionMiddleware([
             'store' => 'job-entry-create',
             'update' => 'job-entry-update',
@@ -23,6 +24,8 @@ class JobEntryController extends BaseController
             'search' => 'job-entry-retrieve',
             'delete' => 'job-entry-delete'
         ]);
+
+        $this->job_entry = DataRepo::job_entry();
     }
 
     /**
@@ -33,75 +36,54 @@ class JobEntryController extends BaseController
      */
     public function store(Request $request)
     {
-        if($this->check_api_key($request)){
-            return $this->job_entry->store($request);
-        }
-        return $this->unauthorized();
+        return $this->job_entry->store($request);
     }
 
     public function update(Request $request, $id)
     {
-        if ($this->check_api_key($request)) {
-            return $this->job_entry->update($request, $id);
-        }
-        return $this->unauthorized();
+        return $this->job_entry->update($request, $id);
     }
 
-    public function getAll(Request $request)
+    public function getAll()
     {
-        if ($this->check_api_key($request)) {
-            $job_entries = $this->job_entry->with(['pnl_excel', 'balance_sheet_excel'])->toArray();
-            return $this->response($job_entries);
-
-        }
-        return $this->unauthorized();
+        $job_entries = $this->job_entry->with(['pnl_excel', 'balance_sheet_excel'])->toArray();
+        return $this->response($job_entries);
     }
 
-    public function pagination(Request $request)
+    public function pagination()
     {
-        if ($this->check_api_key($request)) {
-            $job_entry = $this->job_entry->model()->with('customer')->paginate(20);
-            return $this->response($job_entry);
-        }
-        return $this->unauthorized();
+        $job_entry = $this->job_entry->model()->with('customer')->paginate(20);
+        return $this->response($job_entry);
     }
 
-    public function get(Request $request, $id)
+    public function get($id)
     {
-        if ($this->check_api_key($request)) {
-            $job_entry = $this->job_entry->with(['customer', 'pnl_excel_data', 'balance_sheet_excel_data'], $id)->toArray();
-            if(empty($job_entry)){
-                return $this->empty_data();
-            }
-            $job_entry = $job_entry[0];
-            return $this->response($job_entry);
+        $job_entry = $this->job_entry->with(['customer', 'pnl_excel_data', 'balance_sheet_excel_data'], $id)->toArray();
+        if (empty($job_entry)) {
+            return $this->empty_data();
         }
-        return $this->unauthorized();
+        $job_entry = $job_entry[0];
+        return $this->response($job_entry);
     }
 
-    public function search(Request $request){
-        if ($this->check_api_key($request)) {
-
-            $keyword = $request->get('keyword');
-            $result = $this->job_entry->model()
-                ->whereHas('customer', function($query) use ($keyword){
-                    $query->where('company_id', 'like', '%'.$keyword.'%')
-                        ->orWhere('company_name', 'like', '%'.$keyword.'%');
-                })
-                ->orWhere( 'type', 'LIKE', '%' . $keyword . '%' )
-                ->orWhere( 'company_type', 'LIKE', '%' . $keyword . '%' )
-                ->orWhere ( 'excel_type', 'LIKE', '%' . $keyword . '%' )
-                ->with(['customer'])->get();
-            return $this->response($result);
-        }
-        return $this->unauthorized();
+    public function search(Request $request)
+    {
+        $keyword = $request->get('keyword');
+        $result = $this->job_entry->model()
+            ->whereHas('customer', function ($query) use ($keyword) {
+                $query->where('company_id', 'like', '%' . $keyword . '%')
+                    ->orWhere('company_name', 'like', '%' . $keyword . '%');
+            })
+            ->orWhere('type', 'LIKE', '%' . $keyword . '%')
+            ->orWhere('company_type', 'LIKE', '%' . $keyword . '%')
+            ->orWhere('excel_type', 'LIKE', '%' . $keyword . '%')
+            ->with(['customer'])->get();
+        return $this->response($result);
     }
 
-    public function delete(Request $request, $id){
-        if ($this->check_api_key($request)) {
-            $this->job_entry->destroy($id);
-            return $this->success();
-        }
-        return $this->unauthorized();
+    public function delete($id)
+    {
+        $this->job_entry->destroy($id);
+        return $this->success();
     }
 }

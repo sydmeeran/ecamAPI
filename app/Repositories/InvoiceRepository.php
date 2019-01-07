@@ -12,7 +12,6 @@ namespace App\Repositories;
 use App\Invoice;
 use App\InvoiceRemark;
 use App\Mail\InvoiceEmail;
-use App\Mail\InvoiceMail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;

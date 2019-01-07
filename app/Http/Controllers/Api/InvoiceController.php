@@ -18,9 +18,6 @@ class InvoiceController extends BaseController
     {
         $this->check_api_key($request);
 
-        $this->invoice = DataRepo::invoice();
-        $this->quotation = DataRepo::quotation();
-
         $this->actionMiddleware([
             'store' => 'invoice-create',
             'pagination' => 'invoice-retrieve',
@@ -28,6 +25,9 @@ class InvoiceController extends BaseController
             'get' => 'invoice-retrieve',
             'cancel' => 'invoice-delete',
         ]);
+
+        $this->invoice = DataRepo::invoice();
+        $this->quotation = DataRepo::quotation();
     }
 
     public function pagination()

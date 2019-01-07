@@ -12,56 +12,48 @@ class ScheduleController extends BaseController
 
     protected $schedule;
 
-    public function __construct(){
-
-        $this->schedule = DataRepo::schedule();
-
+    public function __construct(Request $request)
+    {
+        $this->check_api_key($request);
 
         $this->actionMiddleware([
             'delete' => 'schedule-delete',
         ]);
+
+        $this->schedule = DataRepo::schedule();
     }
 
-    public function getAll(Request $request){
-        if ($this->check_api_key($request)) {
-            $schedules = $this->schedule->getAll();
-            return $this->response($schedules);
-        }
-        return response()->json($this->unauthorized);
+    public function getAll()
+    {
+        $schedules = $this->schedule->getAll();
+        return $this->response($schedules);
     }
 
-    public function get(Request $request, $id){
-        if ($this->check_api_key($request)) {
-            $schedule = $this->schedule->with(['user'], $id)->toArray();
-            if(empty($schedule)){
-                return $this->empty_data();
-            }
-            $schedule = $schedule[0];
-            return $this->response($schedule);
+    public function get($id)
+    {
+        $schedule = $this->schedule->with(['user'], $id)->toArray();
+        if (empty($schedule)) {
+            return $this->empty_data();
         }
-        return $this->unauthorized();
+        $schedule = $schedule[0];
+        return $this->response($schedule);
     }
 
-    public function store(Request $request){
-        if ($this->check_api_key($request)) {
-            return $this->schedule->store($request);
-        }
-        return $this->unauthorized();
+    public function store(Request $request)
+    {
+        return $this->schedule->store($request);
+
     }
 
-    public function update(Request $request, $id){
-        if ($this->check_api_key($request)) {
-            return $this->schedule->update($request, $id);
-        }
-        return $this->unauthorized();
+    public function update(Request $request, $id)
+    {
+        return $this->schedule->update($request, $id);
     }
 
-    public function delete(Request $request, $id){
-        if ($this->check_api_key($request)) {
-            $this->schedule->delete($id);
-            return $this->success();
-        }
-        return $this->unauthorized();
+    public function delete($id)
+    {
+        $this->schedule->delete($id);
+        return $this->success();
     }
 
 

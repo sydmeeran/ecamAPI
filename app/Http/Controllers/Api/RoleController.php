@@ -13,10 +13,9 @@ class RoleController extends BaseController
 
     protected $role, $user;
 
-    public function __construct()
+    public function __construct(Request $request)
     {
-        $this->role = DataRepo::role();
-        $this->user = DataRepo::user();
+        $this->check_api_key($request);
 
         $this->actionMiddleware([
             'index' => 'role-retrieve',
@@ -25,66 +24,50 @@ class RoleController extends BaseController
             'get' => 'role-retrieve',
             'delete' => 'role-delete'
         ]);
+
+        $this->role = DataRepo::role();
+        $this->user = DataRepo::user();
     }
 
-    public function index(Request $request)
+    public function index()
     {
-        if ($this->check_api_key($request)) {
-            $roles = $this->role->model()->where('id', '!=', 1)->with('permissions')->get()->toArray();
-            return $this->response($roles);
-        }
-        return $this->unauthorized();
+        $roles = $this->role->model()->where('id', '!=', 1)->with('permissions')->get()->toArray();
+        return $this->response($roles);
     }
 
     public function store(Request $request)
     {
-        if ($this->check_api_key($request)) {
-            $this->role->store($request);
-            return response()->json($this->success);
-        }
-        return $this->unauthorized();
+        $this->role->store($request);
+        return response()->json($this->success);
     }
 
     public function update(Request $request, $id)
     {
-        if ($this->check_api_key($request)) {
-            $this->role->update($request, $id);
-            return response()->json($this->success);
-        }
-        return $this->unauthorized();
+        $this->role->update($request, $id);
+        return response()->json($this->success);
     }
 
-    public function getAll(Request $request)
+    public function getAll()
     {
-        if ($this->check_api_key($request)) {
-            $roles = $this->role->model()->where('id', '!=', 1)->with('permissions')->get()->toArray();
-            return $this->response($roles);
-        }
-        return $this->unauthorized();
+        $roles = $this->role->model()->where('id', '!=', 1)->with('permissions')->get()->toArray();
+        return $this->response($roles);
     }
 
-    public function get(Request $request, $id)
+    public function get($id)
     {
-        if ($this->check_api_key($request)) {
-            $role = $this->role->with(['permissions'], $id)->toArray();
-            if (empty($role)) {
-                return $this->empty_data();
-            }
-            return $this->response($role[0]);
+        $role = $this->role->with(['permissions'], $id)->toArray();
+        if (empty($role)) {
+            return $this->empty_data();
         }
-
-        return $this->unauthorized();
+        return $this->response($role[0]);
     }
 
-    public function delete(Request $request, $id)
+    public function delete($id)
     {
-        if ($this->check_api_key($request)) {
-            if ($this->user->model()->where('role_id', $id)->exists()) {
-                throw new RoleDeleteException();
-            }
-            $this->role->model()->where('id', $id)->delete();
-            return response()->json($this->success);
+        if ($this->user->model()->where('role_id', $id)->exists()) {
+            throw new RoleDeleteException();
         }
-        return $this->unauthorized();
+        $this->role->model()->where('id', $id)->delete();
+        return response()->json($this->success);
     }
 }
