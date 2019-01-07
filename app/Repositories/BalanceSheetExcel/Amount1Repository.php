@@ -20,9 +20,9 @@ class Amount1Repository extends BaseRepository
         return Amount1::query();
     }
 
-    public function validation($data)
+    public function validation($data, $excel_file)
     {
-        return Validator::make($data, [
+        $validator = Validator::make($data, [
             "non_current_assets" => 'int|nullable',
             "computer_a_c" => 'int|nullable',
             "computer_accum_dep" => 'int|nullable',
@@ -80,6 +80,13 @@ class Amount1Repository extends BaseRepository
             "profit_divided" => 'int|nullable',
             "total_equity" => 'int|nullable',
         ]);
+
+        if ($validator->fails()) {
+            if (file_exists($excel_file)) {
+                unlink($excel_file);
+            }
+            throw new ValidationException($validator);
+        }
     }
 //$non_current_assets
 //$computer_a_c
@@ -266,13 +273,7 @@ class Amount1Repository extends BaseRepository
     {
         $amount_1_data = $this->setData($excel_file);
 
-        $validator = $this->validation($amount_1_data);
-        if ($validator->fails()) {
-            if (file_exists($excel_file)) {
-                unlink($excel_file);
-            }
-            throw new ValidationException($validator);
-        }
+        $this->validation($amount_1_data, $excel_file);
 
         $amount_1 = $this->model()->create($amount_1_data);
         return $amount_1->id;

@@ -145,7 +145,7 @@ class JobEntryRepository extends BaseRepository
             if ($data['excel_type'] == "pnl") {
                 $this->pnl->update($excel_file, $id, $data['customer_id']);
             } else {
-                $this->balance_sheet->update($excel_file, $id);
+                $this->balance_sheet->update($excel_file, $id, $data['customer_id']);
             }
 
             $job_entry = $this->find($id);
@@ -154,7 +154,9 @@ class JobEntryRepository extends BaseRepository
             }
         }
 
-        return $this->model()->where('id', $id)->update($data);
+        $this->model()->where('id', $id)->update($data);
+
+        return 'success';
     }
 
     public function destroy($id){

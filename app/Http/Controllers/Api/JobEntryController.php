@@ -59,11 +59,12 @@ class JobEntryController extends BaseController
 
     public function pagination(Request $request)
     {
-        if ($this->check_api_key($request)) {
-            $job_entry = $this->job_entry->model()->with('customer')->paginate(20);
-            return $this->response($job_entry);
-        }
-        return $this->unauthorized();
+        dd(1);
+//        if ($this->check_api_key($request)) {
+//            $job_entry = $this->job_entry->model()->with('customer')->paginate(20);
+//            return $this->response($job_entry);
+//        }
+//        return $this->unauthorized();
     }
 
     public function get(Request $request, $id)
