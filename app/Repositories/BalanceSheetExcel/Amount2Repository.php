@@ -84,7 +84,7 @@ class Amount2Repository extends BaseRepository
         while($spreadsheet->getCell('B'.$i)->getValue() != "Total Non Current Assets"){
             $non_current_assets[] = [
                 'title' => $spreadsheet->getCell('B'.$i)->getValue(),
-                'amount_1' => $spreadsheet->getCell('C'.$i)->getValue(),
+                'value' => $spreadsheet->getCell('D'.$i)->getValue(),
             ];
             $i++;
         }
@@ -95,49 +95,49 @@ class Amount2Repository extends BaseRepository
         while($spreadsheet->getCell('B'.$i)->getValue() != "Total Current Assets"){
             $current_assets[] = [
                 'title' => $spreadsheet->getCell('B'.$i)->getValue(),
-                'amount_1' => $spreadsheet->getCell('C'.$i)->getValue(),
+                'value' => $spreadsheet->getCell('D'.$i)->getValue(),
             ];
             $i++;
         }
 
-        $total_current_assets = $spreadsheet->getCell('C'.$i)->getValue();$i++;
-        $total_assets = $spreadsheet->getCell('C'.$i)->getValue();
+        $total_current_assets = $spreadsheet->getCell('D'.$i)->getValue();$i++;
+        $total_assets = $spreadsheet->getCell('D'.$i)->getValue();
 
         $i = $i + 3;
-        $long_term_loan = $spreadsheet->getCell('C'.$i)->getValue();$i++;
-        $non_current_deferred_income = $spreadsheet->getCell('C'.$i)->getValue();$i++;
-        $deferred_tax = $spreadsheet->getCell('C'.$i)->getValue();$i++;
-        $total_non_current_liabilities = $spreadsheet->getCell('C'.$i)->getValue();
+        $long_term_loan = $spreadsheet->getCell('D'.$i)->getValue();$i++;
+        $non_current_deferred_income = $spreadsheet->getCell('D'.$i)->getValue();$i++;
+        $deferred_tax = $spreadsheet->getCell('D'.$i)->getValue();$i++;
+        $total_non_current_liabilities = $spreadsheet->getCell('D'.$i)->getValue();
 
         $i = $i + 4;
-        $trade_creditors = $spreadsheet->getCell('C'.$i)->getValue();$i++;
-        $current_deferred_income = $spreadsheet->getCell('C'.$i)->getValue();$i++;
-        $salary_payable = $spreadsheet->getCell('C'.$i)->getValue();$i++;
-        $internet_bill = $spreadsheet->getCell('C'.$i)->getValue();$i++;
-        $social_security_fees = $spreadsheet->getCell('C'.$i)->getValue();$i++;
-        $electricity_charges = $spreadsheet->getCell('C'.$i)->getValue();$i++;
-        $staff_fund = $spreadsheet->getCell('C'.$i)->getValue();$i++;
-        $bod_salaries = $spreadsheet->getCell('C'.$i)->getValue();$i++;
-        $consultant_salaries = $spreadsheet->getCell('C'.$i)->getValue();$i++;
-        $payable_stamp_duty = $spreadsheet->getCell('C'.$i)->getValue();$i++;
-        $payable_bonus = $spreadsheet->getCell('C'.$i)->getValue();$i++;
-        $bod_consultant_salaries_tax = $spreadsheet->getCell('C'.$i)->getValue();$i++;
-        $advance_2_and_5_percent_tax = $spreadsheet->getCell('C'.$i)->getValue();$i++;
-        $two_percent_tax = $spreadsheet->getCell('C'.$i)->getValue();$i++;
-        $five_percent_commercial_tax = $spreadsheet->getCell('C'.$i)->getValue();$i++;
-        $total_current_liabilities = $spreadsheet->getCell('C'.$i)->getValue();$i++;
-        $total_liabilities = $spreadsheet->getCell('C'.$i)->getValue();$i++;
-        $net_assets = $spreadsheet->getCell('C'.$i)->getValue();$i++;
-        $equity = $spreadsheet->getCell('C'.$i)->getValue();$i++;
-        $owner_shareholders_equity = $spreadsheet->getCell('C'.$i)->getValue();$i++;
-        $capital = $spreadsheet->getCell('C'.$i)->getValue();
+        $trade_creditors = $spreadsheet->getCell('D'.$i)->getValue();$i++;
+        $current_deferred_income = $spreadsheet->getCell('D'.$i)->getValue();$i++;
+        $salary_payable = $spreadsheet->getCell('D'.$i)->getValue();$i++;
+        $internet_bill = $spreadsheet->getCell('D'.$i)->getValue();$i++;
+        $social_security_fees = $spreadsheet->getCell('D'.$i)->getValue();$i++;
+        $electricity_charges = $spreadsheet->getCell('D'.$i)->getValue();$i++;
+        $staff_fund = $spreadsheet->getCell('D'.$i)->getValue();$i++;
+        $bod_salaries = $spreadsheet->getCell('D'.$i)->getValue();$i++;
+        $consultant_salaries = $spreadsheet->getCell('D'.$i)->getValue();$i++;
+        $payable_stamp_duty = $spreadsheet->getCell('D'.$i)->getValue();$i++;
+        $payable_bonus = $spreadsheet->getCell('D'.$i)->getValue();$i++;
+        $bod_consultant_salaries_tax = $spreadsheet->getCell('D'.$i)->getValue();$i++;
+        $advance_2_and_5_percent_tax = $spreadsheet->getCell('D'.$i)->getValue();$i++;
+        $two_percent_tax = $spreadsheet->getCell('D'.$i)->getValue();$i++;
+        $five_percent_commercial_tax = $spreadsheet->getCell('D'.$i)->getValue();$i++;
+        $total_current_liabilities = $spreadsheet->getCell('D'.$i)->getValue();$i++;
+        $total_liabilities = $spreadsheet->getCell('D'.$i)->getValue();$i++;
+        $net_assets = $spreadsheet->getCell('D'.$i)->getValue();$i++;
+        $equity = $spreadsheet->getCell('D'.$i)->getValue();$i++;
+        $owner_shareholders_equity = $spreadsheet->getCell('D'.$i)->getValue();$i++;
+        $capital = $spreadsheet->getCell('D'.$i)->getValue();
 
         $i = $i + 2;
-        $total_owner_shareholders_equity = $spreadsheet->getCell('C'.$i)->getValue();$i++;
-        $retained_earnings = $spreadsheet->getCell('C'.$i)->getValue();$i++;
-        $profit_loss_for_the_year = $spreadsheet->getCell('C'.$i)->getValue();$i++;
-        $profit_divided = $spreadsheet->getCell('C'.$i)->getValue();$i++;
-        $total_equity = $spreadsheet->getCell('C'.$i)->getValue();
+        $total_owner_shareholders_equity = $spreadsheet->getCell('D'.$i)->getValue();$i++;
+        $retained_earnings = $spreadsheet->getCell('D'.$i)->getValue();$i++;
+        $profit_loss_for_the_year = $spreadsheet->getCell('D'.$i)->getValue();$i++;
+        $profit_divided = $spreadsheet->getCell('D'.$i)->getValue();$i++;
+        $total_equity = $spreadsheet->getCell('D'.$i)->getValue();
 
         $data = [
             'non_current_assets' => json_encode($non_current_assets),

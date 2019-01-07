@@ -16,44 +16,44 @@ class CreateBalanceSheetAmount1Table extends Migration
         Schema::create('balance_sheet_amount_1', function (Blueprint $table) {
             $table->increments('id');
             $table->json('non_current_assets')->nullable();
-            $table->integer('total_non_current_assets')->nullable();
+            $table->json('total_non_current_assets')->nullable();
 
             $table->json('current_assets')->nullable();
-            $table->integer('total_current_assets')->nullable();
-            $table->integer('total_assets')->nullable();
+            $table->json('total_current_assets')->nullable();
+            $table->json('total_assets')->nullable();
 
-            $table->integer('long_term_loan')->nullable();
-            $table->integer('non_current_deferred_income')->nullable();
-            $table->integer('deferred_tax')->nullable();
-            $table->integer('total_non_current_liabilities')->nullable();
+            $table->json('long_term_loan')->nullable();
+            $table->json('non_current_deferred_income')->nullable();
+            $table->json('deferred_tax')->nullable();
+            $table->json('total_non_current_liabilities')->nullable();
 
-            $table->integer('trade_creditors')->nullable();
-            $table->integer('current_deferred_income')->nullable();
-            $table->integer('salary_payable')->nullable();
-            $table->integer('internet_bill')->nullable();
-            $table->integer('social_security_fees')->nullable();
-            $table->integer('electricity_charges')->nullable();
-            $table->integer('staff_fund')->nullable();
-            $table->integer('bod_salaries')->nullable();
-            $table->integer('consultant_salaries')->nullable();
-            $table->integer('payable_stamp_duty')->nullable();
-            $table->integer('payable_bonus')->nullable();
-            $table->integer('bod_consultant_salaries_tax')->nullable();
-            $table->integer('advance_2_and_5_percent_tax')->nullable();
-            $table->integer('2_percent_tax')->nullable();
-            $table->integer('5_percent_commercial_tax')->nullable();
-            $table->integer('total_current_liabilities')->nullable();
-            $table->integer('total_liabilities')->nullable();
-            $table->integer('net_assets')->nullable();
-            $table->integer('equity')->nullable();
-            $table->integer('owner_shareholders_equity')->nullable();
-            $table->integer('capital')->nullable();
+            $table->json('trade_creditors')->nullable();
+            $table->json('current_deferred_income')->nullable();
+            $table->json('salary_payable')->nullable();
+            $table->json('internet_bill')->nullable();
+            $table->json('social_security_fees')->nullable();
+            $table->json('electricity_charges')->nullable();
+            $table->json('staff_fund')->nullable();
+            $table->json('bod_salaries')->nullable();
+            $table->json('consultant_salaries')->nullable();
+            $table->json('payable_stamp_duty')->nullable();
+            $table->json('payable_bonus')->nullable();
+            $table->json('bod_consultant_salaries_tax')->nullable();
+            $table->json('advance_2_and_5_percent_tax')->nullable();
+            $table->json('2_percent_tax')->nullable();
+            $table->json('5_percent_commercial_tax')->nullable();
+            $table->json('total_current_liabilities')->nullable();
+            $table->json('total_liabilities')->nullable();
+            $table->json('net_assets')->nullable();
+            $table->json('equity')->nullable();
+            $table->json('owner_shareholders_equity')->nullable();
+            $table->json('capital')->nullable();
 
-            $table->integer('total_owner_shareholders_equity')->nullable();
-            $table->integer('retained_earnings')->nullable();
-            $table->integer('profit_loss_for_the_year')->nullable();
-            $table->integer('profit_divided')->nullable();
-            $table->integer('total_equity')->nullable();
+            $table->json('total_owner_shareholders_equity')->nullable();
+            $table->json('retained_earnings')->nullable();
+            $table->json('profit_loss_for_the_year')->nullable();
+            $table->json('profit_divided')->nullable();
+            $table->json('total_equity')->nullable();
             $table->timestamps();
         });
     }

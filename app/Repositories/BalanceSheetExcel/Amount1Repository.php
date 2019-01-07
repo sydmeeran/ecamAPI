@@ -24,45 +24,45 @@ class Amount1Repository extends BaseRepository
     {
         $validator = Validator::make($data, [
             "non_current_assets" => 'string|nullable',
-            "total_non_current_assets" => 'int|nullable',
+            "total_non_current_assets" => 'string|nullable',
             "current_assets" => 'string|nullable',
 
-            "total_current_assets" => 'int|nullable',
-            "total_assets" => 'int|nullable',
+            "total_current_assets" => 'string|nullable',
+            "total_assets" => 'string|nullable',
 
-            "long_term_loan" => 'int|nullable',
-            "non_current_deferred_income" => 'int|nullable',
-            "deferred_tax" => 'int|nullable',
-            "total_non_current_liabilities" => 'int|nullable',
+            "long_term_loan" => 'string|nullable',
+            "non_current_deferred_income" => 'string|nullable',
+            "deferred_tax" => 'string|nullable',
+            "total_non_current_liabilities" => 'string|nullable',
 
             "current_liabilities" => 'string|nullable',
-            "trade_creditors" => 'int|nullable',
-            "current_deferred_income" => 'int|nullable',
-            "salary_payable" => 'int|nullable',
-            "internet_bill" => 'int|nullable',
-            "social_security_fees" => 'int|nullable',
-            "electricity_charges" => 'int|nullable',
-            "staff_fund" => 'int|nullable',
-            "bod_salaries" => 'int|nullable',
-            "consultant_salaries" => 'int|nullable',
-            "payable_stamp_duty" => 'int|nullable',
-            "payable_bonus" => 'int|nullable',
-            "bod_consultant_salaries_tax" => 'int|nullable',
-            "advance_2_and_5_percent_tax" => 'int|nullable',
-            "2_percent_tax" => 'int|nullable',
-            "5_percent_commercial_tax" => 'int|nullable',
-            "total_current_liabilities" => 'int|nullable',
-            "total_liabilities" => 'int|nullable',
-            "net_assets" => 'int|nullable',
-            "equity" => 'int|nullable',
-            "owner_shareholders_equity" => 'int|nullable',
-            "capital" => 'int|nullable',
+            "trade_creditors" => 'string|nullable',
+            "current_deferred_income" => 'string|nullable',
+            "salary_payable" => 'string|nullable',
+            "internet_bill" => 'string|nullable',
+            "social_security_fees" => 'string|nullable',
+            "electricity_charges" => 'string|nullable',
+            "staff_fund" => 'string|nullable',
+            "bod_salaries" => 'string|nullable',
+            "consultant_salaries" => 'string|nullable',
+            "payable_stamp_duty" => 'string|nullable',
+            "payable_bonus" => 'string|nullable',
+            "bod_consultant_salaries_tax" => 'string|nullable',
+            "advance_2_and_5_percent_tax" => 'string|nullable',
+            "2_percent_tax" => 'string|nullable',
+            "5_percent_commercial_tax" => 'string|nullable',
+            "total_current_liabilities" => 'string|nullable',
+            "total_liabilities" => 'string|nullable',
+            "net_assets" => 'string|nullable',
+            "equity" => 'string|nullable',
+            "owner_shareholders_equity" => 'string|nullable',
+            "capital" => 'string|nullable',
 
-            "total_owner_shareholders_equity" => 'int|nullable',
-            "retained_earnings" => 'int|nullable',
-            "profit_loss_for_the_year" => 'int|nullable',
-            "profit_divided" => 'int|nullable',
-            "total_equity" => 'int|nullable',
+            "total_owner_shareholders_equity" => 'string|nullable',
+            "retained_earnings" => 'string|nullable',
+            "profit_loss_for_the_year" => 'string|nullable',
+            "profit_divided" => 'string|nullable',
+            "total_equity" => 'string|nullable',
         ]);
 
         if ($validator->fails()) {
@@ -72,62 +72,62 @@ class Amount1Repository extends BaseRepository
             throw new ValidationException($validator);
         }
     }
-//$non_current_assets
-//$computer_a_c
-//$computer_accum_dep
-//$furniture_fixture
-//$furniture_fixtures_accum_dep
-//$printer
-//$printer_accum_dep
-//$cctv_a_c
-//$cctv_accum_dep
-//$finger_print
-//$finger_print_accum_dep
-//$total_non_current_assets
-//$current_assets
-//$inventory
-//$trade_debtors
-//$cash_in_hand
-//$petty_cash
-//$bank_account
-//$prepaid
-//$advance_commercial_tax
-//$adv_income_tax
-//$advance
-//$total_current_assets
-//$total_assets
-//$non_current_liabilities
-//$long_term_loan
-//$deferred_income
-//$deferred_tax
-//$total_non_current_liabilities
-//$current_liabilities
-//$trade_creditors
-//$deferred_income
-//$salary_payable
-//$internet_bill
-//$social_security_fees
-//$electricity_charges
-//$staff_fund
-//$bod_salaries
-//$consultant_salaries
-//$payable_stamp_duty
-//$payable_bonus
-//$bod_consultant_salaries_tax
-//$advance_2_and_5_percent_tax
-//$2_percent_tax
-//$5_percent_commercial_tax
-//$total_current_liabilities
-//$total_liabilities
-//$net_assets
-//$equity
-//$owner_shareholders_equity
-//$capital
-//$total_owner_shareholders_equity
-//$retained_earnings
-//$profit_loss_for_the_year
-//$profit_divided
-//$total_equity
+//non_current_assets
+//computer_a_c
+//computer_accum_dep
+//furniture_fixture
+//furniture_fixtures_accum_dep
+//printer
+//printer_accum_dep
+//cctv_a_c
+//cctv_accum_dep
+//finger_print
+//finger_print_accum_dep
+//total_non_current_assets
+//current_assets
+//inventory
+//trade_debtors
+//cash_in_hand
+//petty_cash
+//bank_account
+//prepaid
+//advance_commercial_tax
+//adv_income_tax
+//advance
+//total_current_assets
+//total_assets
+//non_current_liabilities
+//long_term_loan
+//deferred_income
+//deferred_tax
+//total_non_current_liabilities
+//current_liabilities
+//trade_creditors
+//deferred_income
+//salary_payable
+//internet_bill
+//social_security_fees
+//electricity_charges
+//staff_fund
+//bod_salaries
+//consultant_salaries
+//payable_stamp_duty
+//payable_bonus
+//bod_consultant_salaries_tax
+//advance_2_and_5_percent_tax
+//2_percent_tax
+//5_percent_commercial_tax
+//total_current_liabilities
+//total_liabilities
+//net_assets
+//equity
+//owner_shareholders_equity
+//capital
+//total_owner_shareholders_equity
+//retained_earnings
+//profit_loss_for_the_year
+//profit_divided
+//total_equity
     public function setData($excel_file)
     {
         $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
@@ -139,7 +139,7 @@ class Amount1Repository extends BaseRepository
         while($spreadsheet->getCell('B'.$i)->getValue() != "Total Non Current Assets"){
             $non_current_assets[] = [
                 'title' => $spreadsheet->getCell('B'.$i)->getValue(),
-                'amount_1' => $spreadsheet->getCell('C'.$i)->getValue(),
+                'value' => $spreadsheet->getCell('C'.$i)->getValue(),
             ];
             $i++;
         }
@@ -150,7 +150,7 @@ class Amount1Repository extends BaseRepository
         while($spreadsheet->getCell('B'.$i)->getValue() != "Total Current Assets"){
             $current_assets[] = [
                 'title' => $spreadsheet->getCell('B'.$i)->getValue(),
-                'amount_1' => $spreadsheet->getCell('C'.$i)->getValue(),
+                'value' => $spreadsheet->getCell('C'.$i)->getValue(),
             ];
             $i++;
         }
