@@ -12,8 +12,9 @@ class BusinessController extends BaseController
 
     protected $business;
 
-    public function __construct()
+    public function __construct(Request $request)
     {
+        $this->check_api_key($request);
         $this->business = DataRepo::business();
         $this->actionMiddleware([
             'store' => 'customer-update',
@@ -26,53 +27,35 @@ class BusinessController extends BaseController
 
     public function store(Request $request, $customer_id)
     {
-        if ($this->check_api_key($request)) {
             return $this->business->register($request, $customer_id);
-        }
-        return $this->unauthorized();
     }
 
-    public function update(Request $request, $id)
+    public function update($id)
     {
-        if ($this->check_api_key($request)) {
-
             return $this->business->update($request, $id);
-        }
-        return $this->unauthorized();
     }
 
-    public function delete(Request $request, $id)
+    public function delete($id)
     {
-        if ($this->check_api_key($request)) {
-
             $this->business->delete($id);
 
             return $this->success();
-        }
-        return $this->unauthorized();
     }
 
-    public function get(Request $request, $id)
+    public function get($id)
     {
-        if ($this->check_api_key($request)) {
             $business = $this->business->find($id)->toArray();
 
             if (empty($business)) {
                 return $this->empty_data();
             }
             return $this->response($business);
-        }
-        return $this->unauthorized();
     }
 
-    public function getAll(Request $request)
+    public function getAll()
     {
-        if ($this->check_api_key($request)) {
             $business = $this->business->getAll();
             return $this->response($business);
-
-        }
-        return $this->unauthorized();
     }
 
 //    public function getByCustomer(Request $request, $customer_id)

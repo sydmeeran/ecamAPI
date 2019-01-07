@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Exceptions\ApiKeyException;
 use App\Role;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Http\Request;
@@ -40,9 +41,9 @@ class BaseController extends Controller
         return response()->json($this->success);
     }
 
-    protected function unauthorized(){
-        throw new UnauthorizedException();
-    }
+//    protected function unauthorized(){
+//        throw new UnauthorizedException();
+//    }
 
     protected function unauthenticated(){
         throw new AuthenticationException();
@@ -71,7 +72,7 @@ class BaseController extends Controller
         if($request->header('api-key') == env('API_KEY')){
             return true;
         }
-        return false;
+        throw new ApiKeyException();
     }
 
     protected function success_login_response($success){

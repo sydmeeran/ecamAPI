@@ -16,7 +16,7 @@
 //});
 
 
-Route::post('/customers/verify', 'CustomerController@verify');
+Route::post('/customers/verify', 'Api/CustomerController@verify');
 
 Route::get('/permissions', 'PermissionController@getAll');
 //Route::post('/customers/use', 'CustomerController@use');

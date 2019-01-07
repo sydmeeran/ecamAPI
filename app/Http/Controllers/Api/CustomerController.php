@@ -15,8 +15,10 @@ class CustomerController extends BaseController
 
     protected $customer;
 
-    public function __construct()
+    public function __construct(Request $request)
     {
+        $this->check_api_key($request);
+
         $this->customer = DataRepo::customer();
 
         $this->actionMiddleware([
@@ -55,19 +57,12 @@ class CustomerController extends BaseController
      */
     public function store(Request $request)
     {
-        if ($this->check_api_key($request)) {
-            return $this->customer->store($request);
-
-        }
-        return $this->unauthorized();
+        return $this->customer->store($request);
     }
 
     public function update(Request $request, $id)
     {
-        if ($this->check_api_key($request)) {
-            return $this->customer->update($request, $id);
-        }
-        return $this->unauthorized();
+        return $this->customer->update($request, $id);
     }
 
     public function use(Request $request)
@@ -82,28 +77,22 @@ class CustomerController extends BaseController
         return redirect('https://www.google.com');
     }
 
-    public function send_mail(Request $request, $id)
+    public function send_mail($id)
     {
-        if ($this->check_api_key($request)) {
-            $customer = $this->customer->find($id)->toArray();
-            Mail::to($customer['email'])->send(new CustomerVerificationEmail($customer));
-            return 'success';
-        }
-        return $this->unauthorized();
+        $customer = $this->customer->find($id)->toArray();
+        Mail::to($customer['email'])->send(new CustomerVerificationEmail($customer));
+        return 'success';
     }
 
     public function verify(Request $request)
     {
-        if ($this->check_api_key($request)) {
-            $email = $request->input('email');
-            $otp = $request->input('otp');
+        $email = $request->input('email');
+        $otp = $request->input('otp');
 
-            $this->customer->model()->where('email', $email)->where('otp', $otp)->update([
-                'is_active' => 1
-            ]);
-            return 'success';
-        }
-        return $this->unauthorized();
+        $this->customer->model()->where('email', $email)->where('otp', $otp)->update([
+            'is_active' => 1
+        ]);
+        return 'success';
     }
 
     /**
@@ -191,100 +180,73 @@ class CustomerController extends BaseController
 //        return response()->json($this->unauthorized);
 //    }
 
-    public function getAll(Request $request)
+    public function getAll()
     {
-        if ($this->check_api_key($request)) {
-            $user = $this->customer->getAll();
-            if (empty($user)) {
-                throw new EmptyCustomerException();
-            }
-            return $this->response($user);
+        $user = $this->customer->getAll();
+        if (empty($user)) {
+            throw new EmptyCustomerException();
         }
-        return $this->unauthorized();
+        return $this->response($user);
     }
 
-    public function getAllByJobEntry(Request $request)
+    public function getAllByJobEntry()
     {
-        if ($this->check_api_key($request)) {
-            $user = $this->customer->getAll();
-            if (empty($user)) {
-                throw new EmptyCustomerException();
-            }
-            return $this->response($user);
+        $user = $this->customer->getAll();
+        if (empty($user)) {
+            throw new EmptyCustomerException();
         }
-        return $this->unauthorized();
+        return $this->response($user);
     }
 
-    public function pagination(Request $request)
+    public function pagination()
     {
-        if ($this->check_api_key($request)) {
-            $customer = $this->customer->paginate(20);
-            return $this->response($customer);
-        }
-        return $this->unauthorized();
+        $customer = $this->customer->paginate(20);
+        return $this->response($customer);
     }
 
-    public function get(Request $request, $id)
+    public function get($id)
     {
-        if ($this->check_api_key($request)) {
-            $user = $this->customer->with(['businesses'], $id)->toArray();
-            if (empty($user)) {
-                return $this->empty_data();
-            }
-            $user = $user[0];
-            return $this->response($user);
-
+        $user = $this->customer->with(['businesses'], $id)->toArray();
+        if (empty($user)) {
+            return $this->empty_data();
         }
-        return $this->unauthorized();
+        $user = $user[0];
+        return $this->response($user);
     }
 
     public function search(Request $request)
     {
-        if ($this->check_api_key($request)) {
+        $keyword = $request->get('keyword');
+        $result = $this->customer->model()->where('owner_name', 'LIKE', '%' . $keyword . '%')
+            ->orWhere('email', 'LIKE', '%' . $keyword . '%')
+            ->orWhere('phone_no', 'LIKE', '%' . $keyword . '%')
+            ->orWhere('company_name', 'LIKE', '%' . $keyword . '%')
+            ->orWhere('company_id', 'LIKE', '%' . $keyword . '%')
+            ->get()->toArray();
 
-            $keyword = $request->get('keyword');
-            $result = $this->customer->model()->where('owner_name', 'LIKE', '%' . $keyword . '%')
-                ->orWhere('email', 'LIKE', '%' . $keyword . '%')
-                ->orWhere('phone_no', 'LIKE', '%' . $keyword . '%')
-                ->orWhere('company_name', 'LIKE', '%' . $keyword . '%')
-                ->orWhere('company_id', 'LIKE', '%' . $keyword . '%')
-                ->get()->toArray();
-
-            return $this->response($result);
-        }
-        return $this->unauthorized();
+        return $this->response($result);
     }
 
     public function active_deactive(Request $request, $id)
     {
-        if ($this->check_api_key($request)) {
-            $this->customer->model()->where('id', $id)->update([
-                'is_active' => $request->get('status')
-            ]);
-            return $this->success();
-        }
-        return $this->unauthorized();
+        $this->customer->model()->where('id', $id)->update([
+            'is_active' => $request->get('status')
+        ]);
+        return $this->success();
     }
 
     public function append_suspend(Request $request, $id)
     {
-        if ($this->check_api_key($request)) {
-            $this->customer->model()->where('id', $id)->update([
-                'is_suspend' => $request->get('status')
-            ]);
-            return $this->success();
-        }
-        return $this->unauthorized();
+        $this->customer->model()->where('id', $id)->update([
+            'is_suspend' => $request->get('status')
+        ]);
+        return $this->success();
     }
 
-    public function delete(Request $request, $id)
+    public function delete($id)
     {
-        if ($this->check_api_key($request)) {
-            $this->customer->model()->where('id', $id)->delete();
-            return $this->success();
-
-        }
-        return $this->unauthorized();
+        $this->customer->model()->where('id', $id)->delete();
+        return $this->success();
     }
 
     protected function combine_array($business_name_arrs, $license_no_arrs, $license_type_arrs, $license_photo_arrs, $address_arrs)

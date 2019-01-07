@@ -31,7 +31,7 @@ class CreateBalanceSheetAmount1Table extends Migration
             $table->integer('inventory')->nullable();
             $table->integer('trade_debtors')->nullable();
             $table->integer('cash_in_hand')->nullable();
-            $table->integer('pretty_cash')->nullable();
+            $table->integer('petty_cash')->nullable();
             $table->integer('bank_account')->nullable();
             $table->integer('prepaid')->nullable();
             $table->integer('advance_commercial_tax')->nullable();

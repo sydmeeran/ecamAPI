@@ -2,7 +2,9 @@
 
 namespace App;
 
+use App\Models\PnlExcel\Credit;
 use App\Models\PnlExcel\Debit;
+use App\Models\PnlExcel\Variation;
 use Illuminate\Database\Eloquent\Model;
 
 class PnlExcel extends Model
@@ -22,11 +24,11 @@ class PnlExcel extends Model
     }
 
     public function pnl_credit(){
-        return $this->belongsTo(Debit::class, 'pnl_credit_id');
+        return $this->belongsTo(Credit::class, 'pnl_credit_id');
     }
 
     public function pnl_variation(){
-        return $this->belongsTo(Debit::class, 'pnl_variation_id');
+        return $this->belongsTo(Variation::class, 'pnl_variation_id');
     }
 
     public function customer(){
