@@ -48,10 +48,10 @@ class BusinessRepostitory extends BaseRepository
     }
 
     protected function combine_array($business_name_arrs, $license_no_arrs, $license_type_arrs, $license_photo_arrs, $address_arrs) {
-        $result = array_map(function ($business_name_arrs, $license_no_arrs, $license_type_arrs, $license_photo_arrs, $address_arrs) {
+        $result = array_map(function ($business_name_arr, $license_no_arr, $license_type_arr, $license_photo_arr, $address_arr) {
             return array_combine(
                 ['business_name', 'license_no', 'license_type', 'license_photo', 'address'],
-                [$business_name_arrs, $license_no_arrs, $license_type_arrs, $license_photo_arrs, $address_arrs]
+                [$business_name_arr, $license_no_arr, $license_type_arr, $license_photo_arr, $address_arr]
             );
         }, $business_name_arrs, $license_no_arrs, $license_type_arrs, $license_photo_arrs, $address_arrs);
 
@@ -60,7 +60,10 @@ class BusinessRepostitory extends BaseRepository
 
     public function create_business($data, $customer_id){
         if(is_array($data['license_no'])){
-            $data['license_photo'] = [];
+            if(!$data['license_photo']){
+                $data['license_photo'] = [];
+            }
+
             $businesses = $this->combine_array($data['business_name'], $data['license_no'], $data['license_type'], $data['license_photo'], $data['address']);
 
             foreach($businesses as $business){
@@ -92,10 +95,12 @@ class BusinessRepostitory extends BaseRepository
          * @var UploadedFile $license_photo
          */
         $license_photos = $request->file('license_photo');
+        $i=0;
         foreach($license_photos as $license_photo){
-            $name =  $this->uuid($this->prefix, 15).'.'.$license_photo->getClientOriginalExtension();
+            $name =  $this->uuid($this->prefix, 15).$i.'.'.$license_photo->getClientOriginalExtension();
             $license_photo_name = $license_photo->move(public_path('db/license_photos'), $name);
             $lpn[] = 'db/license_photos/'.$license_photo_name->getFilename();
+            $i++;
         }
         if(!isset($lpn)){
             $name =  $this->uuid($this->prefix, 15).'.'.$license_photos->getClientOriginalExtension();
