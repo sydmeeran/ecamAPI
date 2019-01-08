@@ -15,12 +15,8 @@ class CustomerController extends BaseController
 
     protected $customer;
 
-    public function __construct(Request $request)
+    public function __construct()
     {
-        $this->check_api_key($request);
-
-        $this->customer = DataRepo::customer();
-
         $this->actionMiddleware([
             'store' => 'customer-create',
             'pagination' => 'customer-retrieve',
@@ -32,6 +28,8 @@ class CustomerController extends BaseController
             'delete' => 'customer-delete',
             'send_mail' => 'customer-create'
         ]);
+
+        $this->customer = DataRepo::customer();
     }
 
     /**

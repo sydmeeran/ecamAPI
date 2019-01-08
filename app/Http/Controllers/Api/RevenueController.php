@@ -12,10 +12,8 @@ class RevenueController extends BaseController
 
     protected $revenue;
 
-    public function __construct(Request $request)
+    public function __construct()
     {
-        $this->check_api_key($request);
-
         $this->invoice = DataRepo::invoice();
 
         $this->actionMiddleware([

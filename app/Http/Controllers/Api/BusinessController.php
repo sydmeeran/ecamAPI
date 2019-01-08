@@ -12,50 +12,50 @@ class BusinessController extends BaseController
 
     protected $business;
 
-    public function __construct(Request $request)
+    public function __construct()
     {
-        $this->check_api_key($request);
-        $this->business = DataRepo::business();
         $this->actionMiddleware([
             'store' => 'customer-update',
             'update' => 'customer-update',
             'delete' => 'customer-update',
             'get' => 'customer-retrieve',
-            'getByCustomer' => 'customer-retrieve',
+//            'getByCustomer' => 'customer-retrieve',
         ]);
+
+        $this->business = DataRepo::business();
     }
 
     public function store(Request $request, $customer_id)
     {
-            return $this->business->register($request, $customer_id);
+        return $this->business->register($request, $customer_id);
     }
 
-    public function update($id)
+    public function update(Request $request, $id)
     {
-            return $this->business->update($request, $id);
+        return $this->business->update($request, $id);
     }
 
     public function delete($id)
     {
-            $this->business->delete($id);
+        $this->business->delete($id);
 
-            return $this->success();
+        return $this->success();
     }
 
     public function get($id)
     {
-            $business = $this->business->find($id)->toArray();
+        $business = $this->business->find($id)->toArray();
 
-            if (empty($business)) {
-                return $this->empty_data();
-            }
-            return $this->response($business);
+        if (empty($business)) {
+            return $this->empty_data();
+        }
+        return $this->response($business);
     }
 
     public function getAll()
     {
-            $business = $this->business->getAll();
-            return $this->response($business);
+        $business = $this->business->getAll();
+        return $this->response($business);
     }
 
 //    public function getByCustomer(Request $request, $customer_id)

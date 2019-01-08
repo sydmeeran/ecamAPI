@@ -12,10 +12,8 @@ class JobEntryController extends BaseController
 
     protected $job_entry;
 
-    public function __construct(Request $request)
+    public function __construct()
     {
-        $this->check_api_key($request);
-
         $this->actionMiddleware([
             'store' => 'job-entry-create',
             'update' => 'job-entry-update',

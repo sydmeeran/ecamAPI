@@ -11,6 +11,7 @@ namespace App\Repositories;
 use Illuminate\Http\Request;
 use App\Schedule;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\ValidationException;
 
 class ScheduleRepository extends BaseRepository
 {
@@ -42,7 +43,7 @@ class ScheduleRepository extends BaseRepository
         $data = $this->setData($request);
         $validator = $this->validation($data);
         if($validator->fails()){
-            return $validator;
+            throw new ValidationException($validator);
         }
         $data['from'] = new \DateTime($data['from']);
         $data['to'] = new \DateTime($data['to']);
@@ -57,7 +58,7 @@ class ScheduleRepository extends BaseRepository
         $data = $this->setData($request);
         $validator = $this->validation($data);
         if($validator->fails()){
-            return $validator;
+            throw new ValidationException($validator);
         }
         $data['from'] = new \DateTime($data['from']);
         $data['to'] = new \DateTime($data['to']);

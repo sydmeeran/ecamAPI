@@ -13,10 +13,8 @@ class RoleController extends BaseController
 
     protected $role, $user;
 
-    public function __construct(Request $request)
+    public function __construct()
     {
-        $this->check_api_key($request);
-
         $this->actionMiddleware([
             'index' => 'role-retrieve',
             'store' => 'role-create',

@@ -12,10 +12,7 @@ class PaymentReminderController extends BaseController
 
     protected $invoice, $quotation;
 
-    public function __construct(Request $request){
-
-        $this->check_api_key($request);
-
+    public function __construct(){
         $this->actionMiddleware([
             'pagination' => 'invoice-retrieve',
             'paymentSuccess' => 'invoice-retrieve',

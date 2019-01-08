@@ -12,10 +12,8 @@ class ScheduleController extends BaseController
 
     protected $schedule;
 
-    public function __construct(Request $request)
+    public function __construct()
     {
-        $this->check_api_key($request);
-
         $this->actionMiddleware([
             'delete' => 'schedule-delete',
         ]);

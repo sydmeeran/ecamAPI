@@ -16,9 +16,8 @@ class UserController extends BaseController
 
     protected $user;
 
-    public function __construct(Request $request)
+    public function __construct()
     {
-        $this->check_api_key($request);
 
         $this->user = DataRepo::user();
 

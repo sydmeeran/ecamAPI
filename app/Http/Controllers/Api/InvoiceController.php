@@ -14,10 +14,8 @@ class InvoiceController extends BaseController
 
     protected $invoice, $quotation;
 
-    public function __construct(Request $request)
+    public function __construct()
     {
-        $this->check_api_key($request);
-
         $this->actionMiddleware([
             'store' => 'invoice-create',
             'pagination' => 'invoice-retrieve',

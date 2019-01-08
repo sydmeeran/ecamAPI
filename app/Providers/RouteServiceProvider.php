@@ -68,6 +68,7 @@ class RouteServiceProvider extends ServiceProvider
             ->middleware([
                 'force-json-return',
                 'api',
+                'api-key'
             ])
             ->namespace($this->namespace)
             ->group(base_path('routes/api.php'));

@@ -14,10 +14,8 @@ class ReceiptController extends BaseController
 
     protected $invoice, $receipt;
 
-    public function __construct(Request $request)
+    public function __construct()
     {
-        $this->check_api_key($request);
-
         $this->actionMiddleware([
             'store' => 'receipt-create',
             'pagination' => 'receipt-retrieve',
