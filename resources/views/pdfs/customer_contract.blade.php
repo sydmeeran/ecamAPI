@@ -75,7 +75,7 @@ table {
     <div style="padding-right: 35px;">            
         <h2 style="padding-left: 50px;font-size: 16PX;text-align: center;"><b>AGREEMENT FOR INDEPENDENT AUDITING SERVICES</b></h2>
 		
-		<p style="margin-left: 50px;line-height: 25px;">THIS AGREEMENT, made and entered into this day of {{ date('d/m/Y', time()) }}, by and between:<br><b>CLIENT NAME, ADDRESS,</b> hereinafter referred to as "BREIF NAME OF <b>“CLIENT BRIFE NAME"</b>, and {{ $company_name}}, hereinafter referred to as <b>"AUDITOR"</b>.<br> <b>WHEREAS</b>, the CLIENT NAME has provided allocation of funds to pay for independent auditing services
+		<p style="margin-left: 50px;line-height: 25px;">THIS AGREEMENT, made and entered into this day of {{ date('d/m/Y') }}, by and between:<br><b>CLIENT NAME, ADDRESS,</b> hereinafter referred to as "BREIF NAME OF <b>“CLIENT BRIFE NAME"</b>, and {{ $company_name}}, hereinafter referred to as <b>"AUDITOR"</b>.<br> <b>WHEREAS</b>, the CLIENT NAME has provided allocation of funds to pay for independent auditing services
 		 and <b>WHEREAS</b>, the services to be performed by the AUDITOR are considered to be in the public interest; now, therefore, It is mutually agreed by and between the parties to this Agreement as follows:</p>
 		
 		<ol style="list-style-type: upper-roman;margin-left: 50px;">
