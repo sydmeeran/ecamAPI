@@ -15,15 +15,7 @@ use Illuminate\Validation\ValidationException;
 
 class BalanceSheetExcelRepository extends BaseRepository
 {
-    protected $amount_1, $amount_2, $variation, $pnl_excel;
-
-//    public function __construct()
-//    {
-////        $this->amount_1 = DataRepo::balance_sheet_amount_1();
-////        $this->amount_2 = DataRepo::balance_sheet_amount_2();
-////        $this->variation = DataRepo::balance_sheet_variation();
-//
-//    }
+    protected $pnl_excel;
 
     public function model(){
         return BalanceSheetExcel::query();
@@ -407,10 +399,6 @@ class BalanceSheetExcelRepository extends BaseRepository
     }
 
     public function update($excel_file, $job_entry_id, $customer_id){
-//        $this->amount_1->validation($this->amount_1->setData($excel_file), $excel_file);
-//        $this->amount_2->validation($this->amount_2->setData($excel_file), $excel_file);
-//        $this->variation->validation($this->variation->setData($excel_file), $excel_file);
-
         $this->pnl_excel = DataRepo::pnl_excel();
         $pnl_excel = $this->pnl_excel->model()->where('job_entry_id', $job_entry_id)->get();
         if(!$pnl_excel->isEmpty()){

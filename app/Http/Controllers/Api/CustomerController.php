@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Exceptions\EmptyCustomerException;
+use App\Mail\CustomerContractEmail;
 use App\Mail\CustomerVerificationEmail;
 use App\Repositories\DataRepo;
 use Arga\Utils\ActionMiddlewareTrait;
@@ -79,6 +80,13 @@ class CustomerController extends BaseController
     {
         $customer = $this->customer->find($id)->toArray();
         Mail::to($customer['email'])->send(new CustomerVerificationEmail($customer));
+        return 'success';
+    }
+
+    public function send_contract($id)
+    {
+        $customer = $this->customer->find($id)->toArray();
+        Mail::to($customer['email'])->send(new CustomerContractEmail($customer));
         return 'success';
     }
 

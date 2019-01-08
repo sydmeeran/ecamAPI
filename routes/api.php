@@ -82,6 +82,8 @@ Route::group([
     Route::post('/customers/{id}/active-deactive', 'CustomerController@active_deactive');
     Route::post('/customers/{id}/append-suspend', 'CustomerController@append_suspend');
     Route::post('/customers/send/mail/{id}', 'CustomerController@send_mail');
+    Route::post('/customers/send/contract/{id}', 'CustomerController@send_contract');
+
 
     ////////////////////////////////////
     // Businesses

@@ -72,21 +72,6 @@ class DataRepo
         return app(BalanceSheetExcelRepository::class);
     }
 
-    public static function balance_sheet_amount_1(): Amount1Repository
-    {
-        return app(Amount1Repository::class);
-    }
-
-    public static function balance_sheet_amount_2(): Amount2Repository
-    {
-        return app(Amount2Repository::class);
-    }
-
-    public static function balance_sheet_variation(): \App\Repositories\BalanceSheetExcel\VariationRepository
-    {
-        return app(\App\Repositories\BalanceSheetExcel\VariationRepository::class);
-    }
-
     public static function quotation(): QuotationRepository
     {
         return app(QuotationRepository::class);
