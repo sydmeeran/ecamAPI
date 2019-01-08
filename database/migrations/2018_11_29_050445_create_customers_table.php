@@ -32,6 +32,7 @@ class CreateCustomersTable extends Migration
             $table->boolean('is_use')->default(0);
             $table->boolean('is_active')->default(0);
             $table->boolean('is_suspend')->default(0);
+            $table->string('contract')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

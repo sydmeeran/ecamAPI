@@ -32,9 +32,7 @@ class CustomerContractEmail extends Mailable
             ->subject('This is your contract!')
             ->view('mails.customer_contract')
             ->with([
-                'company_name' => $this->data['company_name'],
-                'owner_name' => $this->data['owner_name'],
-                'email' => $this->data['email'],
+                'pdf' => $this->data,
             ]);
     }
 }

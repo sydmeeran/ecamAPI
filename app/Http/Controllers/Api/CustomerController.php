@@ -7,7 +7,7 @@ use App\Mail\CustomerContractEmail;
 use App\Mail\CustomerVerificationEmail;
 use App\Repositories\DataRepo;
 use Arga\Utils\ActionMiddlewareTrait;
-use Barryvdh\DomPDF\PDF;
+use Barryvdh\DomPDF\Facade as PDF;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 
@@ -87,8 +87,10 @@ class CustomerController extends BaseController
     public function send_contract($id)
     {
         $customer = $this->customer->find($id)->toArray();
-        $pdf = PDF::loadView('mails.customer_contract', $customer)->save('');
-        Mail::to($customer['email'])->send(new CustomerContractEmail($customer));
+        $pdf_name = 'db/contracts/C'.$id.'_'.date('d-m-Y-H-m-s').'_'.generateCode(10).'.pdf';
+        PDF::loadView('pdfs.customer_contract', $customer)->save($pdf_name);
+        $this->customer->model()->where('id', $id)->update(['contract' => $pdf_name]);
+        Mail::to($customer['email'])->send(new CustomerContractEmail($pdf_name));
         return 'success';
     }
 
