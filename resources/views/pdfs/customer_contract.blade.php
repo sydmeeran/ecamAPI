@@ -67,10 +67,8 @@ table {
 			+959253027001<br>contact@za.com.mm</span>
 	
 	
-		<img src="/image/acc2.png" style="padding: 50px;width: 215px;height: 50px;display: inline-block;padding-bottom: 15px;">
+		<img src="{{ env('DOMAIN_NAME') }}/image/acc2.png" style="padding: 50px;width: 215px;height: 50px;display: inline-block;padding-bottom: 15px;">
 
-		
-  
    <hr style="margin: 40px 40px 0px 40px;">
     <div style="padding-right: 35px;">            
         <h2 style="padding-left: 50px;font-size: 16PX;text-align: center;"><b>AGREEMENT FOR INDEPENDENT AUDITING SERVICES</b></h2>

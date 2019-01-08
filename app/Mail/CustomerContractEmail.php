@@ -31,6 +31,7 @@ class CustomerContractEmail extends Mailable
         return $this->from(env('MAIL_FROM'), env('MAIL_NAME'))
             ->subject('This is your contract!')
             ->view('mails.customer_contract')
+//            ->attachData($this->data, '');
             ->with([
                 'pdf' => $this->data,
             ]);
