@@ -5,6 +5,7 @@
 /public/db/license_photos
 /public/db/excel_files
 /public/db/profile_photos
+/public/db/contracts
 /storage/*.key
 /vendor
 /.idea
