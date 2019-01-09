@@ -162,7 +162,7 @@ class UserRepository extends BaseRepository
             'role_id' => 'required|int',
             'profile_photo' => 'image|mimes:jpeg,png,jpg|max:2048',
             'password' => 'required',
-            'password_confirmation' => 'required|same:password'
+            'confirm_password' => 'required|same:password'
         ]);
         }else{
             return Validator::make($request->all(), [
