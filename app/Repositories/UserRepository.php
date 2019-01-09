@@ -119,7 +119,21 @@ class UserRepository extends BaseRepository
 
     public function setUpdateProfileData(Request $request)
     {
-        $data = [
+        if(isset($request->password)){
+            $data = [
+            'name' => $request->get('name'),
+            'email' => $request->get('email'),
+            'position' => $request->get('position'),
+            'nrc_no' => $request->get('nrc_no'),
+            'phone_no' => $request->get('phone_no'),
+            'address' => $request->get('address'),
+            'role_id' => $request->get('role_id'),
+            'password' => $request->get('password'),
+        ];
+
+        return $data;
+        }else{
+            $data = [
             'name' => $request->get('name'),
             'email' => $request->get('email'),
             'position' => $request->get('position'),
@@ -129,12 +143,15 @@ class UserRepository extends BaseRepository
             'role_id' => $request->get('role_id'),
         ];
 
-        return $data;
+        return $data;    
+        }
+        
     }
 
     public function updateProfileValidation(Request $request)
     {
-        return Validator::make($request->all(), [
+        if(isset($request->password)){
+            return Validator::make($request->all(), [
             'name' => 'required',
             'email' => $this->model()->where('email', $request->input('email'))->exists() ? 'required' : 'required|unique:users',
             'position' => 'required|string',
@@ -144,7 +161,23 @@ class UserRepository extends BaseRepository
             'address' => 'required|string',
             'role_id' => 'required|int',
             'profile_photo' => 'image|mimes:jpeg,png,jpg|max:2048',
+            'password' => 'required',
+            'password_confirmation' => 'required|same:password'
         ]);
+        }else{
+            return Validator::make($request->all(), [
+            'name' => 'required',
+            'email' => $this->model()->where('email', $request->input('email'))->exists() ? 'required' : 'required|unique:users',
+            'position' => 'required|string',
+            'nrc_no' => 'required|string',
+            'nrc_photo' => 'image|mimes:jpeg,png,jpg|max:2048',
+            'phone_no' => 'required|string',
+            'address' => 'required|string',
+            'role_id' => 'required|int',
+            'profile_photo' => 'image|mimes:jpeg,png,jpg|max:2048',
+        ]);  
+        }
+        
     }
 
     //    public function updateNrcPhoto(Request $request, $id){
@@ -159,6 +192,7 @@ class UserRepository extends BaseRepository
 
     public function update_profile(Request $request, $id)
     {
+
         $validator = $this->updateProfileValidation($request);
 
         if ($validator->fails()) {
@@ -166,6 +200,7 @@ class UserRepository extends BaseRepository
         }
 
         $data = $this->setUpdateProfileData($request);
+
         $user = $this->find($id);
         if (Input::hasFile('profile_photo')) {
 
@@ -184,7 +219,7 @@ class UserRepository extends BaseRepository
             $nrc_photo_name = $this->storeNrcPhoto($request);
             $data['nrc_photo'] = $nrc_photo_name;
         }
-
+        
         return $this->model()->where('id', $id)->update($data);
 
         //        Mail::to($customer->email)->send(new CustomerVerificationEmail($customer));

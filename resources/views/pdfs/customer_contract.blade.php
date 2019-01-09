@@ -64,7 +64,7 @@ page[size="A4"] {
 			<li><b>TERMS OF AUDIT</b></li>
 			<p>
 				<ol style="list-style-type: upper-alpha;line-height: 25px;">
-				<li><b>Audit Procedures.</b><span style="font-weight: normal;"> The AUDITOR'S procedures shall include such tests of accounting records and such other auditing procedures they consider appropriate.</span style="font-weight: normal;"></li>
+				<li><b>Audit Procedures.</b><span style="font-weight: normal;"> The AUDITOR'S procedures shall include such tests of accounting records and such other auditing procedures they consider appropriate.</span></li>
 
 				<li><b>Preparation of Financial Statements.</b><span style="font-weight: normal;"> CLIENT is responsible for the financial statements and for adjusting those statements to correct material misstatements. CLIENT shall also be responsible for:</span>
 				<ul style="list-style-type: square; color: black;">
