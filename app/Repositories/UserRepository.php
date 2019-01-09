@@ -128,7 +128,7 @@ class UserRepository extends BaseRepository
             'phone_no' => $request->get('phone_no'),
             'address' => $request->get('address'),
             'role_id' => $request->get('role_id'),
-            'password' => $request->get('password'),
+            'password' => bcrypt($request->get('password')),
         ];
 
         return $data;
@@ -179,16 +179,6 @@ class UserRepository extends BaseRepository
         }
         
     }
-
-    //    public function updateNrcPhoto(Request $request, $id){
-    //        if (Input::hasFile('nrc_photo')) {
-    //            $customer = $this->find($id);
-    //            if(file_exists($customer->nrc_photo)){
-    //                unlink($customer->nrc_photo);
-    //            }
-    //        }
-    //        return $this->storeNrcPhoto($request);
-    //    }
 
     public function update_profile(Request $request, $id)
     {
