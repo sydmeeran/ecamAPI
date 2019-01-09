@@ -6,47 +6,24 @@
     
 body {
   background: rgb(204,204,204); 
+  margin: 0 !important;
+  padding: 0 !important;
 }
 page {
   background: white;
   display: block;
-  margin: 0 auto;
-  margin-bottom: 0.5cm;
-  border: 1px solid #eee;
 }
 page[size="A4"] {  
   width: 21cm;
-  height: 29.7cm; 
-}
-.custom-table {
-  border-collapse: collapse;
-}
-
-.custom-table th, .custom-table td {
-  border: 1px solid black;
-  padding: 12px;
+  height: 29.7cm;
+  margin: 0;
+  padding: 0;
 }
 
-.heading-table td{
-	padding-top: 5px;
-	padding-bottom: 5px;
+.custom-table td {
+  padding: 20px;
 }
 
-
-table {
-        counter-reset: tableCount;     
-    }
-
-    .counterCell:before {              
-        content: counter(tableCount); 
-        counter-increment: tableCount; 
-    }
-@media print {
-  body, page {
-    margin: 0;
-    box-shadow: 0;
-  }
-}
 
 		@font-face {
         font-family: 'Ours-Unicode';
@@ -60,23 +37,23 @@ table {
       }
   </style>
 </head>
-<body>
+<body id="wrapper">
 
 <page size="A4">
-  		<span style="color: #270063;float: right;display: inline-block;text-align: right;padding: 50px;padding-bottom: 15px;">No.(226), 2nd Floor,<br> (50) Street Condo(A),(50) Street ( Lower Block), <br> South Botahtaung Tsp, Yangon.<br>
+  		<span style="color: #270063;float: right;display: inline-block;text-align: right;padding: 15px 110px 15px 0px;">No.(226), 2nd Floor,<br> (50) Street Condo(A),(50) Street ( Lower Block), <br> South Botahtaung Tsp, Yangon.<br>
 			+959253027001<br>contact@za.com.mm</span>
 	
 	
-		<img src="{{ env('DOMAIN_NAME') }}/image/acc2.png" style="padding: 50px;width: 215px;height: 50px;display: inline-block;padding-bottom: 15px;">
+		<img src="{{ env('DOMAIN_NAME') }}/image/acc2.png" style="padding: 15px 0px 15px 30px;width: 200px;height: 50px;display: inline-block;">
 
-   <hr style="margin: 40px 40px 0px 40px;">
-    <div style="padding-right: 35px;">            
+   <hr style="margin: 40px 110px 0px 50px;">
+    <div style="margin: 20px 110px 10px 50px;">            
         <h2 style="padding-left: 50px;font-size: 16PX;text-align: center;"><b>AGREEMENT FOR INDEPENDENT AUDITING SERVICES</b></h2>
 		
-		<p style="margin-left: 50px;line-height: 25px;">THIS AGREEMENT, made and entered into this day of {{ date('d/m/Y') }}, by and between:<br><b>CLIENT NAME, ADDRESS,</b> hereinafter referred to as "BREIF NAME OF <b>“CLIENT BRIFE NAME"</b>, and {{ $company_name}}, hereinafter referred to as <b>"AUDITOR"</b>.<br> <b>WHEREAS</b>, the CLIENT NAME has provided allocation of funds to pay for independent auditing services
+		<p style="line-height: 25px;">THIS AGREEMENT, made and entered into this day of {{ date('d/m/Y') }}, by and between:<br><b>CLIENT NAME, ADDRESS,</b> hereinafter referred to as "BREIF NAME OF <b>“CLIENT BRIFE NAME"</b>, and <b>{{ $company_name}}</b>, hereinafter referred to as <b>"AUDITOR"</b>.<br> <b>WHEREAS</b>, the CLIENT NAME has provided allocation of funds to pay for independent auditing services
 		 and <b>WHEREAS</b>, the services to be performed by the AUDITOR are considered to be in the public interest; now, therefore, It is mutually agreed by and between the parties to this Agreement as follows:</p>
 		
-		<ol style="list-style-type: upper-roman;margin-left: 50px;">
+		<ol style="list-style-type: upper-roman;">
 			
 			<li><b>SCOPE OF AUDITS</b></li>
 			<p style="line-height: 25px;">The scope of work to be performed under this agreement is outlined in more detail in the Request for Proposals, Independent Auditing Services to this agreement.</p>
@@ -137,14 +114,16 @@ table {
 					<li>CLENT understands that the proper and timely completion of AUDITOR's services hereunder requires the reasonable cooperation of CLIENT, its agencies, and their respective officers, directors, employees, other personnel and agents. CLIENT agrees to provide all such reasonable cooperation requested by AUDITOR. The CLIENT is responsible for the performance of its staff.</li>
 				</ol>
 			<li style="margin-top: 20px;"><b>PERFORMANCE STANDARDS.</b></li>
-				<ul style="line-height: 25px;">
+			
+				<ol style="line-height: 25px;list-style-type: decimal;">
 					<li>AUDITOR shall provide adequate staff that possesses the necessary skills to perform and 
 conclude the audit and prepare all required reports in a timely manner. Any interchangeability of staff in the original proposal shall be approved by the CLIENT.</li>
 					<li>All responses to any CLIENT questions or inquiries should occur within two (2) business days of notification to AUDITOR. </li>
 					<li>AUDITOR shall respond to any emergency request for service within eight (8) business hours. </li>
 					<li>AUDITOR shall turn around review comments to drafts of the financial statements provided within ten (10) business days from the receipt of such drafts. </li>
 					<li>All deadlines shall be met.</li>
-				</ul>
+				</ol>
+			
 			<li style="margin-top: 20px;"><b>TERM.</b></li>
 				<p style="line-height: 25px;">The term of this Agreement is for the audit of fiscal years ending APRIL 01, 20XX through    MARCH 31, 20XX.</p>
 			<li><b>TERMINATION.</b></li>
@@ -158,7 +137,7 @@ conclude the audit and prepare all required reports in a timely manner. Any inte
 				<p style="line-height: 25px;"><b>IN WITNESS WHEREOF,</b> the parties have caused this Agreement to be executed by their proper and appropriate officials on the day and year first above written.</p>
 		</ol>
 	
-		<table style="margin-left: 50px; padding: 20px;">
+		<table style="padding: 10px;">
 			<tr>
 				<th>CLIENT:</th>
 			</tr>
@@ -179,7 +158,7 @@ conclude the audit and prepare all required reports in a timely manner. Any inte
 			</tr>	
 		</table>
 			<br>
-		<table style="margin-left: 50px; padding: 20px;">
+		<table style="padding: 10px;">
 			<tr>
 				<th>AUDITOR:</th>
 			</tr>
@@ -195,22 +174,56 @@ conclude the audit and prepare all required reports in a timely manner. Any inte
 			</tr>
 				
 		</table>
+		<br>
 		
-		<div style="display: inline-block;margin-left: 50px;padding: 10px;">
-			<p><b>Witness (1)</b></p>
-			<br>
-			<p style="border: none;border-bottom: 2px dotted; width: 200px;"></p>
-			<br>
-			<p style="border: none;border-bottom: 2px dotted; width: 200px;"></p>
+		<div style="display: inline-block;float: left;">
+		<table class="custom-table">
+			<tr>
+				<th>Witness (1):</th>
+			</tr>
+			<tr>
+				<td>........................</td>
+				<td></td>
+				<td></td>
+			</tr>
+			<tr>
+				<td>........................</td>
+				<td></td>
+				<td></td>
+			</tr>
+				
+		</table>
 		</div>
+		<div style="display: inline-block;float: right">
+		<table class="custom-table" ">
+			<tr>
+				<th>Witness (2):</th>
+			</tr>
+			<tr>
+				<td>........................</td>
+				<td></td>
+				<td></td>	
+			</tr>
+			<tr>
+				<td>........................</td>
+				<td></td>
+				<td></td>
+			</tr>
+				
+		</table>
+		</div>
+		{{-- <div style="display: inline-block;padding: 10px;float: left;"> --}}
 
-		<div style="display: inline-block;float: right;padding: 10px;">
-			<p><b>Witness (2)</b></p>
-			<br>
-			<p style="border: none;border-bottom: 2px dotted; width: 200px;"></p>
-			<br>
-			<p style="border: none;border-bottom: 2px dotted;width: 200px;"></p>
-		</div>
+			{{-- <p><b>Witness (1)</b></p>
+			<hr style="border-top: 1px dotted red;padding: 70px;border-bottom: none;border-left: none;border-right: none;">
+			<hr style="border-top: 1px dotted red;padding: 70px;border-bottom: none;border-left: none;border-right: none; "> --}}
+		{{-- </div> --}}
+
+		{{-- <div style="display: inline-block;float: right;padding: 10px;"> --}}
+			{{-- <p><b>Witness (2)</b></p> --}}
+			{{-- <br> --}}
+			
+		{{-- </div> --}}
  </div>       
 <script type="text/javascript">
   

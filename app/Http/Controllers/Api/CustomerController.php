@@ -88,7 +88,7 @@ class CustomerController extends BaseController
     {
         $customer = $this->customer->find($id)->toArray();
         $pdf_name = 'db/contracts/C'.$id.'_'.date('d-m-Y-H-m-s').'_'.generateCode(10).'.pdf';
-        PDF::loadView('pdfs.customer_contract', $customer)->save($pdf_name);
+        PDF::loadView('pdfs.customer_contract', $customer)->setPaper('A4', 'portrait')->save($pdf_name);
         $this->customer->model()->where('id', $id)->update(['contract' => $pdf_name]);
         Mail::to($customer['email'])->send(new CustomerContractEmail($pdf_name));
         return 'success';
