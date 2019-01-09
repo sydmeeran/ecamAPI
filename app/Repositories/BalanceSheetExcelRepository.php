@@ -74,7 +74,17 @@ class BalanceSheetExcelRepository extends BaseRepository
         }
     }
     
-
+    public function setValue($spreadsheet, $index, $with = null){
+        $data = [
+            'amount_1' => $spreadsheet->getCell('C'.$index)->getValue(),
+            'amount_2' => $spreadsheet->getCell('D'.$index)->getValue(),
+            'variation' => $spreadsheet->getCell('E'.$index)->getValue(),
+        ];
+        if($with == 'title'){
+            $data['title'] = $spreadsheet->getCell('B'.$index)->getValue();
+        }
+        return $data;
+    }
 
     public function setData($excel_file)
     {
@@ -85,260 +95,85 @@ class BalanceSheetExcelRepository extends BaseRepository
 
         $i = 5;
         while($spreadsheet->getCell('B'.$i)->getValue() != "Total Non Current Assets"){
-            $non_current_assets[] = [
-                'title' => $spreadsheet->getCell('B'.$i)->getValue(),
-                'amount_1' => $spreadsheet->getCell('C'.$i)->getValue(),
-                'amount_2' => $spreadsheet->getCell('D'.$i)->getValue(),
-                'variation' => $spreadsheet->getCell('E'.$i)->getValue(),
-            ];
+            $non_current_assets[] = $this->setValue($spreadsheet, $i, 'title');
             $i++;
         }
 
-        $total_non_current_assets[] = [
-//            'title' => $spreadsheet->getCell('C'.$i)->getValue(),
-            'amount_1' => $spreadsheet->getCell('C'.$i)->getValue(),
-            'amount_2' => $spreadsheet->getCell('D'.$i)->getValue(),
-            'variation' => $spreadsheet->getCell('E'.$i)->getValue(),
-        ];
+        $total_non_current_assets[] = $this->setValue($spreadsheet, $i);
 
         $i = $i + 3;
         while($spreadsheet->getCell('B'.$i)->getValue() != "Total Current Assets"){
-            $current_assets[] = [
-                'title' => $spreadsheet->getCell('B'.$i)->getValue(),
-                'amount_1' => $spreadsheet->getCell('C'.$i)->getValue(),
-                'amount_2' => $spreadsheet->getCell('D'.$i)->getValue(),
-                'variation' => $spreadsheet->getCell('E'.$i)->getValue(),
-            ];
+            $current_assets[] = $this->setValue($spreadsheet, $i, 'title');
             $i++;
         }
 
-        $total_current_assets[] = [
-//            'title' => $spreadsheet->getCell('C'.$i)->getValue(),
-            'amount_1' => $spreadsheet->getCell('C'.$i)->getValue(),
-            'amount_2' => $spreadsheet->getCell('D'.$i)->getValue(),
-            'variation' => $spreadsheet->getCell('E'.$i)->getValue(),
-        ];
+        $total_current_assets[] = $this->setValue($spreadsheet, $i);
         $i++;
 
-        $total_assets[] = [
-//            'title' => $spreadsheet->getCell('C'.$i)->getValue(),
-            'amount_1' => $spreadsheet->getCell('C'.$i)->getValue(),
-            'amount_2' => $spreadsheet->getCell('D'.$i)->getValue(),
-            'variation' => $spreadsheet->getCell('E'.$i)->getValue(),
-        ];
+        $total_assets[] = $this->setValue($spreadsheet, $i);
 
         $i = $i + 3;
-        $long_term_loan[] = [
-//            'title' => $spreadsheet->getCell('C'.$i)->getValue(),
-            'amount_1' => $spreadsheet->getCell('C'.$i)->getValue(),
-            'amount_2' => $spreadsheet->getCell('D'.$i)->getValue(),
-            'variation' => $spreadsheet->getCell('E'.$i)->getValue(),
-        ];
+        $long_term_loan[] = $this->setValue($spreadsheet, $i);
         $i++;
-        $non_current_deferred_income[] = [
-//            'title' => $spreadsheet->getCell('C'.$i)->getValue(),
-            'amount_1' => $spreadsheet->getCell('C'.$i)->getValue(),
-            'amount_2' => $spreadsheet->getCell('D'.$i)->getValue(),
-            'variation' => $spreadsheet->getCell('E'.$i)->getValue(),
-        ];
+        $non_current_deferred_income[] = $this->setValue($spreadsheet, $i);
         $i++;
-        $deferred_tax[] = [
-//            'title' => $spreadsheet->getCell('C'.$i)->getValue(),
-            'amount_1' => $spreadsheet->getCell('C'.$i)->getValue(),
-            'amount_2' => $spreadsheet->getCell('D'.$i)->getValue(),
-            'variation' => $spreadsheet->getCell('E'.$i)->getValue(),
-        ];
+        $deferred_tax[] = $this->setValue($spreadsheet, $i);
         $i++;
-        $total_non_current_liabilities[] = [
-//            'title' => $spreadsheet->getCell('C'.$i)->getValue(),
-            'amount_1' => $spreadsheet->getCell('C'.$i)->getValue(),
-            'amount_2' => $spreadsheet->getCell('D'.$i)->getValue(),
-            'variation' => $spreadsheet->getCell('E'.$i)->getValue(),
-        ];
+        $total_non_current_liabilities[] = $this->setValue($spreadsheet, $i);
 
         $i = $i + 4;
-        $trade_creditors[] = [
-//            'title' => $spreadsheet->getCell('C'.$i)->getValue(),
-            'amount_1' => $spreadsheet->getCell('C'.$i)->getValue(),
-            'amount_2' => $spreadsheet->getCell('D'.$i)->getValue(),
-            'variation' => $spreadsheet->getCell('E'.$i)->getValue(),
-        ];
+        $trade_creditors[] = $this->setValue($spreadsheet, $i);
         $i++;
-        $current_deferred_income[] = [
-//            'title' => $spreadsheet->getCell('C'.$i)->getValue(),
-            'amount_1' => $spreadsheet->getCell('C'.$i)->getValue(),
-            'amount_2' => $spreadsheet->getCell('D'.$i)->getValue(),
-            'variation' => $spreadsheet->getCell('E'.$i)->getValue(),
-        ];
+        $current_deferred_income[] = $this->setValue($spreadsheet, $i);
         $i++;
-        $salary_payable[] = [
-//            'title' => $spreadsheet->getCell('C'.$i)->getValue(),
-            'amount_1' => $spreadsheet->getCell('C'.$i)->getValue(),
-            'amount_2' => $spreadsheet->getCell('D'.$i)->getValue(),
-            'variation' => $spreadsheet->getCell('E'.$i)->getValue(),
-        ];
+        $salary_payable[] = $this->setValue($spreadsheet, $i);
         $i++;
-        $internet_bill[] = [
-//            'title' => $spreadsheet->getCell('C'.$i)->getValue(),
-            'amount_1' => $spreadsheet->getCell('C'.$i)->getValue(),
-            'amount_2' => $spreadsheet->getCell('D'.$i)->getValue(),
-            'variation' => $spreadsheet->getCell('E'.$i)->getValue(),
-        ];
+        $internet_bill[] = $this->setValue($spreadsheet, $i);
         $i++;
-        $social_security_fees[] = [
-//            'title' => $spreadsheet->getCell('C'.$i)->getValue(),
-            'amount_1' => $spreadsheet->getCell('C'.$i)->getValue(),
-            'amount_2' => $spreadsheet->getCell('D'.$i)->getValue(),
-            'variation' => $spreadsheet->getCell('E'.$i)->getValue(),
-        ];
+        $social_security_fees[] = $this->setValue($spreadsheet, $i);
         $i++;
-        $electricity_charges[] = [
-//            'title' => $spreadsheet->getCell('C'.$i)->getValue(),
-            'amount_1' => $spreadsheet->getCell('C'.$i)->getValue(),
-            'amount_2' => $spreadsheet->getCell('D'.$i)->getValue(),
-            'variation' => $spreadsheet->getCell('E'.$i)->getValue(),
-        ];
+        $electricity_charges[] = $this->setValue($spreadsheet, $i);
         $i++;
-        $staff_fund[] = [
-//            'title' => $spreadsheet->getCell('C'.$i)->getValue(),
-            'amount_1' => $spreadsheet->getCell('C'.$i)->getValue(),
-            'amount_2' => $spreadsheet->getCell('D'.$i)->getValue(),
-            'variation' => $spreadsheet->getCell('E'.$i)->getValue(),
-        ];
+        $staff_fund[] = $this->setValue($spreadsheet, $i);
         $i++;
-        $bod_salaries[] = [
-//            'title' => $spreadsheet->getCell('C'.$i)->getValue(),
-            'amount_1' => $spreadsheet->getCell('C'.$i)->getValue(),
-            'amount_2' => $spreadsheet->getCell('D'.$i)->getValue(),
-            'variation' => $spreadsheet->getCell('E'.$i)->getValue(),
-        ];
+        $bod_salaries[] = $this->setValue($spreadsheet, $i);
         $i++;
-        $consultant_salaries[] = [
-            'title' => $spreadsheet->getCell('C'.$i)->getValue(),
-            'amount_1' => $spreadsheet->getCell('C'.$i)->getValue(),
-            'amount_2' => $spreadsheet->getCell('D'.$i)->getValue(),
-            'variation' => $spreadsheet->getCell('E'.$i)->getValue(),
-        ];
+        $consultant_salaries[] = $this->setValue($spreadsheet, $i);
         $i++;
-        $payable_stamp_duty[] = [
-//            'title' => $spreadsheet->getCell('C'.$i)->getValue(),
-            'amount_1' => $spreadsheet->getCell('C'.$i)->getValue(),
-            'amount_2' => $spreadsheet->getCell('D'.$i)->getValue(),
-            'variation' => $spreadsheet->getCell('E'.$i)->getValue(),
-        ];
+        $payable_stamp_duty[] = $this->setValue($spreadsheet, $i);
         $i++;
-        $payable_bonus[] = [
-//            'title' => $spreadsheet->getCell('C'.$i)->getValue(),
-            'amount_1' => $spreadsheet->getCell('C'.$i)->getValue(),
-            'amount_2' => $spreadsheet->getCell('D'.$i)->getValue(),
-            'variation' => $spreadsheet->getCell('E'.$i)->getValue(),
-        ];
+        $payable_bonus[] = $this->setValue($spreadsheet, $i);
         $i++;
-        $bod_consultant_salaries_tax[] = [
-//            'title' => $spreadsheet->getCell('C'.$i)->getValue(),
-            'amount_1' => $spreadsheet->getCell('C'.$i)->getValue(),
-            'amount_2' => $spreadsheet->getCell('D'.$i)->getValue(),
-            'variation' => $spreadsheet->getCell('E'.$i)->getValue(),
-        ];
+        $bod_consultant_salaries_tax[] = $this->setValue($spreadsheet, $i);
         $i++;
-        $advance_2_and_5_percent_tax[] = [
-//            'title' => $spreadsheet->getCell('C'.$i)->getValue(),
-            'amount_1' => $spreadsheet->getCell('C'.$i)->getValue(),
-            'amount_2' => $spreadsheet->getCell('D'.$i)->getValue(),
-            'variation' => $spreadsheet->getCell('E'.$i)->getValue(),
-        ];
+        $advance_2_and_5_percent_tax[] = $this->setValue($spreadsheet, $i);
         $i++;
-        $two_percent_tax[] = [
-//            'title' => $spreadsheet->getCell('C'.$i)->getValue(),
-            'amount_1' => $spreadsheet->getCell('C'.$i)->getValue(),
-            'amount_2' => $spreadsheet->getCell('D'.$i)->getValue(),
-            'variation' => $spreadsheet->getCell('E'.$i)->getValue(),
-        ];
+        $two_percent_tax[] = $this->setValue($spreadsheet, $i);
         $i++;
-        $five_percent_commercial_tax[] = [
-//            'title' => $spreadsheet->getCell('C'.$i)->getValue(),
-            'amount_1' => $spreadsheet->getCell('C'.$i)->getValue(),
-            'amount_2' => $spreadsheet->getCell('D'.$i)->getValue(),
-            'variation' => $spreadsheet->getCell('E'.$i)->getValue(),
-        ];
+        $five_percent_commercial_tax[] = $this->setValue($spreadsheet, $i);
         $i++;
-        $total_current_liabilities[] = [
-//            'title' => $spreadsheet->getCell('C'.$i)->getValue(),
-            'amount_1' => $spreadsheet->getCell('C'.$i)->getValue(),
-            'amount_2' => $spreadsheet->getCell('D'.$i)->getValue(),
-            'variation' => $spreadsheet->getCell('E'.$i)->getValue(),
-        ];
+        $total_current_liabilities[] = $this->setValue($spreadsheet, $i);
         $i++;
-        $total_liabilities[] = [
-//            'title' => $spreadsheet->getCell('C'.$i)->getValue(),
-            'amount_1' => $spreadsheet->getCell('C'.$i)->getValue(),
-            'amount_2' => $spreadsheet->getCell('D'.$i)->getValue(),
-            'variation' => $spreadsheet->getCell('E'.$i)->getValue(),
-        ];
+        $total_liabilities[] = $this->setValue($spreadsheet, $i);
         $i++;
-        $net_assets[] = [
-//            'title' => $spreadsheet->getCell('C'.$i)->getValue(),
-            'amount_1' => $spreadsheet->getCell('C'.$i)->getValue(),
-            'amount_2' => $spreadsheet->getCell('D'.$i)->getValue(),
-            'variation' => $spreadsheet->getCell('E'.$i)->getValue(),
-        ];
+        $net_assets[] = $this->setValue($spreadsheet, $i);
         $i++;
-        $equity[] = [
-//            'title' => $spreadsheet->getCell('C'.$i)->getValue(),
-            'amount_1' => $spreadsheet->getCell('C'.$i)->getValue(),
-            'amount_2' => $spreadsheet->getCell('D'.$i)->getValue(),
-            'variation' => $spreadsheet->getCell('E'.$i)->getValue(),
-        ];
+        $equity[] = $this->setValue($spreadsheet, $i);
         $i++;
-        $owner_shareholders_equity[] = [
-//            'title' => $spreadsheet->getCell('C'.$i)->getValue(),
-            'amount_1' => $spreadsheet->getCell('C'.$i)->getValue(),
-            'amount_2' => $spreadsheet->getCell('D'.$i)->getValue(),
-            'variation' => $spreadsheet->getCell('E'.$i)->getValue(),
-        ];
+        $owner_shareholders_equity[] = $this->setValue($spreadsheet, $i);
         $i++;
-        $capital[] = [
-//            'title' => $spreadsheet->getCell('C'.$i)->getValue(),
-            'amount_1' => $spreadsheet->getCell('C'.$i)->getValue(),
-            'amount_2' => $spreadsheet->getCell('D'.$i)->getValue(),
-            'variation' => $spreadsheet->getCell('E'.$i)->getValue(),
-        ];
+        $capital[] = $this->setValue($spreadsheet, $i);
 
         $i = $i + 2;
-        $total_owner_shareholders_equity[] = [
-//            'title' => $spreadsheet->getCell('C'.$i)->getValue(),
-            'amount_1' => $spreadsheet->getCell('C'.$i)->getValue(),
-            'amount_2' => $spreadsheet->getCell('D'.$i)->getValue(),
-            'variation' => $spreadsheet->getCell('E'.$i)->getValue(),
-        ];
+        $total_owner_shareholders_equity[] = $this->setValue($spreadsheet, $i);
         $i++;
-        $retained_earnings[] = [
-//            'title' => $spreadsheet->getCell('C'.$i)->getValue(),
-            'amount_1' => $spreadsheet->getCell('C'.$i)->getValue(),
-            'amount_2' => $spreadsheet->getCell('D'.$i)->getValue(),
-            'variation' => $spreadsheet->getCell('E'.$i)->getValue(),
-        ];
+        $retained_earnings[] = $this->setValue($spreadsheet, $i);
         $i++;
-        $profit_loss_for_the_year[] = [
-//            'title' => $spreadsheet->getCell('C'.$i)->getValue(),
-            'amount_1' => $spreadsheet->getCell('C'.$i)->getValue(),
-            'amount_2' => $spreadsheet->getCell('D'.$i)->getValue(),
-            'variation' => $spreadsheet->getCell('E'.$i)->getValue(),
-        ];
+        $profit_loss_for_the_year[] = $this->setValue($spreadsheet, $i);
         $i++;
-        $profit_divided[] = [
-//            'title' => $spreadsheet->getCell('C'.$i)->getValue(),
-            'amount_1' => $spreadsheet->getCell('C'.$i)->getValue(),
-            'amount_2' => $spreadsheet->getCell('D'.$i)->getValue(),
-            'variation' => $spreadsheet->getCell('E'.$i)->getValue(),
-        ];
+        $profit_divided[] = $this->setValue($spreadsheet, $i);
         $i++;
-        $total_equity[] = [
-//            'title' => $spreadsheet->getCell('C'.$i)->getValue(),
-            'amount_1' => $spreadsheet->getCell('C'.$i)->getValue(),
-            'amount_2' => $spreadsheet->getCell('D'.$i)->getValue(),
-            'variation' => $spreadsheet->getCell('E'.$i)->getValue(),
-        ];
+        $total_equity[] = $this->setValue($spreadsheet, $i);
 
         $data = [
             'non_current_assets' => json_encode($non_current_assets),

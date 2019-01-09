@@ -9,7 +9,7 @@
 namespace App\Repositories\PnlExcel;
 
 
-use App\Models\PnlExcel\Variation;
+use App\Variation;
 use App\Repositories\BaseRepository;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;

@@ -9,7 +9,7 @@
 namespace App\Repositories\PnlExcel;
 
 
-use App\Models\PnlExcel\Debit;
+use App\Debit;
 use App\Repositories\BaseRepository;
 use Illuminate\Support\Facades\Validator;
 use JsonSchema\Exception\ValidationException;

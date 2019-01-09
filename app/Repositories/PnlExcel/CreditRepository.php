@@ -9,7 +9,7 @@
 namespace App\Repositories\PnlExcel;
 
 
-use App\Models\PnlExcel\Credit;
+use App\Credit;;
 use App\Repositories\BaseRepository;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
