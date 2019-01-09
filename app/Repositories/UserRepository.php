@@ -30,19 +30,19 @@ class UserRepository extends BaseRepository
     public function validation(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'name'             => 'required',
-            'email'            => 'required|unique:users',
-            'position'         => 'required|string',
-            'nrc_no'           => 'required|string',
-            'nrc_photo'        => 'required',
-            'nrc_photo.*'      => 'image|mimes:jpeg,png,jpg|max:2048',
-            'phone_no'         => 'required|string',
-            'address'          => 'required|string',
-            'password'         => 'required',
+            'name' => 'required',
+            'email' => 'required|unique:users',
+            'position' => 'required|string',
+            'nrc_no' => 'required|string',
+            'nrc_photo' => 'required',
+            'nrc_photo.*' => 'image|mimes:jpeg,png,jpg|max:2048',
+            'phone_no' => 'required|string',
+            'address' => 'required|string',
+            'password' => 'required',
             'confirm_password' => 'required|same:password',
-            'role_id'          => 'required|int',
-            'profile_photo'    => 'required',
-            'profile_photo.*'  => 'image|mimes:jpeg,png,jpg|max:2048',
+            'role_id' => 'required|int',
+            'profile_photo' => 'required',
+            'profile_photo.*' => 'image|mimes:jpeg,png,jpg|max:2048',
         ]);
 
         return $validator;
@@ -51,14 +51,14 @@ class UserRepository extends BaseRepository
     public function setData(Request $request)
     {
         $data = [
-            'name'     => $request->get('name'),
-            'email'    => $request->get('email'),
+            'name' => $request->get('name'),
+            'email' => $request->get('email'),
             'position' => $request->get('position'),
-            'nrc_no'   => $request->get('nrc_no'),
+            'nrc_no' => $request->get('nrc_no'),
             'phone_no' => $request->get('phone_no'),
-            'address'  => $request->get('address'),
+            'address' => $request->get('address'),
             'password' => bcrypt($request->get('password')),
-            'role_id'  => $request->get('role_id'),
+            'role_id' => $request->get('role_id'),
         ];
 
         return $data;
@@ -67,12 +67,12 @@ class UserRepository extends BaseRepository
     public function storeProfilePhoto(Request $request)
     {
         /**
-         * @var UploadedFile $nrc_photo
+         * @var UploadedFile $profile_photo
          */
         $profile_photo = $request->file('profile_photo');
-        $profile_photo_name = $profile_photo->move(public_path('db/profile_photos'), $this->uuid(date('m'), 15).'.'.$profile_photo->getClientOriginalExtension());
+        $profile_photo_name = $profile_photo->move(public_path('db/profile_photos'), $this->uuid(date('m'), 15) . '.' . $profile_photo->getClientOriginalExtension());
 
-        return 'db/profile_photos/'.$profile_photo_name->getFilename();
+        return 'db/profile_photos/' . $profile_photo_name->getFilename();
     }
 
     public function storeNrcPhoto(Request $request)
@@ -81,9 +81,9 @@ class UserRepository extends BaseRepository
          * @var UploadedFile $nrc_photo
          */
         $nrc_photo = $request->file('nrc_photo');
-        $nrc_photo_name = $nrc_photo->move(public_path('db/nrc_photos'), $this->uuid(date('m'), 15).'.'.$nrc_photo->getClientOriginalExtension());
+        $nrc_photo_name = $nrc_photo->move(public_path('db/nrc_photos'), $this->uuid(date('m'), 15) . '.' . $nrc_photo->getClientOriginalExtension());
 
-        return 'db/nrc_photos/'.$nrc_photo_name->getFilename();
+        return 'db/nrc_photos/' . $nrc_photo_name->getFilename();
     }
 
     public function store(Request $request)
@@ -120,13 +120,13 @@ class UserRepository extends BaseRepository
     public function setUpdateProfileData(Request $request)
     {
         $data = [
-            'name'     => $request->get('name'),
-            'email'    => $request->get('email'),
+            'name' => $request->get('name'),
+            'email' => $request->get('email'),
             'position' => $request->get('position'),
-            'nrc_no'   => $request->get('nrc_no'),
+            'nrc_no' => $request->get('nrc_no'),
             'phone_no' => $request->get('phone_no'),
-            'address'  => $request->get('address'),
-            'role_id'  => $request->get('role_id'),
+            'address' => $request->get('address'),
+            'role_id' => $request->get('role_id'),
         ];
 
         return $data;
@@ -134,29 +134,15 @@ class UserRepository extends BaseRepository
 
     public function updateProfileValidation(Request $request)
     {
-        if ($this->model()->where('email', $request->input('email'))->exists()) {
-            return Validator::make($request->all(), [
-                'name'          => 'required',
-                'email'         => 'required',
-                'position'      => 'required|string',
-                'nrc_no'        => 'required|string',
-                'nrc_photo'     => 'image|mimes:jpeg,png,jpg|max:2048',
-                'phone_no'      => 'required|string',
-                'address'       => 'required|string',
-                'role_id'       => 'required|int',
-                'profile_photo' => 'image|mimes:jpeg,png,jpg|max:2048',
-            ]);
-        }
-
         return Validator::make($request->all(), [
-            'name'          => 'required',
-            'email'         => 'required|unique:users',
-            'position'      => 'required|string',
-            'nrc_no'        => 'required|string',
-            'nrc_photo'     => 'image|mimes:jpeg,png,jpg|max:2048',
-            'phone_no'      => 'required|string',
-            'address'       => 'required|string',
-            'role_id'       => 'required|int',
+            'name' => 'required',
+            'email' => $this->model()->where('email', $request->input('email'))->exists() ? 'required' : 'required|unique:users',
+            'position' => 'required|string',
+            'nrc_no' => 'required|string',
+            'nrc_photo' => 'image|mimes:jpeg,png,jpg|max:2048',
+            'phone_no' => 'required|string',
+            'address' => 'required|string',
+            'role_id' => 'required|int',
             'profile_photo' => 'image|mimes:jpeg,png,jpg|max:2048',
         ]);
     }
@@ -209,7 +195,7 @@ class UserRepository extends BaseRepository
     {
         return Validator::make($data, [
             'current_password' => 'required|string|old_password',
-            'new_password'     => 'required|string',
+            'new_password' => 'required|string',
             'confirm_password' => 'required|same:new_password',
         ]);
     }
@@ -218,7 +204,7 @@ class UserRepository extends BaseRepository
     {
         $data = [
             'current_password' => $request->get('current_password'),
-            'new_password'     => $request->get('new_password'),
+            'new_password' => $request->get('new_password'),
             'confirm_password' => $request->get('confirm_password'),
         ];
         $validator = $this->updatePasswordValidation($data);

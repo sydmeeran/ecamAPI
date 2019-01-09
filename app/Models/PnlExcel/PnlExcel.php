@@ -2,9 +2,6 @@
 
 namespace App;
 
-use App\Models\PnlExcel\Credit;
-use App\Models\PnlExcel\Debit;
-use App\Models\PnlExcel\Variation;
 use Illuminate\Database\Eloquent\Model;
 
 class PnlExcel extends Model

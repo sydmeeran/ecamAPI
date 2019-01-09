@@ -2,9 +2,6 @@
 
 namespace App;
 
-use App\Models\BalanceSheetExcel\Amount1;
-use App\Models\BalanceSheetExcel\Amount2;
-use App\Models\BalanceSheetExcel\Variation;
 use Illuminate\Database\Eloquent\Model;
 
 class BalanceSheetExcel extends Model

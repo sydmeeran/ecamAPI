@@ -25,6 +25,12 @@ class AppServiceProvider extends ServiceProvider
             return Hash::check($value, auth()->user()->getAuthPassword());
         });
 
+        $mainPath = database_path('migrations');
+        $directories = glob($mainPath . '/*' , GLOB_ONLYDIR);
+        $paths = array_merge([$mainPath], $directories);
+
+        $this->loadMigrationsFrom($paths);
+
     }
 
     /**
