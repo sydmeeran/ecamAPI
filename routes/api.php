@@ -57,6 +57,7 @@ Route::group([
     Route::get('/users/get/{id}', 'UserController@get');
     Route::post('/users/delete/{id}', 'UserController@delete');
     Route::post('/users/update-profile/{id}', 'UserController@update_profile');
+    Route::post('/users/update/{id}', 'UserController@update');
     Route::post('/users/update-password/{id}', 'UserController@update_password');
     Route::post('/users/{id}/active-deactive', 'UserController@active_deactive');
     Route::post('/users/search', 'UserController@search');

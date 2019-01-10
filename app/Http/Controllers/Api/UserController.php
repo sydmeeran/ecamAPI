@@ -18,17 +18,18 @@ class UserController extends BaseController
 
     public function __construct()
     {
-
-        $this->user = DataRepo::user();
-
         $this->actionMiddleware([
             'store' => 'user-create',
             'pagination' => 'user-retrieve',
             'get' => 'user-retrieve',
             'search' => 'user-retrieve',
             'delete' => 'user-delete',
-            'active_deactive' => 'user-deactive'
+            'active_deactive' => 'user-deactive',
+            'update' => 'user-update',
+//            'update_profile' => 'user-retrieve'
         ]);
+
+        $this->user = DataRepo::user();
     }
 
     public function store(Request $request)
@@ -86,6 +87,11 @@ class UserController extends BaseController
     {
             User::where('id', $id)->delete();
             return response()->json($this->success);
+    }
+
+    public function update(Request $request, $id)
+    {
+        return $this->user->update($request, $id);
     }
 
     public function update_profile(Request $request, $id)

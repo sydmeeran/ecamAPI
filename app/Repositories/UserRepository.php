@@ -180,6 +180,77 @@ class UserRepository extends BaseRepository
         
     }
 
+//    public function edit_profile(Request $request, $id)
+//    {
+//
+//        $validator = $this->updateProfileValidation($request);
+//
+//        if ($validator->fails()) {
+//            throw new ValidationException($validator);
+//        }
+//
+//        $data = $this->setUpdateProfileData($request);
+//
+//        $user = $this->find($id);
+//        if (Input::hasFile('profile_photo')) {
+//
+//            if (file_exists($user->profile_photo)) {
+//                unlink($user->profile_photo);
+//            }
+//            $profile_photo_name = $this->storeProfilePhoto($request);
+//            $data['profile_photo'] = $profile_photo_name;
+//        }
+//
+//        if (Input::hasFile('nrc_photo')) {
+//
+//            if (file_exists($user->nrc_photo)) {
+//                unlink($user->nrc_photo);
+//            }
+//            $nrc_photo_name = $this->storeNrcPhoto($request);
+//            $data['nrc_photo'] = $nrc_photo_name;
+//        }
+//
+//        return $this->model()->where('id', $id)->update($data);
+//
+//        //        Mail::to($customer->email)->send(new CustomerVerificationEmail($customer));
+//
+//    }
+
+    public function update(Request $request, $id)
+    {
+        $validator = $this->updateProfileValidation($request);
+
+        if ($validator->fails()) {
+            throw new ValidationException($validator);
+        }
+
+        $data = $this->setUpdateProfileData($request);
+
+        $user = $this->find($id);
+        if (Input::hasFile('profile_photo')) {
+
+            if (file_exists($user->profile_photo)) {
+                unlink($user->profile_photo);
+            }
+            $profile_photo_name = $this->storeProfilePhoto($request);
+            $data['profile_photo'] = $profile_photo_name;
+        }
+
+        if (Input::hasFile('nrc_photo')) {
+
+            if (file_exists($user->nrc_photo)) {
+                unlink($user->nrc_photo);
+            }
+            $nrc_photo_name = $this->storeNrcPhoto($request);
+            $data['nrc_photo'] = $nrc_photo_name;
+        }
+
+        return $this->model()->where('id', $id)->update($data);
+
+        //        Mail::to($customer->email)->send(new CustomerVerificationEmail($customer));
+
+    }
+
     public function update_profile(Request $request, $id)
     {
 

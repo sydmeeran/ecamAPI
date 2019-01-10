@@ -28,12 +28,13 @@ trait ActionMiddlewareTrait
         }
 
         $methodName = $route->getActionMethod();
-
+//        dd($this->_actionMiddleware, $methodName);
         $middleware = array_get($this->_actionMiddleware, $methodName);
-
+//        dd($middleware);
         if (!$middleware) {
-            $middleware = array_get($this->_actionMiddleware, 'default');
+            return;
         }
+
 
         $this->middleware('permission:'.$middleware);
     }
