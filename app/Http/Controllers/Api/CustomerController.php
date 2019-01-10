@@ -90,14 +90,14 @@ class CustomerController extends BaseController
         if($customer['contract']){
             Mail::to($customer['email'])->send(new CustomerContractEmail($customer['contract']));
             $this->customer->model()->where('id', $id)->update([
-                'contract_date' => strtotime(date('d/M/Y'))
+                'contract_date' => new \DateTime()
             ]);
         } else {
             $pdf_name = 'db/contracts/C'.$id.'_'.date('d-m-Y-H-m-s').'_'.generateCode(10).'.pdf';
             PDF::loadView('pdfs.customer_contract', $customer)->setPaper('A4', 'portrait')->save($pdf_name);
             $this->customer->model()->where('id', $id)->update([
                 'contract' => $pdf_name,
-                'contract_date' => strtotime(date('d/M/Y'))
+                'contract_date' => new \DateTime()
             ]);
             Mail::to($customer['email'])->send(new CustomerContractEmail($pdf_name));
         }
