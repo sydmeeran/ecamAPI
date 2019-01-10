@@ -16,7 +16,7 @@ class Customer extends Model
       'company_id', 'company_name', 'owner_name', 'nrc_no', 'nrc_photo', 'phone_no',
         'email', 'contact_name', 'contact_position', 'contact_number', 'contact_email',
         'company_dica_link', 'company_link', 'otp', 'is_use', 'is_active', 'is_suspend',
-        'contract'
+        'contract', 'contract_date'
     ];
 
     /**
