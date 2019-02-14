@@ -38,7 +38,9 @@ class LoginController extends Controller
 
     protected function sendLoginResponse(Request $request)
     {
-        /** @var \App\User $user */
+        /**
+        *@var $user  App\User 
+        */
         $user = auth()->user();
 
         $user_arr = $user->toArray();

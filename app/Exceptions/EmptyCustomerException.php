@@ -15,6 +15,6 @@ class EmptyCustomerException extends Exception
         $error_message = [
             'message' => 'Register Customer First'
         ];
-        return response()->json($error_message, 401);
+        return response()->json($error_message, 410);
     }
 }

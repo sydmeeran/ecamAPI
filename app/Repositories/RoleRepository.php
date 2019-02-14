@@ -13,7 +13,7 @@ use App\Role;
 use App\RolePermission;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-use JsonSchema\Exception\ValidationException;
+use Illuminate\Validation\ValidationException;
 
 class RoleRepository extends BaseRepository
 {

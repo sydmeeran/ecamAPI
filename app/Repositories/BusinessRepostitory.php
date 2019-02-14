@@ -30,7 +30,6 @@ class BusinessRepostitory extends BaseRepository
     public function validation(Request $request){
         return Validator::make($request->all(), [
             'business_name' => 'required',
-            'license_no' => 'required',
             'license_type' => 'required',
             'license_photo.*' => 'image|mimes:jpeg,png,jpg|max:2048',
             'address' => 'required',
@@ -59,7 +58,12 @@ class BusinessRepostitory extends BaseRepository
     }
 
     public function create_business($data, $customer_id){
-        if(is_array($data['license_no'])){
+        if(is_array($data['license_type'])){
+
+            if(!$data['license_no']){
+                $data['license_no'] = [];
+            }
+
             if(!$data['license_photo']){
                 $data['license_photo'] = [];
             }
@@ -158,7 +162,6 @@ class BusinessRepostitory extends BaseRepository
     public function updateValidation(Request $request){
         return Validator::make($request->all(), [
             'business_name' => 'required|string',
-            'license_no' => 'required|string',
             'license_type' => 'required|string',
             'license_photo.*' => 'image|mimes:jpeg,png,jpg|max:2048',
             'address' => 'required|string',
