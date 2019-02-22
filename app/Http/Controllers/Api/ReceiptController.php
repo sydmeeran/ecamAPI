@@ -81,4 +81,10 @@ class ReceiptController extends BaseController
         Mail::to($invoice[0]['customer']['email'])->send(new ReceiptEmail($invoice));
         return 'success';
     }
+
+    public function delete($id)
+    {
+        $this->receipt->model()->where('id', $id)->delete();
+        return $this->success();
+    }
 }
