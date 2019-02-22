@@ -38,7 +38,7 @@ class QuotationController extends BaseController
 
     public function get($id)
     {
-        $quotation = $this->quotation->with(['customer', 'business', 'accounting_service', 'auditing', 'consulting', 'taxation', 'invoice'], $id)->toArray();
+        $quotation = $this->quotation->with(['customer', 'business', 'accounting_service', 'auditing', 'consulting', 'taxation', 'active_invoice'], $id)->toArray();
         if (empty($quotation)) {
             return $this->empty_data();
         }
@@ -87,4 +87,9 @@ class QuotationController extends BaseController
         return $this->success();
     }
 
+    public function delete($id)
+    {
+        $this->quotation->model()->where('id', $id)->delete();
+        return $this->success();
+    }
 }

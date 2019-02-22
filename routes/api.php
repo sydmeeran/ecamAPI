@@ -116,6 +116,7 @@ Route::group([
     Route::post('/quotations/search', 'QuotationController@search');
     Route::post('/quotations/send/mail/{id}', 'QuotationController@send_mail');
     Route::post('/quotations/cancel/{id}', 'QuotationController@cancel');
+    Route::post('/quotations/delete/{id}', 'QuotationController@delete');
 
     ////////////////////////////////////////////
     // Invoice

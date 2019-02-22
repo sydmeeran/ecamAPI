@@ -121,7 +121,7 @@
         <img style="margin-left: auto; margin-right: auto;display: block;" src="{{ env('DOMAIN_NAME') }}/image/quotation_invoice_receipt.png" align="center">
         
         <div class="invoice-css">
-        <h4 style="text-align: center;font-size: 14px;">Invoice</h4>
+        <h4 style="text-align: center;font-size: 16px;"><b>Invoice</b></h4>
         
         <table style="display: inline-block;" class="heading-table">
             <tr>

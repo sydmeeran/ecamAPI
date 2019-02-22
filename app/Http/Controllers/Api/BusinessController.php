@@ -58,16 +58,5 @@ class BusinessController extends BaseController
         return $this->response($business);
     }
 
-//    public function getByCustomer(Request $request, $customer_id)
-//    {
-//        if ($this->check_api_key($request)) {
-//            $business = $this->business->model()->where('customer_id', $customer_id)->get()->toArray();
-//
-//            if(empty($business)){
-//                return $this->response($business);
-//            }
-//            return $this->response($business);
-//        }
-//        return $this->unauthorized();
-//    }
+
 }

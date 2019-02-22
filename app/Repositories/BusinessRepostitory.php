@@ -61,7 +61,7 @@ class BusinessRepostitory extends BaseRepository
         if(is_array($data['license_type'])){
 
             if(!$data['license_no']){
-                $data['license_no'] = [];
+                $datbusinessesa['license_no'] = [];
             }
 
             if(!$data['license_photo']){
