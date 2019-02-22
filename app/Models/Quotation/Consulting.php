@@ -9,7 +9,7 @@ class Consulting extends Model
     protected $table = 'consulting';
 
     protected $fillable = [
-        'license_type', 'service_type', 'value', 'quotation_id', 'invoice_id'
+        'license_type', 'value', 'quotation_id', 'invoice_id'
     ];
     public function quotation(){
         return $this->belongsTo(Quotation::class, 'quotation_id');

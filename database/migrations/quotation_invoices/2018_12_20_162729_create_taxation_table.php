@@ -16,7 +16,6 @@ class CreateTaxationTable extends Migration
         Schema::create('taxation', function (Blueprint $table) {
             $table->increments('id');
             $table->string('type');
-            $table->string('service_type')->default("quotation");
             $table->string('value');
             $table->string('months')->nullable();
             $table->string('years')->nullable();

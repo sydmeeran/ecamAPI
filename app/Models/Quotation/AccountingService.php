@@ -9,7 +9,7 @@ class AccountingService extends Model
     protected $table = 'accounting_service';
 
     protected $fillable = [
-        'type', 'service_type', 'value', 'months', 'years', 'quotation_id', 'invoice_id'
+        'type', 'value', 'months', 'years', 'quotation_id', 'invoice_id'
     ];
 
     public function quotation(){

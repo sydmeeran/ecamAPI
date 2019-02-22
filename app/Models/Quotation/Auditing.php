@@ -9,7 +9,7 @@ class Auditing extends Model
     protected $table = 'auditing';
 
     protected $fillable = [
-        'type', 'service_type', 'value', 'months', 'years', 'quotation_id', 'invoice_id'
+        'type', 'value', 'months', 'years', 'quotation_id', 'invoice_id'
     ];
 
     public function quotation(){

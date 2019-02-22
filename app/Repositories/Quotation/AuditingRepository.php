@@ -115,7 +115,6 @@ class AuditingRepository extends BaseRepository
     public function setInvoiceData(Request $request, $invoice_id){
         return [
             'type' => $request->input('auditing_radio'),
-            'service_type' => 'quotation',
             'invoice_id' => $invoice_id,
         ];
     }

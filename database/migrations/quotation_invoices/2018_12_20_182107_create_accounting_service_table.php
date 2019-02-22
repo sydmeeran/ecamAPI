@@ -16,7 +16,6 @@ class CreateAccountingServiceTable extends Migration
         Schema::create('accounting_service', function (Blueprint $table) {
             $table->increments('id');
             $table->string('type');
-            $table->string('service_type')->default("quotation");
             $table->string('value');
             $table->string('months')->nullable();
             $table->string('years')->nullable();
