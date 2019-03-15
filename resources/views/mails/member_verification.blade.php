@@ -7,13 +7,13 @@
 <img style="padding: 20px; display: block; margin-left: auto; margin-right: auto;"
      src="{{ env('DOMAIN_NAME') }}/image/acc.png" alt="">
 <div style="margin: 10px 40px; padding: 0px 3px 20px 3px; background-color: white;">
-    <img style="padding: 3px" src="{{ env('DOMAIN_NAME') }}/image/customer_verification.jpg" alt="">
+    <img style="padding: 3px" src="{{ env('DOMAIN_NAME') }}/image/member_verification.jpg" alt="">
     <div style="padding: 0px 50px 0px 50px;">
         <p style="padding: 12px; margin: 0px 10px 20px 0px; font-size: 20px;">
             Thank you for registration ! Click button to verify your account.
         </p>
     </div>
-    <form action="{{ env('DOMAIN_NAME') }}/customer/verify/email" method="GET">
+    <form action="{{ env('DOMAIN_NAME') }}/member/verify/email" method="GET">
         <input type="hidden" name="otp" value="{{ $otp }}">
         <input type="hidden" name="email" value="{{ $email }}">
         <input type="submit" style="

@@ -20,10 +20,10 @@ class CreateBusinessesTable extends Migration
             $table->string('license_type');
             $table->string('license_photo')->nullable();
             $table->string('address');
-            $table->unsignedInteger('customer_id');
+            $table->unsignedInteger('member_id');
             $table->timestamps();
 
-            $table->foreign('customer_id')->references('id')->on('customers')->onDelete('cascade');
+            $table->foreign('member_id')->references('id')->on('members')->onDelete('cascade');
         });
     }
 

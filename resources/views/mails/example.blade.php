@@ -40,24 +40,24 @@
         <h2 style="text-align: center;font-size: 16px;">Quatation</h2>
         <table style="display: inline-block;" class="heading-table">
             <tr>
-                <td>Customer ID</td>
+                <td>Member ID</td>
                 <td>:</td>
-                <td>{{ $quotation['customer']['company_id'] }}</td>
+                <td>{{ $quotation['member']['company_id'] }}</td>
             </tr>
             <tr>
                 <td>Owner Name</td>
                 <td>:</td>
-                <td>{{ $quotation['customer']['owner_name'] }}</td>
+                <td>{{ $quotation['member']['owner_name'] }}</td>
             </tr>
             <tr>
                 <td>Email</td>
                 <td>:</td>
-                <td>{{ $quotation['customer']['email'] }}</td>
+                <td>{{ $quotation['member']['email'] }}</td>
             </tr>
             <tr>
                 <td>Phone</td>
                 <td>:</td>
-                <td>{{ $quotation['customer']['phone_no'] }}</td>
+                <td>{{ $quotation['member']['phone_no'] }}</td>
             </tr>
         </table>
 
@@ -65,7 +65,7 @@
             <tr>
                 <td>Company Name</td>
                 <td>:</td>
-                <td>{{ $quotation['customer']['company_name'] }}</td>
+                <td>{{ $quotation['member']['company_name'] }}</td>
             </tr>
             <tr>
                 <td>Business Name</td>
@@ -153,9 +153,9 @@
         <h4 style="margin-top: 20px;font-size: 16px"><b>Terms & Conditions</b></h4>
 
         <p style="font-size: 13px;">
-            1. Customer need to make payment before due date.<br>
+            1. Member need to make payment before due date.<br>
             2. If payment is not paid before due date, business agreement will be cancel.<br>
-            3. Customer need to send back scan copy of deposit slip to this email or Viber number:09254180009.</p>
+            3. Member need to send back scan copy of deposit slip to this email or Viber number:09254180009.</p>
     </div>
    
     </div>

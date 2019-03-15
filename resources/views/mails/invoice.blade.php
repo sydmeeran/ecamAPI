@@ -125,24 +125,24 @@
         
         <table style="display: inline-block;" class="heading-table">
             <tr>
-                <td>Customer ID</td>
+                <td>Member ID</td>
                 <td>:</td>
-                <td>{{ $invoice['customer']['company_id'] }}</td>
+                <td>{{ $invoice['member']['company_id'] }}</td>
             </tr>
             <tr>
                 <td>Owner Name</td>
                 <td>:</td>
-                <td>{{ $invoice['customer']['owner_name'] }}</td>
+                <td>{{ $invoice['member']['owner_name'] }}</td>
             </tr>
             <tr>
                 <td>Email</td>
                 <td>:</td>
-                <td>{{ $invoice['customer']['email'] }}</td>
+                <td>{{ $invoice['member']['email'] }}</td>
             </tr>
             <tr>
                 <td>Phone</td>
                 <td>:</td>
-                <td>{{ $invoice['customer']['phone_no'] }}</td>
+                <td>{{ $invoice['member']['phone_no'] }}</td>
             </tr>
         </table>
 
@@ -150,7 +150,7 @@
             <tr>
                 <td>Company Name</td>
                 <td>:</td>
-                <td>{{ $invoice['customer']['company_name'] }}</td>
+                <td>{{ $invoice['member']['company_name'] }}</td>
             </tr>
             <tr>
                 <td>Business Name</td>
@@ -280,9 +280,9 @@
         <h4 style="margin-top: 20px;font-size: 14px" class="terms-header"><b>Terms & Conditions</b></h4>
 
         <p style="font-size: 12px;color: black;" class="terms-p">
-            1. Customer need to make payment before due date.<br>
+            1. Member need to make payment before due date.<br>
             2. If payment is not paid before due date, business agreement will be cancel.<br>
-            3. Customer need to send back scan copy of deposit slip to this email or Viber number:09254180009.</p>
+            3. Member need to send back scan copy of deposit slip to this email or Viber number:09254180009.</p>
         </div>
     </div>
 

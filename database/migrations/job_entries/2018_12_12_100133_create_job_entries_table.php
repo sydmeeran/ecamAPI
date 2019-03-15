@@ -21,10 +21,10 @@ class CreateJobEntriesTable extends Migration
             $table->string('company_type');
             $table->string('excel_type');
             $table->string('excel_file');
-            $table->unsignedInteger('customer_id');
+            $table->unsignedInteger('member_id');
             $table->timestamps();
 
-            $table->foreign('customer_id')->references('id')->on('customers')->onDelete('cascade');
+            $table->foreign('member_id')->references('id')->on('members')->onDelete('cascade');
         });
     }
 

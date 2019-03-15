@@ -9,15 +9,15 @@ class Invoice extends Model
     protected $table = 'invoices';
 
     protected $fillable = [
-        'quotation_id', 'invoice_id', 'customer_id', 'business_id', 'sub_total', 'discount', 'tax', 'total', 'is_active'
+        'quotation_id', 'invoice_id', 'member_id', 'business_id', 'sub_total', 'discount', 'tax', 'total', 'is_active'
     ];
 
     public function quotation(){
         return $this->belongsTo(Quotation::class, 'quotation_id');
     }
 
-    public function customer(){
-        return $this->belongsTo(Customer::class, 'customer_id');
+    public function member(){
+        return $this->belongsTo(Member::class, 'member_id');
     }
 
     public function business(){

@@ -8,7 +8,7 @@
 
 namespace App\Repositories;
 
-use App\Mail\CustomerVerificationEmail;
+use App\Mail\MemberVerificationEmail;
 use App\Transformers\UserTransformer;
 use App\User;
 use Illuminate\Http\Request;
@@ -105,7 +105,7 @@ class UserRepository extends BaseRepository
 //        $user = $this->model()->create($data);
         return $this->model()->create($data);
 
-        //        Mail::to($user->email)->send(new CustomerVerificationEmail($user));
+        //        Mail::to($user->email)->send(new MemberVerificationEmail($user));
 //        return 'success';
     }
 
@@ -212,7 +212,7 @@ class UserRepository extends BaseRepository
 //
 //        return $this->model()->where('id', $id)->update($data);
 //
-//        //        Mail::to($customer->email)->send(new CustomerVerificationEmail($customer));
+//        //        Mail::to($member->email)->send(new MemberVerificationEmail($member));
 //
 //    }
 
@@ -247,7 +247,7 @@ class UserRepository extends BaseRepository
 
         return $this->model()->where('id', $id)->update($data);
 
-        //        Mail::to($customer->email)->send(new CustomerVerificationEmail($customer));
+        //        Mail::to($member->email)->send(new MemberVerificationEmail($member));
 
     }
 
@@ -283,7 +283,7 @@ class UserRepository extends BaseRepository
         
         return $this->model()->where('id', $id)->update($data);
 
-        //        Mail::to($customer->email)->send(new CustomerVerificationEmail($customer));
+        //        Mail::to($member->email)->send(new MemberVerificationEmail($member));
 
     }
 
@@ -315,7 +315,7 @@ class UserRepository extends BaseRepository
 
         return $this->model()->where('id', $id)->update($password_data);
 
-        //        Mail::to($customer->email)->send(new CustomerVerificationEmail($customer));
+        //        Mail::to($member->email)->send(new MemberVerificationEmail($member));
 
     }
 

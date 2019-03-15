@@ -11,7 +11,7 @@ class InvoiceEmail extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $invoice, $customer;
+    public $invoice, $member;
 
     /**
      * Create a new message instance.

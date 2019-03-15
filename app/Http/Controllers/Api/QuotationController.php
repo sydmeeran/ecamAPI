@@ -32,13 +32,13 @@ class QuotationController extends BaseController
     public function pagination()
     {
         $quotation = $this->quotation->model()
-            ->with('customer')->with('business')->with('active_invoice')->paginate(20);
+            ->with('member')->with('business')->with('active_invoice')->paginate(20);
         return $this->response($quotation);
     }
 
     public function get($id)
     {
-        $quotation = $this->quotation->with(['customer', 'business', 'accounting_service', 'auditing', 'consulting', 'taxation', 'active_invoice'], $id)->toArray();
+        $quotation = $this->quotation->with(['member', 'business', 'accounting_service', 'auditing', 'consulting', 'taxation', 'active_invoice'], $id)->toArray();
         if (empty($quotation)) {
             return $this->empty_data();
         }
@@ -60,7 +60,7 @@ class QuotationController extends BaseController
     {
         $keyword = $request->get('keyword');
         $result = $this->quotation->model()
-            ->whereHas('customer', function ($query) use ($keyword) {
+            ->whereHas('member', function ($query) use ($keyword) {
                 $query->where('owner_name', 'like', '%' . $keyword . '%')
                     ->orWhere('company_name', 'like', '%' . $keyword . '%');
             })
@@ -68,7 +68,7 @@ class QuotationController extends BaseController
                 $query->where('business_name', 'like', '%' . $keyword . '%');
             })
             ->orWhere('quotation_id', 'like', '%' . $keyword . '%')
-            ->with(['business', 'customer'])
+            ->with(['business', 'member'])
             ->get();
 
         return $this->response($result);
@@ -76,8 +76,8 @@ class QuotationController extends BaseController
 
     public function send_mail($id)
     {
-        $quotation = $this->quotation->with(['customer', 'business', 'accounting_service', 'auditing', 'consulting', 'taxation'], $id)->toArray();
-        Mail::to($quotation[0]['customer']['email'])->send(new QuotationEmail($quotation));
+        $quotation = $this->quotation->with(['member', 'business', 'accounting_service', 'auditing', 'consulting', 'taxation'], $id)->toArray();
+        Mail::to($quotation[0]['member']['email'])->send(new QuotationEmail($quotation));
         return 'success';
     }
 

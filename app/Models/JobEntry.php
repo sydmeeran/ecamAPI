@@ -9,11 +9,11 @@ class JobEntry extends Model
     protected $table = 'job_entries';
 
     protected $fillable = [
-      'type', 'start_date', 'end_date', 'company_type', 'excel_type', 'excel_file', 'customer_id'
+      'type', 'start_date', 'end_date', 'company_type', 'excel_type', 'excel_file', 'member_id'
     ];
 
-    public function customer(){
-        return $this->belongsTo(Customer::class, 'customer_id');
+    public function member(){
+        return $this->belongsTo(Member::class, 'member_id');
     }
 
     public function pnl_excel(){

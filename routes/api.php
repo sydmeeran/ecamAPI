@@ -16,10 +16,10 @@
 //});
 
 
-Route::post('/customers/verify', 'Api/CustomerController@verify');
+Route::post('/members/verify', 'Api/MemberController@verify');
 
 Route::get('/permissions', 'PermissionController@getAll');
-//Route::post('/customers/use', 'CustomerController@use');
+//Route::post('/members/use', 'MemberController@use');
 
 // Group Message
 Route::get('group-messages', 'GroupChatController@index');
@@ -72,28 +72,28 @@ Route::group([
     Route::post('/roles/delete/{id}', 'RoleController@delete');
 
     /////////////////////////////
-    // Customers
-    Route::post('/customers/store', 'CustomerController@store');
-    Route::get('/customers/get', 'CustomerController@getAll');
-    Route::get('/customers', 'CustomerController@pagination');
-    Route::get('/customers/get/{id}', 'CustomerController@get');
-    Route::post('/customers/update/{id}', 'CustomerController@update');
-    Route::post('/customers/delete/{id}', 'CustomerController@delete');
-    Route::post('/customers/search', 'CustomerController@search');
-    Route::post('/customers/{id}/active-deactive', 'CustomerController@active_deactive');
-    Route::post('/customers/{id}/append-suspend', 'CustomerController@append_suspend');
-    Route::post('/customers/send/mail/{id}', 'CustomerController@send_mail');
-    Route::post('/customers/send/contract/{id}', 'CustomerController@send_contract');
+    // Members
+    Route::post('/members/store', 'MemberController@store');
+    Route::get('/members/get', 'MemberController@getAll');
+    Route::get('/members', 'MemberController@pagination');
+    Route::get('/members/get/{id}', 'MemberController@get');
+    Route::post('/members/update/{id}', 'MemberController@update');
+    Route::post('/members/delete/{id}', 'MemberController@delete');
+    Route::post('/members/search', 'MemberController@search');
+    Route::post('/members/{id}/active-deactive', 'MemberController@active_deactive');
+    Route::post('/members/{id}/append-suspend', 'MemberController@append_suspend');
+    Route::post('/members/send/mail/{id}', 'MemberController@send_mail');
+    Route::post('/members/send/contract/{id}', 'MemberController@send_contract');
 
 
     ////////////////////////////////////
     // Businesses
-    Route::post('/businesses/store/{customer_id}', 'BusinessController@store');
+    Route::post('/businesses/store/{member_id}', 'BusinessController@store');
     Route::post('/businesses/update/{id}', 'BusinessController@update');
     Route::post('/businesses/delete/{id}', 'BusinessController@delete');
     Route::get('/businesses/get/{id}', 'BusinessController@get');
     Route::get('/businesses/get', 'BusinessController@getAll');
-//    Route::get('/businesses/get-by-customer/{id}', 'BusinessController@getByCustomer');
+//    Route::get('/businesses/get-by-member/{id}', 'BusinessController@getByMember');
 
     //////////////////////////////////////
     // Job Entries
@@ -103,7 +103,7 @@ Route::group([
     Route::post('/job-entries/store', 'JobEntryController@store');
     Route::post('/job-entries/update/{id}', 'JobEntryController@update');
     Route::post('/job-entries/delete/{id}', 'JobEntryController@delete');
-//    Route::get('/job-entries/get-by-customer/{id}', 'JobEntryController@getByCustomer');
+//    Route::get('/job-entries/get-by-member/{id}', 'JobEntryController@getByMember');
     Route::post('/job-entries/search', 'JobEntryController@search');
 
     //////////////////////////////////////////

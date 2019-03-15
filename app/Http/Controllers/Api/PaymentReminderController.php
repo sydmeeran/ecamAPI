@@ -24,13 +24,13 @@ class PaymentReminderController extends BaseController
 
     public function pagination()
     {
-            $invoice = $this->invoice->model()->where('is_active', 1)->whereDoesntHave('receipt')->with('customer')->with('business')->paginate(20);
+            $invoice = $this->invoice->model()->where('is_active', 1)->whereDoesntHave('receipt')->with('member')->with('business')->paginate(20);
             return $this->response($invoice);
     }
 
     public function paymentSuccess()
     {
-            $invoice = $this->invoice->model()->where('is_active', 1)->whereHas('receipt')->with('customer')->with('business')->with('receipt')->paginate(20);
+            $invoice = $this->invoice->model()->where('is_active', 1)->whereHas('receipt')->with('member')->with('business')->with('receipt')->paginate(20);
             return $this->response($invoice);
     }
 

@@ -19,7 +19,7 @@ use Mail;
 
 class InvoiceRepository extends BaseRepository
 {
-    protected $quotation, $accounting_service, $auditing, $annual, $consulting, $taxation, $customer, $prefix;
+    protected $quotation, $accounting_service, $auditing, $annual, $consulting, $taxation, $member, $prefix;
 
     public function __construct()
     {
@@ -29,7 +29,7 @@ class InvoiceRepository extends BaseRepository
         $this->auditing = DataRepo::auditing();
         $this->consulting = DataRepo::consulting();
         $this->taxation = DataRepo::taxation();
-        $this->customer = DataRepo::customer();
+        $this->member = DataRepo::member();
     }
 
     public function model()
@@ -41,7 +41,7 @@ class InvoiceRepository extends BaseRepository
     {
         $validator = Validator::make($request->all(), [
             'quotation_id' => 'required',
-            'customer_id' => 'required',
+            'member_id' => 'required',
             'business_id' => 'required',
             'sub_total' => 'required|int',
             'discount' => 'required|int',
@@ -56,7 +56,7 @@ class InvoiceRepository extends BaseRepository
     {
         $data = [
             'quotation_id' => $request->input('quotation_id'),
-            'customer_id' => $request->input('customer_id'),
+            'member_id' => $request->input('member_id'),
             'business_id' => $request->input('business_id'),
             'sub_total' => $request->input('sub_total'),
             'discount' => $request->input('discount'),
@@ -100,11 +100,11 @@ class InvoiceRepository extends BaseRepository
             $this->taxation->storeByInvoice($request, $invoice->id);
         }
 
-//        $customer = $this->customer->find($invoice->customer_id)->toArray();
+//        $member = $this->member->find($invoice->member_id)->toArray();
 
-        $invoice = $this->with(['customer', 'business', 'accounting_service', 'auditing', 'consulting', 'taxation'], $invoice->id)->toArray();
+        $invoice = $this->with(['member', 'business', 'accounting_service', 'auditing', 'consulting', 'taxation'], $invoice->id)->toArray();
 
-        Mail::to($invoice[0]['customer']['email'])->send(new InvoiceEmail($invoice));
+        Mail::to($invoice[0]['member']['email'])->send(new InvoiceEmail($invoice));
 
         return 'success';
     }

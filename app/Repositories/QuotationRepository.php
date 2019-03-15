@@ -17,7 +17,7 @@ use Mail;
 
 class QuotationRepository extends BaseRepository
 {
-    protected $accounting_service, $auditing, $annual, $consulting, $taxation, $customer, $prefix;
+    protected $accounting_service, $auditing, $annual, $consulting, $taxation, $member, $prefix;
 
     public function __construct()
     {
@@ -26,7 +26,7 @@ class QuotationRepository extends BaseRepository
         $this->auditing = DataRepo::auditing();
         $this->consulting = DataRepo::consulting();
         $this->taxation = DataRepo::taxation();
-        $this->customer = DataRepo::customer();
+        $this->member = DataRepo::member();
     }
 
     public function model()
@@ -37,7 +37,7 @@ class QuotationRepository extends BaseRepository
     public function validation(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'customer_id' => 'required',
+            'member_id' => 'required',
             'business_id' => 'required',
             'sub_total' => 'required|int',
             'discount' => 'required|int',
@@ -51,7 +51,7 @@ class QuotationRepository extends BaseRepository
     public function setData(Request $request)
     {
         $data = [
-            'customer_id' => $request->input('customer_id'),
+            'member_id' => $request->input('member_id'),
             'business_id' => $request->input('business_id'),
             'sub_total' => $request->input('sub_total'),
             'discount' => $request->input('discount'),
@@ -95,11 +95,11 @@ class QuotationRepository extends BaseRepository
             $this->taxation->store($request, $quotation->id);
         }
 
-//        $customer = $this->customer->find($quotation->customer_id)->toArray();
+//        $member = $this->member->find($quotation->member_id)->toArray();
 
-        $quotation = $this->with(['customer', 'business','accounting_service', 'auditing', 'consulting', 'taxation'], $quotation->id)->toArray();
+        $quotation = $this->with(['member', 'business','accounting_service', 'auditing', 'consulting', 'taxation'], $quotation->id)->toArray();
 
-        Mail::to($quotation[0]['customer']['email'])->send(new QuotationEmail($quotation));
+        Mail::to($quotation[0]['member']['email'])->send(new QuotationEmail($quotation));
 
         return 'success';
     }

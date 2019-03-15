@@ -15,19 +15,19 @@ class BusinessController extends BaseController
     public function __construct()
     {
         $this->actionMiddleware([
-            'store' => 'customer-update',
-            'update' => 'customer-update',
-            'delete' => 'customer-update',
-            'get' => 'customer-retrieve',
-//            'getByCustomer' => 'customer-retrieve',
+            'store' => 'member-update',
+            'update' => 'member-update',
+            'delete' => 'member-update',
+            'get' => 'member-retrieve',
+//            'getByCustomer' => 'member-retrieve',
         ]);
 
         $this->business = DataRepo::business();
     }
 
-    public function store(Request $request, $customer_id)
+    public function store(Request $request, $member_id)
     {
-        return $this->business->register($request, $customer_id);
+        return $this->business->register($request, $member_id);
     }
 
     public function update(Request $request, $id)

@@ -36,16 +36,16 @@ class PermissionSeeder extends Seeder
 
         foreach($permission as $p){
             Permission::create([
-                'permission' => 'customer-'.$p
+                'permission' => 'member-'.$p
             ]);
         }
 
         Permission::create([
-            'permission' => 'customer-deactive'
+            'permission' => 'member-deactive'
         ]);
 
         Permission::create([
-            'permission' => 'customer-suspend'
+            'permission' => 'member-suspend'
         ]);
 
         foreach($permission as $p){

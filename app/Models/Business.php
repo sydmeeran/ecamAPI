@@ -9,11 +9,11 @@ class Business extends Model
     protected $table = 'businesses';
 
     protected $fillable = [
-        'business_name', 'license_no', 'license_type', 'license_photo', 'address', 'customer_id'
+        'business_name', 'license_no', 'license_type', 'license_photo', 'address', 'member_id'
     ];
 
-    public function customer(){
-        return $this->belongsTo(Customer::class, 'customer_id');
+    public function member(){
+        return $this->belongsTo(Member::class, 'member_id');
     }
 
     public function quotation(){

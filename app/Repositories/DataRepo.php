@@ -30,9 +30,9 @@ class DataRepo
         return app(RoleRepository::class);
     }
 
-    public static function customer(): CustomerRepository
+    public static function member(): MemberRepository
     {
-        return app(CustomerRepository::class);
+        return app(MemberRepository::class);
     }
 
     public static function business(): BusinessRepostitory

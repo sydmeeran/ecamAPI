@@ -16,7 +16,7 @@ class CreateQuotationsTable extends Migration
         Schema::create('quotations', function (Blueprint $table) {
             $table->increments('id');
             $table->string('quotation_id');
-            $table->unsignedInteger('customer_id');
+            $table->unsignedInteger('member_id');
             $table->unsignedInteger('business_id');
             $table->integer('sub_total');
             $table->integer('discount');
@@ -25,7 +25,7 @@ class CreateQuotationsTable extends Migration
             $table->boolean('is_active')->default(1);
             $table->timestamps();
 
-            $table->foreign('customer_id')->references('id')->on('customers');
+            $table->foreign('member_id')->references('id')->on('members');
             $table->foreign('business_id')->references('id')->on('businesses')->onDelete('cascade');
         });
     }

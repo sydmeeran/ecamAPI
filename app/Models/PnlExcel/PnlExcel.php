@@ -9,7 +9,7 @@ class PnlExcel extends Model
     protected $table = 'pnl_excel';
 
     protected $fillable = [
-        'pnl_debit_id', 'pnl_credit_id', 'pnl_variation_id', 'job_entry_id', 'customer_id'
+        'pnl_debit_id', 'pnl_credit_id', 'pnl_variation_id', 'job_entry_id', 'member_id'
     ];
 
     public function job_entry(){
@@ -28,7 +28,7 @@ class PnlExcel extends Model
         return $this->belongsTo(Variation::class, 'pnl_variation_id');
     }
 
-    public function customer(){
-        return $this->belongsTo(Customer::class, 'customer_id');
+    public function member(){
+        return $this->belongsTo(Member::class, 'member_id');
     }
 }

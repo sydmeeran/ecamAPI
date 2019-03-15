@@ -58,14 +58,14 @@ class BalanceSheetExcel extends Model
         "5_percent_commercial_tax", "total_current_liabilities", "total_liabilities",
         "net_assets", "equity", "owner_shareholders_equity", "capital", "total_owner_shareholders_equity",
         "retained_earnings", "profit_loss_for_the_year", "profit_divided", "total_equity",
-         "job_entry_id", "customer_id"
+         "job_entry_id", "member_id"
     ];
 
     public function job_entry(){
         return $this->belongsTo(JobEntry::class, 'job_entry_id');
     }
 
-    public function customer(){
-        return $this->belongsTo(Customer::class, 'customer_id');
+    public function member(){
+        return $this->belongsTo(Member::class, 'member_id');
     }
 }

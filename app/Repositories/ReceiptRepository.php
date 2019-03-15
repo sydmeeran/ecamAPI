@@ -19,13 +19,13 @@ use Mail;
 
 class ReceiptRepository extends BaseRepository
 {
-    protected $invoice, $customer, $prefix;
+    protected $invoice, $member, $prefix;
 
     public function __construct()
     {
         $this->prefix = date('y');
         $this->invoice = DataRepo::invoice();
-        $this->customer = DataRepo::customer();
+        $this->member = DataRepo::member();
     }
 
     public function model()
@@ -85,9 +85,9 @@ class ReceiptRepository extends BaseRepository
 
         $receipt = $this->model()->create($data);
 
-        $invoice = $this->invoice->with(['customer', 'business', 'accounting_service', 'auditing', 'consulting', 'taxation', 'receipt'], $receipt->invoice_id)->toArray();
+        $invoice = $this->invoice->with(['member', 'business', 'accounting_service', 'auditing', 'consulting', 'taxation', 'receipt'], $receipt->invoice_id)->toArray();
 
-        Mail::to($invoice[0]['customer']['email'])->send(new ReceiptEmail($invoice));
+        Mail::to($invoice[0]['member']['email'])->send(new ReceiptEmail($invoice));
 
         return 'success';
     }

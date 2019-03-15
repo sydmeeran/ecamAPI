@@ -7,16 +7,14 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class CustomerVerificationEmail extends Mailable
+class MemberContractEmail extends Mailable
 {
     use Queueable, SerializesModels;
-
-    public $data;
 
     /**
      * Create a new message instance.
      *
-     * @param $data
+     * @return void
      */
     public function __construct($data)
     {
@@ -31,12 +29,11 @@ class CustomerVerificationEmail extends Mailable
     public function build()
     {
         return $this->from(env('MAIL_FROM'), env('MAIL_NAME'))
-            ->subject('Thanks for your registration!')
-            ->view('mails.customer_verification')
+            ->subject('This is your contract!')
+            ->view('mails.member_contract')
+//            ->attachData($this->data, '');
             ->with([
-                'otp' => $this->data['otp'],
-                'owner_name' => $this->data['owner_name'],
-                'email' => $this->data['email']
+                'pdf' => $this->data,
             ]);
     }
 }

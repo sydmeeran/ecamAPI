@@ -19,11 +19,11 @@ class CreatePnlExcelTable extends Migration
             $table->unsignedInteger('pnl_credit_id')->nullable();
             $table->unsignedInteger('pnl_variation_id')->nullable();
             $table->unsignedInteger('job_entry_id');
-            $table->unsignedInteger('customer_id');
+            $table->unsignedInteger('member_id');
             $table->timestamps();
 
             $table->foreign('job_entry_id')->references('id')->on('job_entries')->onDelete('cascade');
-            $table->foreign('customer_id')->references('id')->on('customers')->onDelete('cascade');
+            $table->foreign('member_id')->references('id')->on('members')->onDelete('cascade');
             $table->foreign('pnl_debit_id')->references('id')->on('pnl_debit');
             $table->foreign('pnl_credit_id')->references('id')->on('pnl_credit');
             $table->foreign('pnl_variation_id')->references('id')->on('pnl_variation');

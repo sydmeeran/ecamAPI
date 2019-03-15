@@ -30,13 +30,13 @@ class InvoiceController extends BaseController
 
     public function pagination()
     {
-        $invoice = $this->invoice->model()->with('customer')->with('business')->with('receipt')->paginate(20);
+        $invoice = $this->invoice->model()->with('member')->with('business')->with('receipt')->paginate(20);
         return $this->response($invoice);
     }
 
     public function get($id)
     {
-        $invoice = $this->invoice->with(['customer', 'business', 'receipt', 'accounting_service', 'auditing', 'consulting', 'taxation', 'remarks'], $id)->toArray();
+        $invoice = $this->invoice->with(['member', 'business', 'receipt', 'accounting_service', 'auditing', 'consulting', 'taxation', 'remarks'], $id)->toArray();
         if (empty($invoice)) {
             return $this->empty_data();
         }
@@ -53,7 +53,7 @@ class InvoiceController extends BaseController
     {
         $keyword = $request->get('keyword');
         $result = $this->invoice->model()
-            ->whereHas('customer', function ($query) use ($keyword) {
+            ->whereHas('member', function ($query) use ($keyword) {
                 $query->where('owner_name', 'like', '%' . $keyword . '%')
                     ->orWhere('company_name', 'like', '%' . $keyword . '%');
             })
@@ -61,7 +61,7 @@ class InvoiceController extends BaseController
                 $query->where('business_name', 'like', '%' . $keyword . '%');
             })
             ->orWhere('invoice_id', 'like', '%' . $keyword . '%')
-            ->with(['business', 'customer'])
+            ->with(['business', 'member'])
             ->get();
 
         return $this->response($result);
@@ -69,8 +69,8 @@ class InvoiceController extends BaseController
 
     public function send_mail($id)
     {
-        $invoice = $this->invoice->with(['customer', 'business', 'accounting_service', 'auditing', 'consulting', 'taxation'], $id)->toArray();
-        Mail::to($invoice[0]['customer']['email'])->send(new InvoiceEmail($invoice));
+        $invoice = $this->invoice->with(['member', 'business', 'accounting_service', 'auditing', 'consulting', 'taxation'], $id)->toArray();
+        Mail::to($invoice[0]['member']['email'])->send(new InvoiceEmail($invoice));
         return 'success';
     }
 

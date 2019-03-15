@@ -47,6 +47,13 @@ class BusinessRepostitory extends BaseRepository
     }
 
     protected function combine_array($business_name_arrs, $license_no_arrs, $license_type_arrs, $license_photo_arrs, $address_arrs) {
+        if(!$license_no_arrs){
+            $license_no_arrs = [];
+            for($i=0; $i<count($business_name_arrs); $i++){
+                $license_no_arrs[] = null;
+            }
+        }
+
         $result = array_map(function ($business_name_arr, $license_no_arr, $license_type_arr, $license_photo_arr, $address_arr) {
             return array_combine(
                 ['business_name', 'license_no', 'license_type', 'license_photo', 'address'],
@@ -57,7 +64,7 @@ class BusinessRepostitory extends BaseRepository
         return $result;
     }
 
-    public function create_business($data, $customer_id){
+    public function create_business($data, $member_id){
         if(is_array($data['license_type'])){
 
             if(!$data['license_no']){
@@ -77,7 +84,7 @@ class BusinessRepostitory extends BaseRepository
                     'license_type' => $business['license_type'],
                     'license_photo' => $business['license_photo'],
                     'address' => $business['address'],
-                    'customer_id' => $customer_id
+                    'member_id' => $member_id
                 ]);
             }
         } else {
@@ -87,7 +94,7 @@ class BusinessRepostitory extends BaseRepository
                 'license_type' => $data['license_type'],
                 'license_photo' => $data['license_photo'],
                 'address' => $data['address'],
-                'customer_id' => $customer_id
+                'member_id' => $member_id
             ]);
         }
         return 'success';
@@ -114,7 +121,7 @@ class BusinessRepostitory extends BaseRepository
         return $lpn;
     }
 
-    public function store(Request $request, $customer_id){
+    public function store(Request $request, $member_id){
         $data = $this->setData($request);
 
         if(Input::hasFile('license_photo')){
@@ -124,12 +131,12 @@ class BusinessRepostitory extends BaseRepository
             $data['license_photo'] = null;
         }
 
-        $this->create_business($data, $customer_id);
+        $this->create_business($data, $member_id);
 
         return 'success';
     }
 
-    public function register(Request $request, $customer_id){
+    public function register(Request $request, $member_id){
         $validator = $this->validation($request);
         if($validator->fails()){
             throw new ValidationException($validator);
@@ -142,7 +149,7 @@ class BusinessRepostitory extends BaseRepository
             $data['license_photo'] = null;
         }
 
-        return $this->create_business($data, $customer_id);
+        return $this->create_business($data, $member_id);
     }
 
 //    public function update(Request $request){
@@ -207,7 +214,7 @@ class BusinessRepostitory extends BaseRepository
     }
 
 
-    public function deleteByCustomerId($id){
-        $this->model()->where('customer_id', $id)->delete();
+    public function deleteByMemberId($id){
+        $this->model()->where('member_id', $id)->delete();
     }
 }

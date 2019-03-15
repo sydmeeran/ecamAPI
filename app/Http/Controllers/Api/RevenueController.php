@@ -25,7 +25,7 @@ class RevenueController extends BaseController
 
     public function index()
     {
-        $invoice = $this->invoice->model()->whereHas('receipt')->with(['customer', 'business', 'receipt'])->paginate(20);
+        $invoice = $this->invoice->model()->whereHas('receipt')->with(['member', 'business', 'receipt'])->paginate(20);
         return $this->response($invoice);
     }
 
@@ -34,10 +34,10 @@ class RevenueController extends BaseController
         $keyword = $request->get('keyword');
         $result = $this->invoice->model()
             ->whereHas('receipt')
-            ->whereHas('customer', function ($query) use ($keyword) {
+            ->whereHas('member', function ($query) use ($keyword) {
                 $query->where('company_name', 'like', '%' . $keyword . '%');
             })
-            ->with(['business', 'customer', 'receipt'])
+            ->with(['business', 'member', 'receipt'])
             ->get();
 
         return $this->response($result);
@@ -51,7 +51,7 @@ class RevenueController extends BaseController
             ->whereHas('receipt', function ($query) use ($from, $to) {
                 $query->whereBetween('created_at', [$from, $to]);
             })
-            ->with(['business', 'customer', 'receipt'])
+            ->with(['business', 'member', 'receipt'])
             ->get();
 
         return $this->response($result);

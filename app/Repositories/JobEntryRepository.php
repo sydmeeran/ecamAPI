@@ -44,7 +44,7 @@ class JobEntryRepository extends BaseRepository
             'company_type' => 'required|string',
             'excel_type' => 'required|string',
             'excel_file' => 'required|mimes:xlsx,csv|max:2048',
-            'customer_id' => 'required',
+            'member_id' => 'required',
         ]);
     }
 
@@ -56,7 +56,7 @@ class JobEntryRepository extends BaseRepository
             'start_date' => $request->input('start_date'),
             'end_date' => $request->input('end_date'),
             'excel_type' => $request->input('excel_type'),
-            'customer_id' => $request->input('customer_id'),
+            'member_id' => $request->input('member_id'),
         ];
         if($job_entry_data['type'] === 'daily'){
             $start_date = $request->input('start_date');
@@ -81,7 +81,7 @@ class JobEntryRepository extends BaseRepository
         return $job_entry_data;
     }
 
-    public function storeExcelFile(Request $request, $excel_type, $customer_id)
+    public function storeExcelFile(Request $request, $excel_type, $member_id)
     {
         /**
          * @var UploadedFile $nrc_photo
@@ -102,16 +102,16 @@ class JobEntryRepository extends BaseRepository
 
         $data = $this->setData($request);
 
-        $excel_file = $this->storeExcelFile($request, $data['excel_type'], $data['customer_id']);
+        $excel_file = $this->storeExcelFile($request, $data['excel_type'], $data['member_id']);
 
         $data['excel_file'] = $excel_file;
 
         $job_entry = $this->model()->create($data);
 
         if ($data['excel_type'] == "pnl") {
-            return $this->pnl->store($excel_file, $job_entry->id, $job_entry->customer_id);
+            return $this->pnl->store($excel_file, $job_entry->id, $job_entry->member_id);
         } else {
-            return $this->balance_sheet->store($excel_file, $job_entry->id, $job_entry->customer_id);
+            return $this->balance_sheet->store($excel_file, $job_entry->id, $job_entry->member_id);
         }
     }
 
@@ -124,7 +124,7 @@ class JobEntryRepository extends BaseRepository
             'company_type' => 'required|string',
             'excel_type' => 'required|string',
             'excel_file' => 'mimes:xlsx,csv|max:2048',
-            'customer_id' => 'required',
+            'member_id' => 'required',
         ]);
     }
 
@@ -139,13 +139,13 @@ class JobEntryRepository extends BaseRepository
 
         if(Input::hasFile('excel_file')){
 
-            $excel_file = $this->storeExcelFile($request, $data['excel_type'], $data['customer_id']);
+            $excel_file = $this->storeExcelFile($request, $data['excel_type'], $data['member_id']);
 
             $data['excel_file'] = $excel_file;
             if ($data['excel_type'] == "pnl") {
-                $this->pnl->update($excel_file, $id, $data['customer_id']);
+                $this->pnl->update($excel_file, $id, $data['member_id']);
             } else {
-                $this->balance_sheet->update($excel_file, $id, $data['customer_id']);
+                $this->balance_sheet->update($excel_file, $id, $data['member_id']);
             }
 
             $job_entry = $this->find($id);

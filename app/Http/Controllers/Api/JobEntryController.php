@@ -50,13 +50,13 @@ class JobEntryController extends BaseController
 
     public function pagination()
     {
-        $job_entry = $this->job_entry->model()->with('customer')->paginate(20);
+        $job_entry = $this->job_entry->model()->with('member')->paginate(20);
         return $this->response($job_entry);
     }
 
     public function get($id)
     {
-        $job_entry = $this->job_entry->with(['customer', 'pnl_excel_data', 'balance_sheet_excel'], $id)->toArray();
+        $job_entry = $this->job_entry->with(['member', 'pnl_excel_data', 'balance_sheet_excel'], $id)->toArray();
         if (empty($job_entry)) {
             return $this->empty_data();
         }
@@ -68,14 +68,14 @@ class JobEntryController extends BaseController
     {
         $keyword = $request->get('keyword');
         $result = $this->job_entry->model()
-            ->whereHas('customer', function ($query) use ($keyword) {
+            ->whereHas('member', function ($query) use ($keyword) {
                 $query->where('company_id', 'like', '%' . $keyword . '%')
                     ->orWhere('company_name', 'like', '%' . $keyword . '%');
             })
             ->orWhere('type', 'LIKE', '%' . $keyword . '%')
             ->orWhere('company_type', 'LIKE', '%' . $keyword . '%')
             ->orWhere('excel_type', 'LIKE', '%' . $keyword . '%')
-            ->with(['customer'])->get();
+            ->with(['member'])->get();
         return $this->response($result);
     }
 

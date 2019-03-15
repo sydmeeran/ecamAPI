@@ -16,7 +16,7 @@ class CreateInvoicesTable extends Migration
         Schema::create('invoices', function (Blueprint $table) {
             $table->increments('id');
             $table->string('invoice_id');
-            $table->unsignedInteger('customer_id');
+            $table->unsignedInteger('member_id');
             $table->unsignedInteger('business_id');
             $table->unsignedInteger('quotation_id');
             $table->integer('sub_total');
@@ -26,7 +26,7 @@ class CreateInvoicesTable extends Migration
             $table->boolean('is_active')->default(1);
             $table->timestamps();
 
-            $table->foreign('customer_id')->references('id')->on('customers');
+            $table->foreign('member_id')->references('id')->on('members');
             $table->foreign('quotation_id')->references('id')->on('quotations');
             $table->foreign('business_id')->references('id')->on('businesses');
         });

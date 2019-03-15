@@ -4,7 +4,7 @@ namespace App\Exceptions;
 
 use Exception;
 
-class EmptyCustomerException extends Exception
+class EmptyMemberException extends Exception
 {
     public function __construct(string $message = "", int $code = 0, Throwable $previous = null)
     {
@@ -13,7 +13,7 @@ class EmptyCustomerException extends Exception
 
     public function render(){
         $error_message = [
-            'message' => 'Register Customer First'
+            'message' => 'Register Member First'
         ];
         return response()->json($error_message, 410);
     }

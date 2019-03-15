@@ -6,11 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Passport\HasApiTokens;
 
-class Customer extends Model
+class Member extends Model
 {
     use Notifiable, HasApiTokens;
 
-    protected $table = 'customers';
+    protected $table = 'members';
 
     protected $fillable = [
       'company_id', 'company_name', 'owner_name', 'nrc_no', 'nrc_photo', 'phone_no',

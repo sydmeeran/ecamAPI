@@ -8,15 +8,15 @@
 
 namespace App\Repositories;
 
-use App\Customer;
-use App\Mail\CustomerVerificationEmail;
+use App\Member;
+use App\Mail\MemberVerificationEmail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 
-class CustomerRepository extends BaseRepository
+class MemberRepository extends BaseRepository
 {
     protected $prefix, $business;
 
@@ -27,7 +27,7 @@ class CustomerRepository extends BaseRepository
     }
 
     public function model(){
-        return Customer::query();
+        return Member::query();
     }
 
     public function validation(Request $request){
@@ -38,7 +38,7 @@ class CustomerRepository extends BaseRepository
             'nrc_no' => 'required|string',
             'nrc_photo.*' => 'image|mimes:jpeg,png,jpg|max:2048',
             'phone_no' => 'required|string|max:12',
-            'email' => 'required|email|unique:customers,email',
+            'email' => 'required|email|unique:members,email',
 
             'contact_name' => 'string',
             'contact_position' => 'string',
@@ -52,7 +52,7 @@ class CustomerRepository extends BaseRepository
     }
 
     public function setData(Request $request){
-        $customer_data = [
+        $member_data = [
             'company_name' => $request->input('company_name'),
 
             'owner_name' => $request->input('owner_name'),
@@ -69,11 +69,11 @@ class CustomerRepository extends BaseRepository
             'company_link' => $request->input('company_link'),
             'otp' => $request->input('otp'),
         ];
-        return $customer_data;
+        return $member_data;
     }
 
     public function editSetData(Request $request){
-        $customer_data = [
+        $member_data = [
             'company_name' => $request->input('company_name'),
 
             'owner_name' => $request->input('owner_name'),
@@ -89,7 +89,7 @@ class CustomerRepository extends BaseRepository
             'company_dica_link' => $request->input('company_dica_link'),
             'company_link' => $request->input('company_link'),
         ];
-        return $customer_data;
+        return $member_data;
     }
 
     public function storeNrcPhoto(Request $request){
@@ -122,11 +122,11 @@ class CustomerRepository extends BaseRepository
         }
         $data['company_id'] = $this->generateCompanyId();
 
-        $customer = $this->model()->create($data);
+        $member = $this->model()->create($data);
 
-//        Mail::to($customer->email)->send(new CustomerVerificationEmail($customer));
+//        Mail::to($member->email)->send(new MemberVerificationEmail($member));
 
-        return $this->business->store($request, $customer->id);
+        return $this->business->store($request, $member->id);
     }
 
     protected function generateCompanyId(){
@@ -162,7 +162,7 @@ class CustomerRepository extends BaseRepository
             'nrc_no' => 'required|string',
             'nrc_photo.*' => 'image|mimes:jpeg,png,jpg,svg|max:2048',
             'phone_no' => 'required|string|max:12',
-            'email' => 'required|email|unique:customers,email',
+            'email' => 'required|email|unique:members,email',
 
             'contact_name' => 'string',
             'contact_position' => 'string',
@@ -176,9 +176,9 @@ class CustomerRepository extends BaseRepository
 
 //    public function updateNrcPhoto(Request $request, $id){
 //        if (Input::hasFile('nrc_photo')) {
-//            $customer = $this->find($id);
-//            if(file_exists($customer->nrc_photo)){
-//                unlink($customer->nrc_photo);
+//            $member = $this->find($id);
+//            if(file_exists($member->nrc_photo)){
+//                unlink($member->nrc_photo);
 //            }
 //        }
 //        return $this->storeNrcPhoto($request);
@@ -194,9 +194,9 @@ class CustomerRepository extends BaseRepository
         $data = $this->editSetData($request);
 
         if (Input::hasFile('nrc_photo')) {
-            $customer = $this->find($id);
-            if(file_exists($customer->nrc_photo)){
-                unlink($customer->nrc_photo);
+            $member = $this->find($id);
+            if(file_exists($member->nrc_photo)){
+                unlink($member->nrc_photo);
             }
             $nrc_photo_name = $this->storeNrcPhoto($request);
             $data['nrc_photo'] = $nrc_photo_name;
@@ -205,7 +205,7 @@ class CustomerRepository extends BaseRepository
         $this->model()->where('id', $id)->update($data);
 
         return 'success';
-//        Mail::to($customer->email)->send(new CustomerVerificationEmail($customer));
+//        Mail::to($member->email)->send(new MemberVerificationEmail($member));
 
 //        return $this->business->update($request, $id);
     }

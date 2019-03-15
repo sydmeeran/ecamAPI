@@ -9,11 +9,11 @@ class Quotation extends Model
     protected $table = 'quotations';
 
     protected $fillable = [
-        'quotation_id', 'customer_id', 'business_id', 'sub_total', 'discount', 'tax', 'total', 'is_active'
+        'quotation_id', 'member_id', 'business_id', 'sub_total', 'discount', 'tax', 'total', 'is_active'
     ];
 
-    public function customer(){
-        return $this->belongsTo(Customer::class, 'customer_id');
+    public function member(){
+        return $this->belongsTo(Member::class, 'member_id');
     }
 
     public function business(){

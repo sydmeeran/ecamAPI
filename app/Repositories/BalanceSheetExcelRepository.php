@@ -219,26 +219,26 @@ class BalanceSheetExcelRepository extends BaseRepository
         return $data;
     }
 
-    public function store($excel_file, $job_entry_id, $customer_id){
+    public function store($excel_file, $job_entry_id, $member_id){
 
         $data = $this->setData($excel_file);
 
         $this->validation($data, $excel_file);
 
         $data['job_entry_id'] = $job_entry_id;
-        $data['customer_id'] = $customer_id;
+        $data['member_id'] = $member_id;
 
         $this->model()->create($data);
 
         return 'success';
     }
 
-    public function update($excel_file, $job_entry_id, $customer_id){
+    public function update($excel_file, $job_entry_id, $member_id){
         $this->pnl_excel = DataRepo::pnl_excel();
         $pnl_excel = $this->pnl_excel->model()->where('job_entry_id', $job_entry_id)->get();
         if(!$pnl_excel->isEmpty()){
             $this->pnl_excel->destroy($pnl_excel);
-            $this->store($excel_file, $job_entry_id, $customer_id);
+            $this->store($excel_file, $job_entry_id, $member_id);
         } else {
             $data = $this->setData($excel_file);
             $this->validation($data, $excel_file);

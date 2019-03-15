@@ -26,7 +26,7 @@ class PnlExcelRepository extends BaseRepository
         return PnlExcel::query();
     }
 
-    public function store($excel_file, $job_entry_id, $customer_id){
+    public function store($excel_file, $job_entry_id, $member_id){
         $debit_id = $this->debit->store($excel_file);
 
         $credit_id = $this->credit->store($excel_file);
@@ -38,12 +38,12 @@ class PnlExcelRepository extends BaseRepository
             'pnl_credit_id' => $credit_id,
             'pnl_variation_id' => $variation_id,
             'job_entry_id' => $job_entry_id,
-            'customer_id' => $customer_id,
+            'member_id' => $member_id,
         ]);
         return 'success';
     }
 
-    public function update($excel_file, $job_entry_id, $customer_id){
+    public function update($excel_file, $job_entry_id, $member_id){
         $this->debit->validation($this->debit->setData($excel_file), $excel_file);
         $this->credit->validation($this->credit->setData($excel_file), $excel_file);
         $this->variation->validation($this->variation->setData($excel_file), $excel_file);
@@ -66,7 +66,7 @@ class PnlExcelRepository extends BaseRepository
             'pnl_credit_id' => $credit_id,
             'pnl_variation_id' => $variation_id,
             'job_entry_id' => $job_entry_id,
-            'customer_id' => $customer_id,
+            'member_id' => $member_id,
         ]);
 
 

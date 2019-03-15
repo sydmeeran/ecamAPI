@@ -46,9 +46,9 @@ return [
             'provider' => 'users',
         ],
 
-        'customer' => [
+        'member' => [
             'driver' => 'passport',
-            'provider' => 'customers',
+            'provider' => 'members',
         ]
     ],
 
@@ -75,9 +75,9 @@ return [
             'model' => App\User::class,
         ],
 
-        'customers' => [
+        'members' => [
             'driver' => 'eloquent',
-            'model' => App\Customer::class,
+            'model' => App\Member::class,
         ],
 
         // 'users' => [
@@ -108,8 +108,8 @@ return [
             'expire' => 60,
         ],
 
-        'customers' => [
-            'provider' => 'customers',
+        'members' => [
+            'provider' => 'members',
             'table' => 'password_resets',
             'expire' => 60,
         ],
