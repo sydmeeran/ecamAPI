@@ -18,7 +18,7 @@ class CreateMembersTable extends Migration
             $table->uuid('company_id');
             $table->string('company_name');
             $table->string('owner_name');
-            $table->string('nrc_no');
+            $table->string('nrc_no')->nullable();
             $table->string('nrc_photo')->nullable();
             $table->string('phone_no');
             $table->string('email');

@@ -72,5 +72,14 @@ class RouteServiceProvider extends ServiceProvider
             ])
             ->namespace($this->namespace)
             ->group(base_path('routes/api.php'));
+
+            Route::prefix('frontend-api')
+            ->middleware([
+                'force-json-return',
+                'api',
+                'frontend-api-key'
+            ])
+            ->namespace($this->namespace)
+            ->group(base_path('routes/frontend.php'));
     }
 }

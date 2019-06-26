@@ -63,7 +63,8 @@ class Kernel extends HttpKernel
         'verified'          => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'force-json-return' => \App\Http\Middleware\ForceToJsonReturn::class,
         'permission'        => \App\Http\Middleware\PermissionMiddleware::class,
-        'api-key'           => \App\Http\Middleware\ApiKeyMiddleware::class
+        'api-key'           => \App\Http\Middleware\ApiKeyMiddleware::class,
+        'frontend-api-key'  => \App\Http\Middleware\FrontendApiKeyMiddleware::class
     ];
 
     /**

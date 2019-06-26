@@ -19,7 +19,7 @@ class CreateBusinessesTable extends Migration
             $table->string('license_no');
             $table->string('license_type');
             $table->string('license_photo')->nullable();
-            $table->string('address');
+            $table->string('address')->nullable();
             $table->unsignedInteger('member_id');
             $table->timestamps();
 

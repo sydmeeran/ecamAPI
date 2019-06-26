@@ -142,7 +142,7 @@ class MemberRepository extends BaseRepository
             return Validator::make($request->all(), [
                 'company_name' => 'required|string',
                 'owner_name' => 'required|string',
-                'nrc_no' => 'required|string',
+                'nrc_no' => 'string',
                 'nrc_photo.*' => 'image|mimes:jpeg,png,jpg,svg|max:2048',
                 'phone_no' => 'required|string|max:12',
                 'email' => 'required|email',
@@ -159,7 +159,7 @@ class MemberRepository extends BaseRepository
         return Validator::make($request->all(), [
             'company_name' => 'required|string',
             'owner_name' => 'required|string',
-            'nrc_no' => 'required|string',
+            'nrc_no' => 'string',
             'nrc_photo.*' => 'image|mimes:jpeg,png,jpg,svg|max:2048',
             'phone_no' => 'required|string|max:12',
             'email' => 'required|email|unique:members,email',
