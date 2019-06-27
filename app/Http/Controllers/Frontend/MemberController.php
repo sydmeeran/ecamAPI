@@ -68,7 +68,7 @@ class MemberController extends BaseController
             'license_type' => 'required|string',
             'facebook_url' => 'required|string',
             'website_url' => 'required|string',
-            'otp' => 'required|string',
+            // 'otp' => 'required|string',
         ]);
 
         $member_data = $request->only('company_name', 'phone_no', 'email',
@@ -81,6 +81,7 @@ class MemberController extends BaseController
 
         $member_data['owner_name'] = $member_data['company_name'];
         $member_data['company_id'] = $this->generateCompanyId();
+        $member_data['otp'] = generateCode();
             
         // dd($member_data);
         $member = Member::create($member_data);
