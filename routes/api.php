@@ -84,7 +84,7 @@ Route::group([
     Route::post('/members/{id}/append-suspend', 'MemberController@append_suspend');
     Route::post('/members/send/mail/{id}', 'MemberController@send_mail');
     Route::post('/members/send/contract/{id}', 'MemberController@send_contract');
-
+    Route::get('/members/all/count', 'MemberController@all_count');
 
     ////////////////////////////////////
     // Businesses

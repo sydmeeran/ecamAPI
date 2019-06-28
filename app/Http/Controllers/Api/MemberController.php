@@ -255,6 +255,20 @@ class MemberController extends BaseController
         return $this->success();
     }
 
+    public function all_count()
+    {
+        $user = DataRepo::user();
+        $query =  $this->member->getAll();
+
+        $superadmin_count = 1;
+
+        $active_count = $this->member->model()->where('is_active', true)->count();
+        $deactive_count = $this->member->model()->where('is_active', false)->count();
+        $cec_count = $user->model()->where('role_id', 3)->count() + $superadmin_count;
+
+        return $this->response(['active_count' => $active_count, 'deactive_count' => $deactive_count, 'cec_count' => $cec_count]);
+    }
+
     public function append_suspend(Request $request, $id)
     {
         $this->member->model()->where('id', $id)->update([
