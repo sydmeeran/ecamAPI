@@ -65,18 +65,18 @@ class MemberController extends BaseController
             'phone_no' => 'required|string',
             'email' => 'required|email|unique:members,email',
             'business_name' => 'required|string',
-            'license_type' => 'required|string',
-            'facebook_url' => 'required|string',
-            'website_url' => 'required|string',
+            'business_type' => 'required|string',
+            'facebook_page_url' => 'required|string',
+            'website_url' => 'string',
             // 'otp' => 'required|string',
         ]);
 
         $member_data = $request->only('company_name', 'phone_no', 'email',
-                 'business_name', 'license_type', 'facebook_url', 'website_url', 'otp');
-        $member_data['company_dica_link'] = $member_data['facebook_url'];
+                 'business_name', 'business_type', 'facebook_page_url', 'website_url', 'otp');
+        $member_data['company_dica_link'] = $member_data['facebook_page_url'];
         $member_data['company_link'] = $member_data['website_url'];
 
-        unset($member_data['facebook_url']);
+        unset($member_data['facebook_page_url']);
         unset($member_data['website_url']);
 
         $member_data['owner_name'] = $member_data['company_name'];
@@ -86,9 +86,11 @@ class MemberController extends BaseController
         // dd($member_data);
         $member = Member::create($member_data);
 
-        $business_data = $request->only('business_name', 'license_type');
+        $business_data = $request->only('business_name', 'business_type');
         $business_data['member_id'] = $member->id;
-
+        $business_data['license_type'] = $business_data['business_type'];
+        unset($member_data['business_type']);
+        
         Business::create($business_data);
         
         return $this->response($member);
