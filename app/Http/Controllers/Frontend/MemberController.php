@@ -74,10 +74,15 @@ class MemberController extends BaseController
         $member_data = $request->only('company_name', 'phone_no', 'email',
                  'business_name', 'business_type', 'facebook_page_url', 'website_url', 'otp');
         $member_data['company_dica_link'] = $member_data['facebook_page_url'];
-        $member_data['company_link'] = $member_data['website_url'];
+        
+        if(isset($member_data['website_url'])){
+            $member_data['company_link'] = $member_data['website_url'];
+            unset($member_data['website_url']);
+        }
+        
 
         unset($member_data['facebook_page_url']);
-        unset($member_data['website_url']);
+        
 
         $member_data['owner_name'] = $member_data['company_name'];
         $member_data['company_id'] = $this->generateCompanyId();
