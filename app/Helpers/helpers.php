@@ -53,12 +53,12 @@ if ( ! function_exists('delete_image'))
     function delete_image($image)
     {
         if($image){
-            if(strpos($image, 'ecam/') !== false){
+            // if(strpos($image, 'ecam/') !== false){
                 return Cloudder::delete($image);
-            } else {
-                if(file_exists($image)){
-                    unlink($image);
-                }
+            // } else {
+                // if(file_exists($image)){
+                    // unlink($image);
+                // }
             }
         }
     }
@@ -68,6 +68,6 @@ if ( ! function_exists('image_name'))
 {
     function image_name($type = null, $sub_type = null)
     {
-        return date('Y-m-d_H-i-ss').'_'.$type.'_'.$sub_type.'_'.generateCode().'.jpg';
+        return date('Y-m-d_H-i-ss').'_'.$type.'_'.$sub_type.'_'.generateCode();
     }
 }
