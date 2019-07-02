@@ -41,10 +41,10 @@ if ( ! function_exists('get_image'))
 {
     function get_image($image)
     {
-        if(strpos($image, 'ecam/') !== false){
+        // if(strpos($image, 'ecam/') !== false){
             return Cloudder::show($image);
-        }
-        return env('API_URL').'/'.$image;   
+        // }
+        // return env('API_URL').'/'.$image;   
     }
 }
 
