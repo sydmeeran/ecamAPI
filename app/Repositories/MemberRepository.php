@@ -219,7 +219,7 @@ class MemberRepository extends BaseRepository
         $validator = $this->updateValidation($request);
 
         if ($validator->fails()) {
-            return $validator;
+            throw new ValidationException($validator);
         }
 
         $data = $this->editSetData($request);
