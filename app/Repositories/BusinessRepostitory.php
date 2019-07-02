@@ -13,6 +13,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
+use JD\Cloudder\Facades\Cloudder;
 
 class BusinessRepostitory extends BaseRepository
 {
@@ -108,15 +109,43 @@ class BusinessRepostitory extends BaseRepository
         $license_photos = $request->file('license_photo');
         $i=0;
         foreach($license_photos as $license_photo){
-            $name =  $this->uuid($this->prefix, 15).$i.'.'.$license_photo->getClientOriginalExtension();
-            $license_photo_name = $license_photo->move(public_path('db/license_photos'), $name);
-            $lpn[] = 'db/license_photos/'.$license_photo_name->getFilename();
+            // $nrc_photo = $request->nrc_photo;
+
+            // if(!is_null($nrc_photo)){
+
+                $filename = $license_photo->getRealPath();
+
+                Cloudder::upload($filename, image_name('business', 'license_photos'),[
+                    'folder' => 'ecam/business/license_photos/'
+                ]);
+
+                $image_id = Cloudder::getPublicId();
+
+                $lpn[] = $image_id;
+            // }
+
+            // return null;
+
+            // $name =  $this->uuid($this->prefix, 15).$i.'.'.$license_photo->getClientOriginalExtension();
+            // $license_photo_name = $license_photo->move(public_path('db/license_photos'), $name);
+            // $lpn[] = 'db/license_photos/'.$license_photo_name->getFilename();
             $i++;
         }
         if(!isset($lpn)){
-            $name =  $this->uuid($this->prefix, 15).'.'.$license_photos->getClientOriginalExtension();
-            $license_photo_name = $license_photos->move(public_path('db/license_photos'), $name);
-            $lpn = 'db/license_photos/'.$license_photo_name->getFilename();
+
+            $filename = $license_photos->getRealPath();
+
+            Cloudder::upload($filename, image_name('business', 'license_photos'),[
+                'folder' => 'ecam/business/license_photos/'
+            ]);
+
+            $image_id = Cloudder::getPublicId();
+
+            $lpn = $image_id;
+
+            // $name =  $this->uuid($this->prefix, 15).'.'.$license_photos->getClientOriginalExtension();
+            // $license_photo_name = $license_photos->move(public_path('db/license_photos'), $name);
+            // $lpn = 'db/license_photos/'.$license_photo_name->getFilename();
         };
         return $lpn;
     }

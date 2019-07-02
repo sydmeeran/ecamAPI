@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
+use JD\Cloudder\Facades\Cloudder;
 
 class MemberRepository extends BaseRepository
 {
@@ -92,13 +93,43 @@ class MemberRepository extends BaseRepository
         return $member_data;
     }
 
+    // public function store_photo($photo = null, $type = null)
+    // {
+    //     if(!is_null($photo)){
+    //         $filename = $photo->getRealPath();
+
+    //         Cloudder::upload($filename, image_name('members', $type).'.jpg',[
+    //             'folder' => 'ecam/members/nrc_photo/'.($type ? $type.'/' : '')
+    //         ]);
+    //         $image_id = Cloudder::getPublicId();
+    //         return $image_id;
+    //     }
+    //     return null;
+    // }
+
     public function storeNrcPhoto(Request $request){
         /**
          * @var UploadedFile $nrc_photo
          */
-        $nrc_photo = $request->file('nrc_photo');
-        $nrc_photo_name = $nrc_photo->move(public_path('db/nrc_photos'), $this->uuid(date('m'), 15).'.'.$nrc_photo->getClientOriginalExtension());
-        return 'db/nrc_photos/'.$nrc_photo_name->getFilename();
+        $nrc_photo = $request->nrc_photo;
+
+        if(!is_null($nrc_photo)){
+
+            $filename = $nrc_photo->getRealPath();
+
+            Cloudder::upload($filename, image_name('members', 'nrc_photos'),[
+                'folder' => 'ecam/members/nrc_photos/'
+            ]);
+
+            $image_id = Cloudder::getPublicId();
+
+            return $image_id;
+        }
+
+        return null;
+        // $nrc_photo_name = $this->store_photo($nrc_photo, 'nrc_photo');
+        // $nrc_photo_name = $nrc_photo->move(public_path('db/nrc_photos'), $this->uuid(date('m'), 15).'.'.$nrc_photo->getClientOriginalExtension());
+        // return 'db/nrc_photos/'.$nrc_photo_name->getFilename();
 
     }
 

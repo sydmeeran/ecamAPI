@@ -36,3 +36,19 @@ if (! function_exists('generateNumber')) {
         return $randomString;
     }
 }
+
+if ( ! function_exists('cloudinary'))
+{
+    function cloudinary($publicId)
+    {
+        return Cloudder::show($publicId);
+    }
+}
+
+if ( ! function_exists('image_name'))
+{
+    function image_name($type = null, $sub_type = null)
+    {
+        return date('Y-m-d_H-i-ss').'_'.$type.'_'.$sub_type.'_'.generateCode().'.jpg';
+    }
+}

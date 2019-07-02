@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
+use JD\Cloudder\Facades\Cloudder;
 
 class UserRepository extends BaseRepository
 {
@@ -64,6 +65,26 @@ class UserRepository extends BaseRepository
         return $data;
     }
 
+    public function storePhotos($photo, $type)
+    {
+        // $nrc_photo = $request->nrc_photo;
+
+        if($photo){
+
+            $filename = $photo->getRealPath();
+
+            Cloudder::upload($filename, image_name('users', $type),[
+                'folder' => 'ecam/users/'.$type.'/'
+            ]);
+
+            $image_id = Cloudder::getPublicId();
+
+            return $image_id;
+        }
+
+        return null;
+    }
+
     public function storeProfilePhoto(Request $request)
     {
         /**
@@ -94,8 +115,8 @@ class UserRepository extends BaseRepository
             throw new ValidationException($validator);
         }
 
-        $profile_photo_name = $this->storeProfilePhoto($request);
-        $nrc_photo_name = $this->storeNrcPhoto($request);
+        $profile_photo_name = $this->storePhotos($request->profile_photo, 'profile_photos');
+        $nrc_photo_name = $this->storePhotos($request->nrc_photo, 'nrc_photos');
 
         $data = $this->setData($request);
 
