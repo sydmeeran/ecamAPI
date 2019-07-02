@@ -85,27 +85,27 @@ class UserRepository extends BaseRepository
         return null;
     }
 
-    public function storeProfilePhoto(Request $request)
-    {
-        /**
-         * @var UploadedFile $profile_photo
-         */
-        $profile_photo = $request->file('profile_photo');
-        $profile_photo_name = $profile_photo->move(public_path('db/profile_photos'), $this->uuid(date('m'), 15) . '.' . $profile_photo->getClientOriginalExtension());
+    // public function storeProfilePhoto(Request $request)
+    // {
+    //     /**
+    //      * @var UploadedFile $profile_photo
+    //      */
+    //     $profile_photo = $request->file('profile_photo');
+    //     $profile_photo_name = $profile_photo->move(public_path('db/profile_photos'), $this->uuid(date('m'), 15) . '.' . $profile_photo->getClientOriginalExtension());
 
-        return 'db/profile_photos/' . $profile_photo_name->getFilename();
-    }
+    //     return 'db/profile_photos/' . $profile_photo_name->getFilename();
+    // }
 
-    public function storeNrcPhoto(Request $request)
-    {
-        /**
-         * @var UploadedFile $nrc_photo
-         */
-        $nrc_photo = $request->file('nrc_photo');
-        $nrc_photo_name = $nrc_photo->move(public_path('db/nrc_photos'), $this->uuid(date('m'), 15) . '.' . $nrc_photo->getClientOriginalExtension());
+    // public function storeNrcPhoto(Request $request)
+    // {
+    //     /**
+    //      * @var UploadedFile $nrc_photo
+    //      */
+    //     $nrc_photo = $request->file('nrc_photo');
+    //     $nrc_photo_name = $nrc_photo->move(public_path('db/nrc_photos'), $this->uuid(date('m'), 15) . '.' . $nrc_photo->getClientOriginalExtension());
 
-        return 'db/nrc_photos/' . $nrc_photo_name->getFilename();
-    }
+    //     return 'db/nrc_photos/' . $nrc_photo_name->getFilename();
+    // }
 
     public function store(Request $request)
     {
@@ -250,19 +250,15 @@ class UserRepository extends BaseRepository
         $user = $this->find($id);
         if (Input::hasFile('profile_photo')) {
 
-            if (file_exists($user->profile_photo)) {
-                unlink($user->profile_photo);
-            }
-            $profile_photo_name = $this->storeProfilePhoto($request);
+            delete_image($user->profile_photo);
+            $profile_photo_name = $this->storePhotos($request->profile_photo, 'profile_photos');
             $data['profile_photo'] = $profile_photo_name;
         }
 
         if (Input::hasFile('nrc_photo')) {
 
-            if (file_exists($user->nrc_photo)) {
-                unlink($user->nrc_photo);
-            }
-            $nrc_photo_name = $this->storeNrcPhoto($request);
+            delete_image($user->nrc_photo);
+            $nrc_photo_name = $this->storePhotos($request->nrc_photo, 'nrc_photos');
             $data['nrc_photo'] = $nrc_photo_name;
         }
 
@@ -286,19 +282,15 @@ class UserRepository extends BaseRepository
         $user = $this->find($id);
         if (Input::hasFile('profile_photo')) {
 
-            if (file_exists($user->profile_photo)) {
-                unlink($user->profile_photo);
-            }
-            $profile_photo_name = $this->storeProfilePhoto($request);
+            delete_image($user->profile_photo);
+            $profile_photo_name = $this->storePhotos($request->profile_photo, 'profile_photos');
             $data['profile_photo'] = $profile_photo_name;
         }
 
         if (Input::hasFile('nrc_photo')) {
 
-            if (file_exists($user->nrc_photo)) {
-                unlink($user->nrc_photo);
-            }
-            $nrc_photo_name = $this->storeNrcPhoto($request);
+            delete_image($user->nrc_photo);
+            $nrc_photo_name = $this->storePhotos($request->nrc_photo, 'nrc_photos');
             $data['nrc_photo'] = $nrc_photo_name;
         }
         

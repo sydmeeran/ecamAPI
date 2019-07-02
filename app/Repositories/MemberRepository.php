@@ -226,9 +226,7 @@ class MemberRepository extends BaseRepository
 
         if (Input::hasFile('nrc_photo')) {
             $member = $this->find($id);
-            if(file_exists($member->nrc_photo)){
-                unlink($member->nrc_photo);
-            }
+            delete_image($member->nrc_photo);
             $nrc_photo_name = $this->storeNrcPhoto($request);
             $data['nrc_photo'] = $nrc_photo_name;
         }
@@ -240,6 +238,7 @@ class MemberRepository extends BaseRepository
 
 //        return $this->business->update($request, $id);
     }
+
 
 
 }

@@ -37,11 +37,30 @@ if (! function_exists('generateNumber')) {
     }
 }
 
-if ( ! function_exists('cloudinary'))
+if ( ! function_exists('get_image'))
 {
-    function cloudinary($publicId)
+    function get_image($image)
     {
-        return Cloudder::show($publicId);
+        if(strpos($image, 'ecam/') !== false){
+            return Cloudder::show($image);
+        }
+        return env('API_URL').'/'.$image;   
+    }
+}
+
+if ( ! function_exists('delete_image'))
+{
+    function delete_image($image)
+    {
+        if($image){
+            if(strpos($image, 'ecam/') !== false){
+                return Cloudder::delete($image);
+            } else {
+                if(file_exists($image)){
+                    unlink($image);
+                }
+            }
+        }
     }
 }
 
