@@ -59,7 +59,7 @@ if ( ! function_exists('delete_image'))
                 // if(file_exists($image)){
                     // unlink($image);
                 // }
-            }
+            // }
         }
     }
 }
