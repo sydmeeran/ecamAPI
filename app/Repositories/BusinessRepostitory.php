@@ -196,7 +196,7 @@ class BusinessRepostitory extends BaseRepository
 //    }
 
     public function updateValidation(Request $request){
-        return Validator::make($request->all(), [
+        return $request->validate([
             'business_name' => 'required|string',
             'license_type' => 'required|string',
             'license_photo.*' => 'image|mimes:jpeg,png,jpg|max:2048',
@@ -219,19 +219,22 @@ class BusinessRepostitory extends BaseRepository
 //    }
 
     public function update(Request $request, $id){
-        $validator = $this->updateValidation($request);
-        if($validator->fails()){
-            return $validator;
-        }
+        $this->updateValidation($request);
+
+        // $validator = $this->updateValidation($request);
+        // if($validator->fails()){
+        //     return $validator;
+        // }
 
         $data = $this->setData($request);
 
         if(Input::hasFile('license_photo')){
 
             $business = $this->find($id);
-            if(file_exists($business->license_photo)){
-                unlink($business->license_photo);
-            }
+            // if(file_exists($business->license_photo)){
+            //     unlink($business->license_photo);
+            // }
+            // delete_image($business->license_photo);
 
             $license_photo = $this->storeLicensePhoto($request);
             $data['license_photo'] = $license_photo;
