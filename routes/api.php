@@ -128,6 +128,12 @@ Route::group([
     Route::post('/invoices/send/mail/{id}', 'InvoiceController@send_mail');
     Route::post('/invoices/cancel/{id}', 'InvoiceController@cancel');
 
+    ////////////////////////////////////////////
+    // Sponsor Donate
+    Route::get('/sponsor-donate', 'SponsorDonateController@pagination');
+    Route::get('/sponsor-donate/get/{id}', 'SponsorDonateController@get');
+    Route::post('/sponsor-donate/store', 'SponsorDonateController@store');
+
     ///////////////////////////////////////////
     // Payment Reminder
     Route::get('/payment-reminders', 'PaymentReminderController@pagination');

@@ -103,6 +103,11 @@ class DataRepo
         return app(InvoiceRepository::class);
     }
 
+    public static function sponsor_donate(): SponsorDonateRepository
+    {
+        return app(SponsorDonateRepository::class);
+    }
+
     public static function receipt(): ReceiptRepository
     {
         return app(ReceiptRepository::class);

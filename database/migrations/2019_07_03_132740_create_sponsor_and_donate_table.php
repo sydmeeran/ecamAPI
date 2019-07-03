@@ -18,6 +18,7 @@ class CreateSponsorAndDonateTable extends Migration
             $table->string('company_name');
             $table->string('email');
             $table->string('phone_no');
+            $table->string('event_title');
             $table->integer('amount');
             $table->string('description');
             $table->string('type');
