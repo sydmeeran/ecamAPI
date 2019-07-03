@@ -18,16 +18,10 @@ class CreateInvoicesTable extends Migration
             $table->string('invoice_id');
             $table->unsignedInteger('member_id');
             $table->unsignedInteger('business_id');
-            $table->unsignedInteger('quotation_id');
-            $table->integer('sub_total');
-            $table->integer('discount');
-            $table->integer('tax')->default(0);
-            $table->float('total');
             $table->boolean('is_active')->default(1);
             $table->timestamps();
 
             $table->foreign('member_id')->references('id')->on('members');
-            $table->foreign('quotation_id')->references('id')->on('quotations');
             $table->foreign('business_id')->references('id')->on('businesses');
         });
     }
