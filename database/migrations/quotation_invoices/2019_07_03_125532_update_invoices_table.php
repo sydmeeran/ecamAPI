@@ -13,6 +13,13 @@ class UpdateInvoicesTable extends Migration
      */
     public function up()
     {
+        Schema::dropIfExists('invoice_remarks');
+        Schema::dropIfExists('accounting_service');
+        Schema::dropIfExists('taxation');
+        Schema::dropIfExists('consulting');
+        Schema::dropIfExists('auditing');
+        Schema::dropIfExists('receipts');
+
         Schema::dropIfExists('invoices');
 
         Schema::create('invoices', function (Blueprint $table) {
