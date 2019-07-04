@@ -17,6 +17,7 @@ abstract class BaseRepository
 
     public function getAll()
     {
+        // dd($this->model()->get()->all());
         return $this->model()->get()->all();
     }
 

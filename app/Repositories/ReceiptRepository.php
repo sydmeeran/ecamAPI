@@ -28,6 +28,13 @@ class ReceiptRepository extends BaseRepository
         $this->member = DataRepo::member();
     }
 
+    public function pagination($collection, $total, $page, $perPage){
+        
+        return new \Illuminate\Pagination\LengthAwarePaginator($collection, $total, $perPage, $page, [
+            'path' => \Illuminate\Pagination\Paginator::resolveCurrentPath(),
+        ]);
+    }
+
     public function model()
     {
         return Receipt::query();
@@ -43,34 +50,41 @@ class ReceiptRepository extends BaseRepository
             
             $rules['bank'] = 'required|string';
             $rules['bank_date'] = 'required|string';
-
-            // return Validator::make($request->all(), [
-            //     'invoice_id' => 'required',
-            //     'type' => 'required',
-            //     'bank' => 'required|string',
-            //     'bank_date' => 'required|string',
-            // ]);
         } else {
-            $rules['_date'] = 'required|string';
+            $rules['cash_date'] = 'required|string';
+            $rules['description'] = 'required|string';
         }
-        return Validator::make($request->all(), [
-            'invoice_id' => 'required',
-            'type' => 'required',
-            'cash_date' => 'required|string',
-            'description' => 'required|string',
-        ]);
+
+        if($request->invoice_id){
+            $rules['invoice_id'] = 'required';
+        } else {
+            $rules['sponsor_donate_id'] = 'required';
+        }
+
+        return $request->validate($rules);
     }
 
     public function setData(Request $request)
     {
         $data = [
-            'invoice_id' => $request->input('invoice_id'),
-            'type' => $request->input('type'),
-            'bank' => $request->input('bank'),
-            'bank_date' => new DateTime($request->input('bank_date')),
-            'cash_date' => new DateTime($request->input('cash_date')),
-            'description' => $request->input('description'),
+            'type' => $request->type,
         ];
+
+        if($request->input('type') == 'bank'){
+            
+            $data['bank'] = $request->bank;
+            $data['bank_date'] = new DateTime($request->bank_date);
+
+        } else {
+            $data['cash_date'] = new DateTime($request->cash_date);
+            $data['description'] = $request->description;
+        }
+
+        if($request->invoice_id){
+            $data['invoice_id'] = $request->invoice_id;
+        } else {
+            $data['sponsor_donate_id'] = $request->sponsor_donate_id;
+        }
 
         return $data;
     }
@@ -85,19 +99,16 @@ class ReceiptRepository extends BaseRepository
 
     public function store(Request $request){
 
-        $validator = $this->validation($request);
-        if($validator->fails()){
-            throw new ValidationException($validator);
-        }
+        $this->validation($request);
 
         $data = $this->setData($request);
         $data['receipt_id'] = $this->generateReceiptId();
 
         $receipt = $this->model()->create($data);
 
-        $invoice = $this->invoice->with(['member', 'business', 'accounting_service', 'auditing', 'consulting', 'taxation', 'receipt'], $receipt->invoice_id)->toArray();
+        // $invoice = $this->invoice->with(['member', 'business', 'accounting_service', 'auditing', 'consulting', 'taxation', 'receipt'], $receipt->invoice_id)->toArray();
 
-        Mail::to($invoice[0]['member']['email'])->send(new ReceiptEmail($invoice));
+        // Mail::to($invoice[0]['member']['email'])->send(new ReceiptEmail($invoice));
 
         return 'success';
     }

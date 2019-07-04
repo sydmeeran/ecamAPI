@@ -12,5 +12,7 @@ class SponsorDonate extends Model
         'company_name', 'email', 'phone_no', 'event_title', 'amount', 'description', 'type'
     ];
 
-    
+    public function receipt(){
+        return $this->hasOne(Receipt::class);
+    }
 }

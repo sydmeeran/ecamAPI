@@ -7,6 +7,7 @@ use App\Repositories\DataRepo;
 use Arga\Utils\ActionMiddlewareTrait;
 use Illuminate\Http\Request;
 use Mail;
+use App\Http\Resources\ReceiptCollection;
 
 class ReceiptController extends BaseController
 {
@@ -27,25 +28,37 @@ class ReceiptController extends BaseController
         $this->receipt = DataRepo::receipt();
     }
 
-    public function pagination()
+    public function resource(){
+        ReceiptCollection::withoutWrapping();
+        return ReceiptCollection::class;
+    }
+
+    // public function collection($query){
+    //     return $this->resource()::collection($query);
+    // }
+
+    public function pagination(Request $request)
     {
-        $receipt = $this->invoice->model()->whereHas('receipt')->with('receipt')->with('member')->with('business')->paginate(20);
+        $all = $this->receipt->model()->get();
+        // dd($all);
+        $collection = collect($this->resource()::collection($all));
+        $page = $request->page;
+        $perPage = 20;
+        $total = $collection->count();
+        // dd($total);
+        // $data = $this->receipt->where('') 
+
+        $receipt = $this->receipt->pagination($collection, $total, $page, $perPage);
         return $this->response($receipt);
     }
 
     public function get($id)
     {
-        $receipt = $this->receipt->model()->where('id', $id)->get()->toArray();
+        $receipt = $this->receipt->find($id)->toArray();
         if (empty($receipt)) {
             return $this->empty_data();
         }
-        $receipt = $this->invoice->with(['receipt', 'member', 'business', 'accounting_service', 'auditing', 'consulting', 'taxation'], $receipt[0]['invoice_id'])->toArray();
-
-        if (empty($receipt)) {
-            return $this->empty_data();
-        }
-
-        $receipt = $receipt[0];
+        
         return $this->response($receipt);
     }
 
