@@ -26,6 +26,7 @@ class UpdateInvoicesTable extends Migration
             $table->increments('id');
             $table->string('invoice_id');
             $table->unsignedInteger('member_id');
+            $table->string('member_type');
             $table->unsignedInteger('business_id');
             $table->string('payment_type');
             $table->string('payment_date');

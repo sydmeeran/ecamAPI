@@ -19,16 +19,11 @@ use Mail;
 
 class InvoiceRepository extends BaseRepository
 {
-    protected $quotation, $accounting_service, $auditing, $annual, $consulting, $taxation, $member, $prefix;
+    protected $member, $prefix;
 
     public function __construct()
     {
         $this->prefix = date('y');
-        $this->quotation = DataRepo::quotation();
-        $this->accounting_service = DataRepo::accounting_service();
-        $this->auditing = DataRepo::auditing();
-        $this->consulting = DataRepo::consulting();
-        $this->taxation = DataRepo::taxation();
         $this->member = DataRepo::member();
     }
 
@@ -40,13 +35,8 @@ class InvoiceRepository extends BaseRepository
     public function validation(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'quotation_id' => 'required',
             'member_id' => 'required',
             'business_id' => 'required',
-            'sub_total' => 'required|int',
-            'discount' => 'required|int',
-            'tax' => 'required|int',
-            'total' => 'required|int',
         ]);
 
         return $validator;
@@ -55,13 +45,8 @@ class InvoiceRepository extends BaseRepository
     public function setData(Request $request)
     {
         $data = [
-            'quotation_id' => $request->input('quotation_id'),
             'member_id' => $request->input('member_id'),
             'business_id' => $request->input('business_id'),
-            'sub_total' => $request->input('sub_total'),
-            'discount' => $request->input('discount'),
-            'tax' => $request->input('tax'),
-            'total' => $request->input('total'),
         ];
 
         return $data;
